@@ -307,7 +307,7 @@
   body:not(.hide-ui) #timer .tl-info em { display: inline; }
   /* the round bar carries no times; the single whole-workout bar shows its times only once tapped */
   #timeline.roundview .tl-tw { display: none !important; }
-  body.hide-ui #timeline .tl-tw { visibility: hidden; }
+  #timeline .tl-tw { display: none !important; }   /* the info line under the bars carries the time left */
   /* nothing about battery/wake-lock on the timing screen */
   #wakeStatus2 { display: none !important; }
   #pauseBtn { padding: 1.8vmin 4.2vmin; font-size: clamp(18px, 3.6vmin, 44px); }
@@ -378,7 +378,11 @@
   #pcompact { display: none; width: 100%; text-align: center; }
   @media (orientation: portrait) {
     #pcompact { display: none; }
-    /* portrait: bars get the full width; the time labels move underneath them */
+    /* portrait order: clock, Frogue, what's next, THEN the bars, then the controls */
+    #timer .bottom { display: contents; }
+    #timer .top { order: 0; } #timer .ringwrap { order: 1; } #timer .frogrow { order: 2; } #timer #nextUp { order: 3; }
+    #timer #timeline { order: 5; } #timer .ctrl { order: 6; } #timer > .credit { order: 7; }
+    /* portrait: bars get the full width */
     #timeline .tl-main { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0; row-gap: 0; }
     #timeline .tl-main > .tl-col { grid-area: 1 / 1 / 2 / 3; }
     #timeline .tl-main > .tl-tw:first-child { grid-area: 2 / 1; }
@@ -1370,8 +1374,8 @@
     // one line under the bars: progress on the left, and (tapped) rounds to go / time left
     const toGo = left === 0 ? 'final round' : left === 1 ? '1 round to go' : left + ' rounds to go';
     const timeLeft = fmt(Math.max(0, total - elapsed));
-    $('tlInfo').innerHTML = done ? '<span>100%</span><span></span>'
-      : `<span>${pct}%${N > 1 ? `<em> · ${toGo}</em>` : ''}</span><span>${roundView ? `<em>${timeLeft} left</em>` : ''}</span>`;
+    $('tlInfo').innerHTML = done ? '<span>100%</span><span>0:00 left</span>'
+      : `<span>${pct}%${N > 1 ? `<em> · ${toGo}</em>` : ''}</span><span>${timeLeft} left</span>`;
     $('pcFill').style.width = pct + '%';
     $('pcPct').textContent = pct + '%';
   }
