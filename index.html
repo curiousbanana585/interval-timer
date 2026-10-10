@@ -51,14 +51,15 @@
            border-radius: 1.2vmin; transition: background .15s, transform .05s; touch-action: manipulation; }
   button:hover { background: var(--panel-hover); }
   button:active { transform: scale(.95); }
+  #setup button { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
   button:focus-visible, .mascot[role="button"]:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 
 
   /* ---------- Screens (TV + phone) ---------- */
   .scr { width: 100%; display: flex; flex-direction: column; gap: 1.2vmin; align-items: flex-start; }
   .scrstat { font-size: clamp(14px, 2.4vmin, 26px); font-weight: 700; color: var(--muted); }
-  .scrbtns { display: flex; gap: 1.2vmin; flex-wrap: wrap; }
-  .scrbtns button { font-size: clamp(14px, 2.4vmin, 26px); font-weight: 700; padding: 1.1vmin 2vmin; }
+  .scrbtns { display: flex; gap: 1.2vmin; flex-wrap: wrap; justify-content: flex-end; margin-left: auto; }
+  .scrbtns button { font-size: clamp(14px, 2.4vmin, 26px); font-weight: 700; padding: 1.1vmin 2vmin; min-height: 48px; white-space: nowrap; }
   .scrbtns button.del:hover { background: #b42318; }
   .scr .wakeinfo { text-align: left; margin-top: 0; }
   #display { align-items: center; justify-content: center; flex-direction: column; overflow: hidden; }
@@ -117,6 +118,29 @@
   .dw-leg span { display: inline-flex; align-items: center; gap: 1vmin; }
   .dw-leg i { width: 1.8vmin; height: 1.8vmin; border-radius: .5vmin; }
   .dw-set { margin-left: auto; }
+  /* exercise line-up: one row up to 6, two rows up to 12, then pages of 12 that flip every few seconds */
+  .dw-tiles { display: grid; grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr)); gap: 1.2vmin; margin-top: 1.8vmin; }
+  .dw-tiles:empty { display: none; }
+  .dw-tiles.flip { animation: dwflip .45s ease-out; }
+  @keyframes dwflip { from { opacity: 0; transform: translateX(3vmin); } to { opacity: 1; transform: none; } }
+  .dw-tile { min-width: 0; background: rgba(255,255,255,.07); border-radius: 1.8vmin; padding: 1.5vmin 1.8vmin; display: flex; flex-direction: column; gap: .8vmin; }
+  .dw-tile .tn { display: flex; align-items: center; gap: 1vmin; min-width: 0; }
+  .dw-tile .no { flex: none; width: 3.8vmin; height: 3.8vmin; border-radius: 50%; background: rgba(255,255,255,.14); display: inline-flex; align-items: center; justify-content: center; font-size: clamp(11px, 2vmin, 22px); font-weight: 800; }
+  .dw-tile .nm { font-size: clamp(14px, 2.8vmin, 30px); font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dw-tile .tt { display: flex; gap: 1.6vmin; flex-wrap: wrap; font-size: clamp(12px, 2.2vmin, 24px); font-weight: 700; }
+  .dw-tile .tw { color: #32d583; } .dw-tile .tr { color: #84caff; } .dw-tile .tb { color: #c9b8ff; } .dw-tile .tx { color: rgba(255,255,255,.45); }
+  .dw-tiles.two { gap: 1vmin; }
+  .dw-tiles.two .dw-tile { padding: 1vmin 1.4vmin; gap: .4vmin; }
+  .dw-tiles.two .nm { font-size: clamp(13px, 2.4vmin, 26px); }
+  .dw-tiles.two .tt { font-size: clamp(11px, 1.9vmin, 20px); }
+  .dw-dots { display: flex; justify-content: center; align-items: center; gap: 1vmin; margin-top: 1vmin; font-size: clamp(11px, 1.8vmin, 20px); font-weight: 700; color: rgba(255,255,255,.6); }
+  .dw-dots i { width: 1.2vmin; height: 1.2vmin; border-radius: 50%; background: rgba(255,255,255,.25); }
+  .dw-dots i.on { background: #fff; }
+  .dwait.tiles .dw-bar { height: clamp(8px, 1.8vmin, 20px); }
+  .dwait.tiles .dw-frog { width: min(30vmin, 34vw); }
+  .dwait.tiles .dw-bubble { font-size: clamp(20px, 4.6vmin, 52px); }
+  .dwait.tiles2 .dw-frog { width: min(24vmin, 30vw); }
+  .dwait.tiles2 .dw-bubble { font-size: clamp(18px, 4vmin, 46px); }
   .dw-foot { display: flex; align-items: center; justify-content: center; gap: 2vmin; flex-wrap: wrap; }
   .dw-foot button { font-size: clamp(12px, 2vmin, 22px); font-weight: 700; padding: 1vmin 2.2vmin; opacity: .7; }
   .dw-foot button.big { background: #12b76a; opacity: 1; font-size: clamp(14px, 2.6vmin, 28px); }
@@ -142,8 +166,8 @@
   @keyframes dw-squat { 0%,100% { transform: scaleY(1) translateY(0); } 50% { transform: scaleY(.8) translateY(2%); } }
   @keyframes dw-armFwdL { 0%,100% { transform: rotate(0); } 50% { transform: rotate(-50deg); } }
   @keyframes dw-armFwdR { 0%,100% { transform: rotate(0); } 50% { transform: rotate(50deg); } }
-  @media (prefers-reduced-motion: reduce) { .dw-frog *, .dw-bubble { animation: none !important; } }
-  @media (orientation: portrait) { .dw-mid { flex-direction: column; } .dw-bubble::before { display: none; } .dw-frog { width: min(48vmin, 70vw); } }
+  @media (prefers-reduced-motion: reduce) { .dw-frog *, .dw-bubble, .dw-tiles { animation: none !important; } }
+  @media (orientation: portrait) { .dw-mid { flex-direction: column; } .dw-bubble::before { display: none; } .dw-frog { width: min(48vmin, 70vw); } .dw-tiles { --cols: 3 !important; } }
 
   /* ---------- Phone remote (while the TV runs the workout) ---------- */
   #remote { overflow-y: auto; }
@@ -193,7 +217,6 @@
   .titlebar { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2vmin; flex-wrap: wrap; }
   .brand { display: flex; align-items: center; gap: 1.6vmin; min-width: 0; }
   .sub { font-size: clamp(13px, 2.2vmin, 22px); color: var(--muted); font-weight: 600; margin-top: .4vmin; }
-  .fsbtn { font-size: clamp(14px, 2.4vmin, 26px); font-weight: 700; padding: 1.1vmin 2.2vmin; }
 
   .steps { display: flex; align-items: center; gap: .8vmin; }
   .steps button { font-size: clamp(16px, 2.8vmin, 30px); font-weight: 700; width: clamp(40px, 6vmin, 64px); height: clamp(40px, 6vmin, 64px); }
@@ -595,6 +618,12 @@
     .ex.open .mini .val { min-width: 0; width: 100%; font-size: 22px; }
     .ex.open .exact { grid-column: 1 / -1; display: flex; margin: 0; justify-content: flex-end; gap: 8px; }
     .ex.open .exact button { width: 44px; height: 40px; }
+    .titlebar { flex-wrap: nowrap; align-items: flex-start; gap: 8px; }
+    .titlebar .scrbtns { flex-wrap: nowrap; gap: 6px; flex: none; }
+    .titlebar .scrbtns button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-width: 60px; min-height: 52px; padding: 6px 8px; font-size: 11px; line-height: 1.1; white-space: normal; text-align: center; }
+    .titlebar .scrbtns button .ic { font-size: 20px; }
+    .titlebar .scrbtns #scrUnpair { font-size: 13px; }
+    #setup h1 { font-size: clamp(22px, 6.4vw, 30px); }
   }
 
 </style>
@@ -610,7 +639,15 @@
         <span class="mascot brandfrog" id="brandFrog"></span>
         <div><h1>Frogue Interval Timer</h1><div class="sub" id="setupSay"></div></div>
       </div>
-      <button class="fsbtn" id="fsBtn" title="Full screen (shortcut: F)">⛶ Full screen</button>
+      <div class="scrbtns">
+        <button id="scrDisplay" title="Make this screen the TV: it shows the timer and plays the sound"><span class="ic">📺</span> <span>Use as TV</span></button>
+        <button id="scrPair" title="Run the timer on a TV from this phone"><span class="ic">📱</span> <span>Control a TV</span></button>
+        <button id="scrUnpair" class="del" title="Stop controlling the TV" hidden>Disconnect</button>
+      </div>
+    </div>
+    <div class="scr" id="scrBox" hidden>
+      <div id="scrStatus" class="scrstat"></div>
+      <div class="wakeinfo" id="scrNote" hidden></div>
     </div>
 
     <h2>Saved workouts</h2>
@@ -665,17 +702,7 @@
 
     <label class="toggle"><input type="checkbox" id="wakeToggle" checked><span class="sw"></span><span>Keep screen awake during workouts</span></label>
     <div class="wakeinfo" id="wakeStatus"></div>
-    <h2>Screens</h2>
-    <div class="scr">
-      <div id="scrStatus" class="scrstat"></div>
-      <div class="scrbtns">
-        <button id="scrDisplay" title="Make this screen the TV: it shows the timer and plays the sound">📺 Use this screen as the TV</button>
-        <button id="scrPair" title="Run the timer on a TV from this phone">📱 Control a TV</button>
-        <button id="scrUnpair" class="del" hidden>Disconnect</button>
-      </div>
-      <div class="wakeinfo" id="scrNote" hidden></div>
-    </div>
-    <div class="hint">Hold a +/− button to change faster · Space = start/pause · ← → = back/skip · Esc = stop · F = full screen · M = mute · Tap a time to type it · Double-tap the timer to pause</div>
+    <div class="hint">Hold a +/− button to change faster · Tap a time to type it · Double-tap the timer to pause</div>
     <div class="credit">A Bouncy Production · Made for Haz</div>
 
     <div class="startbar">
@@ -726,6 +753,8 @@
     </div>
     <div class="dw-card">
       <div class="dw-head"><div class="dw-name" id="dwName">Choose a workout on your phone</div><div class="dw-stats" id="dwStats"></div></div>
+      <div class="dw-tiles" id="dwTiles" aria-label="Exercises in each round"></div>
+      <div class="dw-dots" id="dwDots" hidden></div>
       <div class="dw-bar" id="dwBar"></div>
       <div class="dw-leg"><span><i class="sp"></i>Get ready</span><span><i class="sr"></i>Round</span><span><i class="sb"></i>Round break</span><span class="dw-set">Setting up on your phone…</span></div>
     </div>
@@ -1071,6 +1100,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     }
   });
   function updateExVals(i) {
+    if (!cfg.exercises[i]) return;                 // rows from the previous workout, about to be redrawn
     const w = document.querySelector(`[data-v="${i}-work"]`), r = document.querySelector(`[data-v="${i}-rest"]`);
     if (w) w.value = fmt(cfg.exercises[i].work);
     if (r) r.value = fmt(cfg.exercises[i].rest);
@@ -1354,20 +1384,36 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     }
     save();
   }
-  let holdT = null, holdI = null;
+  let holdT = null, holdI = null, touchB = null, touchAt = null, held = false;
   function stopHold() { clearTimeout(holdT); clearInterval(holdI); holdT = holdI = null; }
+  function blurTin() { if (isTin(document.activeElement)) document.activeElement.blur(); }   // commit anything half-typed first
   $('setup').addEventListener('pointerdown', (e) => {
     const b = e.target.closest('button[data-act]');
+    stopHold(); touchB = null; held = false;
     if (!b || b.disabled) return;
-    e.preventDefault();
-    if (isTin(document.activeElement)) document.activeElement.blur();   // commit anything half-typed first
-    doAct(b);
-    if (b.hasAttribute('data-hold')) {
-      stopHold();
-      holdT = setTimeout(() => { holdI = setInterval(() => doAct(b), 90); }, 450);
+    if (e.pointerType === 'touch') {
+      // fingers: the press happens on the lift (the click), so a swipe that starts on a button scrolls instead of pressing it.
+      // Holding still on a +/− still repeats.
+      touchB = b; touchAt = { x: e.clientX, y: e.clientY };
+      if (b.hasAttribute('data-hold')) holdT = setTimeout(() => { held = true; blurTin(); doAct(b); holdI = setInterval(() => doAct(b), 90); }, 450);
+      return;
     }
+    e.preventDefault();
+    blurTin(); doAct(b);
+    if (b.hasAttribute('data-hold')) holdT = setTimeout(() => { holdI = setInterval(() => doAct(b), 90); }, 450);
   });
-  ['pointerup', 'pointercancel', 'pointerleave'].forEach((ev) => $('setup').addEventListener(ev, stopHold));
+  $('setup').addEventListener('pointermove', (e) => {   // finger moved: it's a scroll, not a hold
+    if (touchB && !held && Math.hypot(e.clientX - touchAt.x, e.clientY - touchAt.y) > 10) { stopHold(); touchB = null; }
+  });
+  $('setup').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-act]');
+    if (!b || b !== touchB) return;                       // mouse presses already happened on pointerdown
+    touchB = null;
+    if (held || b.disabled) { held = false; return; }     // a hold already did its thing
+    blurTin(); doAct(b);
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach((ev) => $('setup').addEventListener(ev, (e) => { stopHold(); if (ev === 'pointercancel') touchB = null; }));
+  $('setup').addEventListener('contextmenu', (e) => { if (e.target.closest('button[data-hold]')) e.preventDefault(); });   // long-press = repeat, not a menu
   window.addEventListener('blur', stopHold);
 
   /* ---------- Audio ---------- */
@@ -2197,10 +2243,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   }
   function updateFs() {
     const label = document.fullscreenElement ? '⛶ Exit full screen' : '⛶ Full screen';
-    ['fsBtn', 'fsBtn2'].forEach((id) => { $(id).hidden = !fsOk; $(id).textContent = label; });
+    $('fsBtn2').hidden = !fsOk; $('fsBtn2').textContent = label;
   }
   document.addEventListener('fullscreenchange', () => { updateFs(); sizeTime(); });
-  $('fsBtn').addEventListener('click', fullscreen);
   $('fsBtn2').addEventListener('click', fullscreen);
 
   /* ---------- Frogue on the setup screen: tap him! ---------- */
@@ -2546,9 +2591,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if (remote) {
       const how = linkStatus === 'denied' ? '⚠ can’t reach the relay' : linkStatus !== 'online' ? '… connecting' : tvAlive() ? '● TV online' : '○ TV not responding';
       st.textContent = `📺 Controlling TV ${sync.code} · ${how}`;
-    } else st.textContent = 'Show the timer on a TV or Fire TV stick, and run it from this phone.';
+    } else st.textContent = '';
     note.textContent = SYNC_DB ? '' : 'Sync isn’t set up yet, so screens only find each other inside this one browser (demo). See sync-config.js.';
-    note.hidden = !note.textContent;
+    note.hidden = !note.textContent; st.hidden = !st.textContent;
+    $('scrBox').hidden = note.hidden && st.hidden;
   }
   let dspPhone = 0, dspMsg = null, dspMsgT = null, hiSeen = false, dspPid = null;
   const OWNER_KEY = 'intervalTimerOwner';
@@ -2600,12 +2646,49 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     $('dwFrog').classList.add(MOVES[moveI]);
     dwBubble(msg('tvWaiting', WAIT_LINES));
     waitT = setInterval(dwStep, 6500);
+    tileT = setInterval(tileFlip, 6000);
   }
-  function waitStop() { clearInterval(waitT); waitT = null; clearTimeout(reactT); }
+  function waitStop() { clearInterval(waitT); waitT = null; clearTimeout(reactT); clearInterval(tileT); tileT = null; }
+  let tilePage = 0, tileT = null;
+  const TILE_PAGE = 12;
+  function tileLast(w) { return w.rounds <= 1 ? ['tx', 'no rest'] : w.roundRest > 0 ? ['tb', fmt(w.roundRest) + ' break'] : null; }
+  function renderTiles(flip) {
+    const w = dspDraft, box = $('dwTiles'), dots = $('dwDots'), wait = $('dspWait');
+    box.innerHTML = ''; dots.innerHTML = '';
+    const n = w ? w.exercises.length : 0, pages = Math.ceil(n / TILE_PAGE);
+    if (tilePage >= pages) tilePage = 0;
+    wait.classList.toggle('tiles', n > 0); wait.classList.toggle('tiles2', n > 6);
+    box.classList.toggle('two', n > 6);
+    box.style.setProperty('--cols', n > 6 ? 6 : Math.max(n, 4));
+    dots.hidden = pages < 2;
+    if (!n) return;
+    for (let i = tilePage * TILE_PAGE; i < Math.min(n, (tilePage + 1) * TILE_PAGE); i++) {
+      const e = w.exercises[i], t = document.createElement('div'); t.className = 'dw-tile';
+      const last = i === n - 1 && tileLast(w);
+      t.innerHTML = '<div class="tn"><span class="no"></span><span class="nm"></span></div><div class="tt"><span class="tw"></span><span></span></div>';
+      t.querySelector('.no').textContent = i + 1;
+      t.querySelector('.nm').textContent = exName(w, i);
+      t.querySelector('.tw').textContent = fmt(e.work) + ' work';
+      const r = t.querySelector('.tt span:last-child');
+      if (last) { r.className = last[0]; r.textContent = last[1]; } else { r.className = 'tr'; r.textContent = fmt(e.rest) + ' rest'; }
+      box.appendChild(t);
+    }
+    if (pages > 1) {
+      for (let k = 0; k < pages; k++) { const d = document.createElement('i'); if (k === tilePage) d.className = 'on'; dots.appendChild(d); }
+      const lbl = document.createElement('span'); lbl.textContent = `${tilePage + 1} of ${pages}`; dots.appendChild(lbl);
+    }
+    if (flip) { box.classList.remove('flip'); void box.offsetWidth; box.classList.add('flip'); }
+  }
+  function tileFlip() {
+    const n = dspDraft ? dspDraft.exercises.length : 0, pages = Math.ceil(n / TILE_PAGE);
+    if (pages < 2) return;
+    tilePage = (tilePage + 1) % pages; renderTiles(true);
+  }
   function renderWait() {
     const w = dspDraft, bar = $('dwBar');
     bar.innerHTML = '';
     $('dwName').textContent = w ? wkLabel(w) : 'Choose a workout on your phone';
+    renderTiles(false);
     if (!w) { $('dwStats').textContent = ''; return; }
     const st = draftStats(w);
     $('dwStats').textContent = `${plural(st.rounds, 'round')} · ${plural(st.exercises, 'exercise')} · ${fmt(st.total)} total`;
@@ -2644,8 +2727,15 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     catch (e) { box.textContent = ''; }
     $('dspUrl').textContent = location.host + location.pathname.replace(/index\.html$/, '');
   }
-  function enterDisplay() {
+  let dspFsTried = false;
+  function tvFullscreen() {                       // only once per visit, so leaving full screen on purpose sticks
+    if (dspFsTried || !fsOk || document.fullscreenElement) return;
+    dspFsTried = true;
+    try { const r = document.documentElement.requestFullscreen(); if (r && r.catch) r.catch(() => { dspFsTried = false; }); } catch (e) { dspFsTried = false; }
+  }
+  function enterDisplay(e) {
     if (sync.role !== 'display') { sync = { role: 'display', code: genCode() }; saveSync(); }
+    if (e && e.isTrusted) tvFullscreen();
     restoreOwner();
     connect(); ensureAudio(); drawQr(); renderDisplay(); renderScreens();
     if (!active) show('display');
@@ -2656,6 +2746,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     setTimeout(disconnect, 400);
     dspPid = null; saveOwner(); dspPhone = 0;
     sync = { role: null, code: null }; saveSync(); renderScreens();
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    dspFsTried = false;
     show('setup');
   }
   async function askPair() {
@@ -2694,7 +2786,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   $('dwSound').addEventListener('click', () => { ensureAudio(); cues.done(); setTimeout(renderDisplay, 400); });
   $('dspSound').addEventListener('click', () => { ensureAudio(); cues.done(); setTimeout(renderDisplay, 400); });
   // on the TV, any key press counts as the gesture that lets the browser play sound
-  ['click', 'keydown', 'pointerdown'].forEach((ev) => document.addEventListener(ev, () => { if (sync.role === 'display') { ensureAudio(); setTimeout(renderDisplay, 300); } }, true));
+  ['click', 'keydown', 'pointerdown'].forEach((ev) => document.addEventListener(ev, (e) => {
+    if (sync.role !== 'display') return;
+    ensureAudio(); setTimeout(renderDisplay, 300);
+    if (e.isTrusted && e.key !== 'Escape' && !(e.target && e.target.closest && e.target.closest('#dspExit, #dwExit'))) tvFullscreen();
+  }, true));
   // for the Fire TV app: Back key = leave a dialog / stop prompt; false = nothing to do (the app may exit)
   window.frogueTvBack = () => {
     if (dlgOpen()) { closeDialog(dlgCancel); return true; }
