@@ -4,10 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Bouncy Production">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#054f31">
+<meta name="mobile-web-app-capable" content="yes">
 <link rel="icon" type="image/svg+xml" sizes="any" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='35' cy='38' r='19' fill='%234ade80' stroke='%2315803d' stroke-width='6'/%3E%3Ccircle cx='85' cy='38' r='19' fill='%234ade80' stroke='%2315803d' stroke-width='6'/%3E%3Cellipse cx='60' cy='72' rx='50' ry='40' fill='%234ade80' stroke='%2315803d' stroke-width='6'/%3E%3Ccircle cx='35' cy='38' r='12' fill='%23fff'/%3E%3Ccircle cx='85' cy='38' r='12' fill='%23fff'/%3E%3Ccircle cx='38' cy='40' r='6.5' fill='%231f2937'/%3E%3Ccircle cx='82' cy='40' r='6.5' fill='%231f2937'/%3E%3Cpath d='M16 62 Q60 46 104 62 L102 74 Q60 58 18 74 Z' fill='%23fb923c' stroke='%23c2410c' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M38 88 Q60 106 82 88' fill='none' stroke='%23166534' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,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">
 <link rel="apple-touch-icon" href="data:image/png;base64,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">
-<title>Interval Timer</title>
+<title>Frogue Interval Timer</title>
 <style>
   :root {
     --bg: #0e1116;
@@ -16,8 +19,10 @@
     --accent: #98a2b3;
     --panel: rgba(255,255,255,.08);
     --panel-hover: rgba(255,255,255,.16);
+    --tfs: clamp(48px, min(18vh, 34vw), 260px);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
   html, body { height: 100%; }
   body {
     background: var(--bg);
@@ -31,6 +36,9 @@
   body[data-phase="work"]  { --bg: #054f31; --accent: #32d583; }
   body[data-phase="rest"]  { --bg: #0b2f66; --accent: #53b1fd; }
   body[data-phase="done"]  { --bg: #3b1d6e; --accent: #b692f6; }
+  /* a break between rounds is indigo (ordinary rests stay blue) */
+  body[data-brk="1"] { --bg: #2a1b5e; --accent: #c9b8ff; }
+  body[data-brk="1"] #ring .track { stroke: rgba(201,184,255,.4); stroke-dasharray: 0.1 11; stroke-linecap: round; }
 
   #flash { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 50; }
   #flash.go { animation: flash .7s ease-out; }
@@ -43,16 +51,27 @@
            border-radius: 1.2vmin; transition: background .15s, transform .05s; touch-action: manipulation; }
   button:hover { background: var(--panel-hover); }
   button:active { transform: scale(.95); }
+  button:focus-visible, .mascot[role="button"]:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
 
   /* ---------- Setup ---------- */
   #setup { overflow-y: auto; }
-  .wrap { margin: auto; width: min(1150px, 100%); display: flex; flex-direction: column; align-items: center; gap: 2vmin; padding: 1vmin 0; }
-  #setup h1 { font-size: clamp(26px, 5vmin, 56px); font-weight: 700; letter-spacing: .02em; }
+  .wrap { align-self: stretch; margin: 0 auto; width: min(1150px, 100%); display: flex; flex-direction: column; align-items: center; gap: 2vmin; padding: 1vmin 0 0; }
+  #setup h1 { font-size: clamp(26px, 5vmin, 56px); font-weight: 700; letter-spacing: .02em; line-height: 1.1; }
   h2 { font-size: clamp(14px, 2.2vmin, 22px); text-transform: uppercase; letter-spacing: .15em; color: var(--muted); align-self: flex-start; margin-top: 1vmin; }
+
+  .titlebar { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2vmin; flex-wrap: wrap; }
+  .brand { display: flex; align-items: center; gap: 1.6vmin; min-width: 0; }
+  .sub { font-size: clamp(13px, 2.2vmin, 22px); color: var(--muted); font-weight: 600; margin-top: .4vmin; }
+  .fsbtn { font-size: clamp(14px, 2.4vmin, 26px); font-weight: 700; padding: 1.1vmin 2.2vmin; }
 
   .steps { display: flex; align-items: center; gap: .8vmin; }
   .steps button { font-size: clamp(16px, 2.8vmin, 30px); font-weight: 700; width: clamp(40px, 6vmin, 64px); height: clamp(40px, 6vmin, 64px); }
   .val { font-size: clamp(20px, 4vmin, 44px); font-weight: 800; min-width: 2.7em; text-align: center; font-variant-numeric: tabular-nums; }
+  /* time / count values you can tap and type into (90 or 1:30) */
+  input.tin { width: 3.5em; min-width: 0; padding: .12em 0; background: rgba(0,0,0,.25); border: 2px solid transparent;
+              border-radius: 1vmin; color: inherit; font-family: inherit; }
+  input.tin:hover { background: rgba(0,0,0,.35); }
+  input.tin:focus { outline: none; border-color: #32d583; background: rgba(0,0,0,.45); }
 
   .wkbar { width: 100%; display: flex; gap: 1.2vmin; flex-wrap: wrap; align-items: center; }
   .wkbar select, .wkbar input {
@@ -65,68 +84,7 @@
   .wkbar input:focus, .wkbar select:focus { outline: none; border-color: #32d583; }
   .wkbar button { font-size: clamp(14px, 2.4vmin, 26px); font-weight: 700; padding: 1.1vmin 2vmin; }
   .wkbar button.del:hover { background: #b42318; }
-  .titlebar { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 2vmin; flex-wrap: wrap; }
-  .castbtn { font-size: clamp(14px, 2.4vmin, 26px); font-weight: 700; padding: 1.1vmin 2.2vmin; background: #1570ef; color: #fff; }
-  .castbtn:hover { background: #2e90fa; }
 
-  .modal { position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center; padding: 3vmin; background: rgba(0,0,0,.7); }
-  .modal.open { display: flex; }
-  .card { width: min(720px, 100%); max-height: 100%; overflow-y: auto; background: #1d2330; border-radius: 2.4vmin; padding: 3vmin;
-          display: flex; flex-direction: column; gap: 1.6vmin; box-shadow: 0 2vmin 6vmin rgba(0,0,0,.5); }
-  .card h3 { font-size: clamp(20px, 3.4vmin, 34px); }
-  .card ol { padding-left: 1.4em; display: flex; flex-direction: column; gap: .8vmin; font-size: clamp(15px, 2.4vmin, 24px); line-height: 1.35; }
-  .card .note { font-size: clamp(13px, 2vmin, 20px); color: var(--muted); line-height: 1.4; }
-  .card .row2 { display: flex; gap: 1.2vmin; flex-wrap: wrap; }
-  .card .row2 button { font-size: clamp(14px, 2.3vmin, 24px); font-weight: 700; padding: 1.2vmin 2.2vmin; }
-  .card .row2 button.go { background: #12b76a; color: #fff; }
-  .card .row2 button.go:hover { background: #32d583; }
-  .card kbd { background: rgba(255,255,255,.14); border-radius: .6vmin; padding: 0 .5em; font: inherit; font-weight: 700; }
-  #toast { position: fixed; left: 50%; bottom: 4vmin; transform: translateX(-50%); z-index: 70; background: #fff; color: #000;
-           padding: 1.4vmin 2.6vmin; border-radius: 2vmin; font-weight: 700; font-size: clamp(14px, 2.4vmin, 24px);
-           opacity: 0; pointer-events: none; transition: opacity .3s; max-width: 90vw; text-align: center; }
-  #toast.show { opacity: 1; }
-
-  .toggle { display: inline-flex; align-items: center; gap: 1.2vmin; cursor: pointer; font-size: clamp(15px, 2.6vmin, 28px); font-weight: 700; }
-  .toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
-  .toggle .sw { position: relative; width: 2.4em; height: 1.3em; border-radius: 99px; background: rgba(255,255,255,.22); transition: background .2s; flex: none; }
-  .toggle .sw::after { content: ""; position: absolute; top: .15em; left: .15em; width: 1em; height: 1em; border-radius: 50%; background: #fff; transition: transform .2s; }
-  .toggle input:checked + .sw { background: #12b76a; }
-  .toggle input:checked + .sw::after { transform: translateX(1.1em); }
-  .toggle input:focus-visible + .sw { outline: 3px solid #fff; outline-offset: 2px; }
-  .wakeinfo { font-size: clamp(13px, 2.1vmin, 22px); color: var(--muted); text-align: center; margin-top: -1vmin; }
-  #wakeStatus2 { font-size: clamp(13px, 2vmin, 22px); color: var(--muted); text-align: center; }
-  .credit { font-size: clamp(12px, 1.9vmin, 20px); color: var(--muted); letter-spacing: .14em; text-transform: uppercase; text-align: center; }
-
-  /* ---------- Frog mascot ---------- */
-  .brand { display: flex; align-items: center; gap: 1.6vmin; }
-  .mascot { display: inline-block; width: clamp(54px, 10vmin, 110px); flex: none; line-height: 0; }
-  .mascot svg { width: 100%; height: auto; overflow: visible; display: block; }
-  .mascot.corner { position: absolute; right: 1vmin; bottom: 0; width: clamp(56px, 13vmin, 180px); z-index: 2; }
-  .mascot .hopper { transform-box: fill-box; transform-origin: 50% 100%; animation: frog-bob 2.6s ease-in-out infinite; }
-  .mascot .eye { transform-box: fill-box; transform-origin: 50% 50%; animation: frog-blink 4.5s infinite; }
-  .mascot .sweat { transform-box: fill-box; opacity: 0; }
-  .mascot .sparkle { opacity: 0; }
-  body[data-phase="prep"] .mascot .hopper { animation: frog-wiggle .5s ease-in-out infinite; }
-  body[data-phase="work"] .mascot .hopper { animation: frog-hop .7s ease-in-out infinite; }
-  body[data-phase="work"] .mascot .sweat { animation: frog-drip 1.4s ease-in infinite; }
-  body[data-phase="rest"] .mascot .hopper { animation: frog-breathe 3s ease-in-out infinite; }
-  body[data-phase="done"] .mascot .hopper { animation: frog-celebrate .9s ease-in-out infinite; }
-  body[data-phase="done"] .mascot .sparkle { opacity: 1; animation: frog-twinkle .8s ease-in-out infinite alternate; }
-  @keyframes frog-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
-  @keyframes frog-wiggle { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
-  @keyframes frog-hop { 0%,100% { transform: translateY(0) scale(1.08,.9); } 50% { transform: translateY(-18%) scale(.94,1.08); } }
-  @keyframes frog-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04,.97); } }
-  @keyframes frog-celebrate { 0%,100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-28%) rotate(6deg); } }
-  @keyframes frog-blink { 0%,94%,100% { transform: scaleY(1); } 97% { transform: scaleY(.1); } }
-  @keyframes frog-drip { 0% { transform: translateY(-4px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
-  @keyframes frog-twinkle { from { opacity: .2; } to { opacity: 1; } }
-  .mascot.hero { position: absolute; display: none; width: min(88%, 54vh); height: auto; aspect-ratio: 1 / 1; }
-  #timer.is-done .mascot.hero { display: block; }
-  #timer.is-done svg#ring, #timer.is-done #time, #timer.is-done .mascot.corner,
-  #timer.is-done #wakeStatus2, #timer.is-done #backBtn, #timer.is-done #skipBtn { display: none; }
-  :root { --tfs: clamp(48px, min(18vh, 34vw), 260px); }
-  #time.long { font-size: calc(var(--tfs) * .78); }
-  @media (prefers-reduced-motion: reduce) { .mascot * { animation: none !important; } }
   .globals { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.4vmin; }
   .g { background: var(--panel); border-radius: 1.8vmin; padding: 1.4vmin 2vmin; display: flex; flex-direction: column; align-items: center; gap: .8vmin; }
   .g .lbl { font-size: clamp(13px, 2.2vmin, 22px); color: var(--muted); font-weight: 600; }
@@ -149,37 +107,312 @@
   .addbtn { width: 100%; padding: 1.4vmin; font-size: clamp(16px, 2.8vmin, 28px); font-weight: 700; border: 2px dashed rgba(255,255,255,.3); background: transparent; }
   .addbtn:hover { background: var(--panel); }
 
-  .summary { font-size: clamp(15px, 2.6vmin, 28px); color: var(--muted); text-align: center; }
-  .big { background: #12b76a; color: #fff; font-weight: 800; letter-spacing: .04em;
-         font-size: clamp(24px, 4.6vmin, 52px); padding: 1.8vmin 8vmin; border-radius: 3vmin; }
-  .big:hover { background: #32d583; }
+  .allrow { width: 100%; display: flex; align-items: center; gap: 1.6vmin; flex-wrap: wrap; background: var(--panel); border-radius: 1.8vmin; padding: 1vmin 1.6vmin; }
+  .allhead { font-size: clamp(13px, 2.2vmin, 22px); color: var(--muted); font-weight: 700; margin-right: auto; }
+  .allrow .apply { font-size: clamp(14px, 2.4vmin, 26px); font-weight: 700; padding: 1.1vmin 2.2vmin; background: #12b76a; color: #fff; }
+  .allrow .apply:hover { background: #32d583; }
+
+  .soundrow { display: flex; align-items: center; justify-content: center; gap: 1.4vmin; flex-wrap: wrap; font-size: clamp(14px, 2.4vmin, 26px); font-weight: 700; }
+  .soundrow button { font-size: inherit; font-weight: 700; padding: 1vmin 1.8vmin; }
+  .soundrow input[type=range] { width: min(240px, 40vw); accent-color: #12b76a; height: 2.2em; }
+  #volPct { min-width: 3.4em; text-align: left; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+  .toggle { display: inline-flex; align-items: center; gap: 1.2vmin; cursor: pointer; font-size: clamp(15px, 2.6vmin, 28px); font-weight: 700; }
+  .toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .toggle .sw { position: relative; width: 2.4em; height: 1.3em; border-radius: 99px; background: rgba(255,255,255,.22); transition: background .2s; flex: none; }
+  .toggle .sw::after { content: ""; position: absolute; top: .15em; left: .15em; width: 1em; height: 1em; border-radius: 50%; background: #fff; transition: transform .2s; }
+  .toggle input:checked + .sw { background: #12b76a; }
+  .toggle input:checked + .sw::after { transform: translateX(1.1em); }
+  .toggle input:focus-visible + .sw { outline: 3px solid #fff; outline-offset: 2px; }
+  .wakeinfo { font-size: clamp(13px, 2.1vmin, 22px); color: var(--muted); text-align: center; margin-top: -1vmin; }
+  #wakeStatus2 { font-size: clamp(13px, 2vmin, 22px); color: var(--muted); text-align: center; }
   .hint { font-size: clamp(12px, 1.8vmin, 18px); color: var(--muted); text-align: center; }
+  .credit { font-size: clamp(12px, 1.9vmin, 20px); color: var(--muted); letter-spacing: .14em; text-transform: uppercase; text-align: center; }
+
+  /* Pinned START bar: always visible at the bottom of the setup screen */
+  .startbar {
+    position: sticky; bottom: -3vmin; z-index: 5; align-self: stretch; margin: auto -3vmin -3vmin;
+    padding: 1.2vmin 3vmin 1.4vmin; display: flex; flex-direction: column; gap: .8vmin;
+    background: rgba(14,17,22,.96); border-top: 1px solid rgba(255,255,255,.14);
+    -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+  }
+  .srow { display: flex; align-items: center; justify-content: space-between; gap: 2vmin; }
+  .sumwrap { flex: 1 1 160px; min-width: 0; }
+  .summary { font-size: clamp(14px, 2.5vmin, 28px); color: var(--muted); text-align: left; line-height: 1.25; }
+  .legend { display: flex; gap: 1.6vmin; flex-wrap: wrap; font-size: clamp(11px, 1.8vmin, 16px); color: var(--muted); font-weight: 600; margin-top: .3vmin; }
+  .legend span { display: inline-flex; align-items: center; gap: .6vmin; }
+  .legend i { width: 1.6em; height: .8em; border-radius: 3px; border: 2px solid var(--c); box-sizing: border-box; background: var(--c); }
+  .legend i.brk { --c: #c9b8ff; background: radial-gradient(circle, rgba(201,184,255,.95) 1.6px, transparent 2.1px) 0 0/6px 6px, rgba(255,255,255,.08); }
+  .legend i.rest { background: repeating-linear-gradient(135deg, rgba(83,177,253,.6) 0 3px, transparent 3px 6px); }
+  @media (max-width: 520px) { .legend { display: none; } }
+  .pv-track { position: relative; height: clamp(10px, 1.8vmin, 16px); }
+  .pv-rounds { margin-top: 2px; font-size: clamp(10px, 1.6vmin, 14px); height: 1.6em; }
+  .big { background: #12b76a; color: #fff; font-weight: 800; letter-spacing: .04em; flex: 0 1 auto;
+         font-size: clamp(22px, 4.2vmin, 48px); padding: 1.4vmin 7vmin; border-radius: 3vmin; }
+  .big:hover { background: #32d583; }
+
+  /* ---------- Dialogs + toast ---------- */
+  .modal { position: fixed; inset: 0; z-index: 60; display: none; align-items: center; justify-content: center; padding: 3vmin; background: rgba(0,0,0,.72); }
+  .modal.open { display: flex; }
+  .card { width: min(640px, 100%); max-height: 100%; overflow-y: auto; background: #1d2330; border-radius: 2.4vmin; padding: 3vmin;
+          display: flex; flex-direction: column; gap: 1.6vmin; box-shadow: 0 2vmin 6vmin rgba(0,0,0,.5); }
+  .dlghead { display: flex; align-items: center; gap: 2vmin; }
+  .dlghead .mascot { width: clamp(52px, 11vmin, 96px); }
+  .card h3 { font-size: clamp(20px, 3.4vmin, 34px); line-height: 1.2; overflow-wrap: anywhere; }
+  .dlgbody { font-size: clamp(15px, 2.4vmin, 24px); line-height: 1.4; display: flex; flex-direction: column; gap: 1vmin; overflow-wrap: anywhere; }
+  .dlgbody .note { font-size: clamp(13px, 2vmin, 20px); color: var(--muted); }
+  .dlgbody ul { padding-left: 1.3em; }
+  .dlgbody input { width: 100%; font: inherit; font-size: clamp(13px, 2vmin, 20px); color: inherit; background: rgba(0,0,0,.35); border: 2px solid transparent; border-radius: 1.2vmin; padding: 1vmin 1.4vmin; }
+  .dlgbody input:focus { outline: none; border-color: #32d583; }
+  .row2 { display: flex; gap: 1.2vmin; flex-wrap: wrap; }
+  .row2 button { font-size: clamp(14px, 2.3vmin, 24px); font-weight: 700; padding: 1.2vmin 2.2vmin; }
+  .row2 button.go { background: #12b76a; color: #fff; }
+  .row2 button.go:hover { background: #32d583; }
+  .row2 button.danger { background: #b42318; color: #fff; }
+  .row2 button.danger:hover { background: #d92d20; }
+  #toast { position: fixed; left: 50%; bottom: 4vmin; transform: translateX(-50%); z-index: 70; background: #fff; color: #000;
+           padding: 1.4vmin 2.6vmin; border-radius: 2vmin; font-weight: 700; font-size: clamp(14px, 2.4vmin, 24px);
+           opacity: 0; pointer-events: none; transition: opacity .3s; max-width: 90vw; text-align: center; }
+  #toast.show { opacity: 1; }
+
+  /* ---------- Frogue ---------- */
+  .mascot { display: inline-block; width: clamp(54px, 10vmin, 110px); flex: none; line-height: 0; }
+  .mascot svg { width: 100%; height: auto; overflow: visible; display: block; }
+  .mascot[role="button"] { cursor: pointer; }
+  .mascot .hopper { transform-box: fill-box; transform-origin: 50% 100%; animation: frog-bob 2.6s ease-in-out infinite; }
+  .mascot .eye { transform-box: fill-box; transform-origin: 50% 50%; animation: frog-blink 4.5s infinite; }
+  .mascot .sweat, .mascot .sparkle { opacity: 0; }
+  .mascot .flat, .mascot .zzz { display: none; }
+  .mascot.hop .hopper { animation: frog-celebrate .6s ease-in-out 1; }
+  body[data-phase="prep"] .mascot .hopper { animation: frog-wiggle .5s ease-in-out infinite; }
+  body[data-phase="work"] .mascot .hopper { animation: frog-hop .7s ease-in-out infinite; }
+  body[data-phase="work"] .mascot .sweat { animation: frog-drip 1.4s ease-in infinite; }
+  body[data-phase="rest"] .mascot .hopper { animation: frog-breathe 3s ease-in-out infinite; }
+  body[data-phase="done"] .mascot .hopper { animation: frog-celebrate .9s ease-in-out infinite; }
+  body[data-phase="done"] .mascot .sparkle { opacity: 1; animation: frog-twinkle .8s ease-in-out infinite alternate; }
+  /* paused: Frogue dozes off while he waits */
+  #timer.paused .mascot .hopper { animation: frog-breathe 4s ease-in-out infinite; }
+  #timer.paused .mascot .eye { animation: none; transform: scaleY(.12); }
+  #timer.paused .mascot .zzz { display: block; animation: frog-zzz 2.2s ease-in-out infinite; }
+  /* worried face in "are you sure?" dialogs */
+  .card.worry .mascot .smile { display: none; }
+  .card.worry .mascot .flat { display: block; }
+  .card.worry .mascot .sweat { opacity: 1; animation: frog-drip 1.4s ease-in infinite; }
+  @keyframes frog-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes frog-wiggle { 0%,100% { transform: rotate(-5deg); } 50% { transform: rotate(5deg); } }
+  @keyframes frog-hop { 0%,100% { transform: translateY(0) scale(1.08,.9); } 50% { transform: translateY(-18%) scale(.94,1.08); } }
+  @keyframes frog-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.04,.97); } }
+  @keyframes frog-celebrate { 0%,100% { transform: translateY(0) rotate(-6deg); } 50% { transform: translateY(-28%) rotate(6deg); } }
+  @keyframes frog-blink { 0%,94%,100% { transform: scaleY(1); } 97% { transform: scaleY(.1); } }
+  @keyframes frog-drip { 0% { transform: translateY(-4px); opacity: 0; } 30% { opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
+  @keyframes frog-twinkle { from { opacity: .2; } to { opacity: 1; } }
+  @keyframes frog-zzz { 0%,100% { opacity: .35; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .mascot *, .tl-frog *, #frogSay { animation: none !important; } }
 
   /* ---------- Timer ---------- */
-  #timer { flex-direction: column; align-items: center; justify-content: space-between; }
+  #timer { flex-direction: column; align-items: center; justify-content: space-between; gap: 1vmin; }
   .top { text-align: center; width: 100%; }
   #phaseLabel { font-size: clamp(34px, 10vmin, 140px); font-weight: 900; letter-spacing: .05em; text-transform: uppercase;
                 color: var(--accent); line-height: 1.05; overflow-wrap: anywhere; }
-  #roundLabel { font-size: clamp(18px, 4.2vmin, 52px); color: var(--muted); margin-top: 1vmin; font-weight: 600; }
+  #roundLabel { font-size: clamp(18px, 4.8vmin, 64px); color: var(--muted); margin-top: 1vmin; font-weight: 600; }
   .ringwrap { position: relative; flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; min-height: 0; }
-  svg#ring { height: 100%; max-height: 60vh; aspect-ratio: 1; }
+  svg#ring { height: 100%; max-height: 60vh; max-width: 100%; aspect-ratio: 1; }
   #ring .track { stroke: rgba(255,255,255,.12); }
   #ring .bar { stroke: var(--accent); transition: stroke .35s; }
   #time { position: absolute; font-size: var(--tfs); font-weight: 900; line-height: 1;
           font-variant-numeric: tabular-nums; letter-spacing: -.02em; }
+  #time.long { font-size: calc(var(--tfs) * .78); }
   #timer.paused #time { animation: blink 1s steps(2) infinite; }
   @keyframes blink { 50% { opacity: .35; } }
-  #pausedTag { position: absolute; bottom: 14%; font-size: clamp(16px, 3.4vmin, 40px); letter-spacing: .3em;
-               color: var(--muted); display: none; text-transform: uppercase; }
-  #timer.paused #pausedTag { display: block; }
-  .bottom { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.2vmin; }
-  #nextUp, #totalLeft { font-size: clamp(16px, 3.2vmin, 38px); color: var(--muted); font-weight: 600; text-align: center; }
-  .ctrl { display: flex; gap: 1.4vmin; flex-wrap: wrap; justify-content: center; }
-  .ctrl button { font-size: clamp(16px, 2.8vmin, 30px); font-weight: 700; padding: 1.6vmin 3vmin; }
+  #pausedTag { position: absolute; bottom: 6%; display: none; align-items: center; gap: .6em; padding: .35em .9em; border-radius: 99px;
+               background: rgba(0,0,0,.62); color: #fff; font-size: clamp(20px, 5vmin, 60px); font-weight: 900; letter-spacing: .22em;
+               text-transform: uppercase; box-shadow: 0 0 0 .12em rgba(255,255,255,.55); animation: pausepulse 1.6s ease-in-out infinite; }
+  #pausedTag svg { width: .9em; height: .9em; }
+  @keyframes pausepulse { 50% { box-shadow: 0 0 0 .3em rgba(255,255,255,.18); } }
+  /* paused: everything except the clock, Frogue and the controls is dimmed and drained of colour */
+  #pauseVeil { position: fixed; inset: 0; z-index: 30; display: none; pointer-events: none; background: rgba(0,0,0,.5);
+               backdrop-filter: grayscale(.6); -webkit-backdrop-filter: grayscale(.6); }
+  #timer.paused:not(.is-done) #pauseVeil { display: block; }
+  #timer.paused:not(.is-done) .ringwrap, #timer.paused:not(.is-done) .bottom { position: relative; z-index: 31; }
+  #timer.paused svg#ring { opacity: .45; }
+  #timer { user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+  #timer.paused #pausedTag { display: inline-flex; }
+  .mascot.hero { position: absolute; display: none; width: min(88%, 54vh); height: auto; aspect-ratio: 1 / 1; }
+  #timer.is-done .mascot.hero { display: block; }
+  #timer.is-done svg#ring, #timer.is-done #time, #timer.is-done #pausedTag,
+  #timer.is-done #wakeStatus2, #timer.is-done #backBtn, #timer.is-done #skipBtn, #timer.is-done #nextUp { display: none; }
+
+  /* Frogue + speech bubble */
+  .bottom { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1.1vmin; }
+  .frogrow { display: flex; align-items: center; justify-content: center; gap: 1.8vmin; width: 100%; min-height: clamp(46px, 11vmin, 120px); }
+  .mascot.say { width: clamp(46px, 11vmin, 120px); }
+  #frogSay { position: relative; background: rgba(255,255,255,.16); border-radius: 2.2vmin; padding: 1vmin 2vmin;
+             font-size: clamp(16px, 3.6vmin, 46px); font-weight: 700; max-width: min(72vw, 900px); line-height: 1.25; }
+  #frogSay::before { content: ""; position: absolute; left: -1.1vmin; top: 50%; transform: translateY(-50%);
+                     border: 1.2vmin solid transparent; border-left-width: 0; border-right-color: rgba(255,255,255,.16); }
+  #frogSay.pop { animation: pop .35s ease-out; }
+  #frogSay.count { font-size: clamp(24px, 6vmin, 72px); font-weight: 900; padding: .3vmin 3vmin; min-width: 2.2em; text-align: center; }
+  @keyframes pop { 0% { transform: scale(.82); opacity: .35; } 100% { transform: scale(1); opacity: 1; } }
+  #timer.is-done .frogrow .mascot { display: none; }
+  #timer.is-done #frogSay::before { display: none; }
+  #timer.is-done #frogSay { font-size: clamp(20px, 4vmin, 40px); }
+
+  #nextUp, #totalLeft { font-size: clamp(16px, 3.7vmin, 52px); color: var(--muted); font-weight: 600; text-align: center; }
+  .ctrl { display: flex; gap: 1.4vmin; flex-wrap: wrap; justify-content: center; transition: opacity .4s; }
+  .ctrl button { font-size: clamp(16px, 3vmin, 38px); font-weight: 700; padding: 1.5vmin 2.8vmin; }
   .ctrl button.primary { background: var(--accent); color: #000; }
   .ctrl button.primary:hover { filter: brightness(1.1); }
-  .ctrl { transition: opacity .4s; }
   body.hide-ui .ctrl { opacity: 0; pointer-events: none; }
+
+  /* ---------- Landscape progress bar: work vs rest across the whole workout ---------- */
+  #timeline { display: block; width: 100%; }
+  .tl-main { display: flex; align-items: flex-start; gap: 1.6vmin; padding-top: clamp(26px, 5vmin, 46px); }
+  .tl-t { flex: none; min-width: 3.4em; font-size: clamp(13px, 2.7vmin, 32px); font-weight: 700; color: var(--muted);
+          font-variant-numeric: tabular-nums; line-height: clamp(14px, 3vmin, 32px); }
+  #tlLeft { text-align: right; }
+  .tl-col { flex: 1; min-width: 0; }
+  .tl-track { position: relative; height: clamp(14px, 2.6vmin, 24px); }
+  .seg { position: absolute; top: 0; bottom: 0; border: 2px solid var(--c); border-radius: 5px; overflow: hidden; box-sizing: border-box; }
+  .seg i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: var(--c); }
+  .seg.work { --c: #32d583; }
+  .seg.rest { --c: #53b1fd; background: repeating-linear-gradient(135deg, rgba(83,177,253,.35) 0 5px, transparent 5px 10px); }
+  .seg.prep { --c: #fdb022; }
+  .seg.brk { --c: #c9b8ff; background: radial-gradient(circle, rgba(201,184,255,.95) 1.6px, transparent 2.1px) 0 0/6px 6px, rgba(255,255,255,.08); }
+  .seg.hl { box-shadow: 0 0 0 2px #fff; z-index: 1; }
+  /* compact mode (too many intervals to draw one by one): one striped block per round + a shade over what's done */
+  .seg.cblock { border: 0; --c: transparent; }
+  .shade { position: absolute; top: 0; bottom: 0; left: 0; width: 0; background: rgba(0,0,0,.45); border-radius: 5px;
+           pointer-events: none; z-index: 2; transition: width .25s linear; }
+  .seg.done { opacity: .5; }
+  .seg.done i { width: 100%; }
+  .seg.current { box-shadow: 0 0 0 2px rgba(255,255,255,.7); }
+  .tl-frog { position: absolute; bottom: 100%; left: 0; width: clamp(24px, 4.8vmin, 42px); transform: translateX(-50%);
+             transition: left .25s linear; pointer-events: none; line-height: 0; margin-bottom: 2px; }
+  .tl-frog svg { width: 100%; height: auto; display: block; transform-origin: 50% 100%; }
+  body[data-phase="work"] .tl-frog svg { animation: frog-hop .7s ease-in-out infinite; }
+  body[data-phase="prep"] .tl-frog svg { animation: frog-wiggle .5s ease-in-out infinite; }
+  body[data-phase="done"] .tl-frog svg { animation: frog-celebrate .9s ease-in-out infinite; }
+  #timer.paused .tl-frog svg { animation: none; }
+  .tl-rounds { position: relative; height: 1.7em; margin-top: 4px; font-size: clamp(11px, 2.3vmin, 24px); }
+  .rl { position: absolute; top: 0; padding-top: 2px; border-top: 2px solid rgba(255,255,255,.28); text-align: center;
+        color: var(--muted); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; overflow: hidden; white-space: nowrap; box-sizing: border-box; }
+
+  /* the bar's own "-0:35" says how long is left, so the separate line isn't needed */
+  #totalLeft { display: none; }
+  /* big workouts on a wide screen: bar shows one round at a time, with a counter underneath */
+  /* overall line under the bars: "Round 2 of 5 ... 21%". More detail appears when the screen is tapped. */
+  .tl-info { display: flex; justify-content: space-between; gap: 2vmin; font-weight: 800; margin-top: 6px; font-size: clamp(14px, 3vmin, 34px); }
+  .tl-info span:last-child { color: var(--muted); }
+  .tl-info em { display: none; font-style: normal; font-weight: 700; color: var(--muted); }
+  body:not(.hide-ui) #timer .tl-info em { display: inline; }
+  /* the round bar carries no times; the single whole-workout bar shows its times only once tapped */
+  #timeline.roundview .tl-tw { display: none !important; }
+  body.hide-ui #timeline .tl-tw { visibility: hidden; }
+  /* nothing about battery/wake-lock on the timing screen */
+  #wakeStatus2 { display: none !important; }
+  #pauseBtn { padding: 1.8vmin 4.2vmin; font-size: clamp(18px, 3.6vmin, 44px); }
+  .cap, .ov { display: none; }
+  .tl-tw { flex: none; }
+  .tl-tw.r { text-align: right; }
+  #timeline.roundview .tl-rounds:not(.ov-rounds) { display: none; }
+  /* two bars: the round (tall, coloured work/rest cues, Frogue hops along it) over the whole workout
+     (slim, white, one pill per round, no colour cues - so the two can't be confused) */
+  #timeline.roundview .tl-tw { width: 5.6em; font-size: clamp(13px, 2.7vmin, 32px); }
+  #timeline.roundview .tl-tw .tl-t { font-size: 1em; min-width: 0; display: block; }
+  #timeline.roundview .cap { display: block; font-size: .56em; letter-spacing: .12em; text-transform: uppercase; font-weight: 800;
+                             color: var(--muted); line-height: 1.3; margin-bottom: 1px; }
+  #timeline.roundview .cap.ovpct { color: #fff; font-size: .8em; letter-spacing: 0; }
+  #timeline.roundview .tl-track { height: clamp(22px, 4.6vmin, 44px); }
+  #timeline.roundview .tl-main:not(.ov) { padding-top: clamp(28px, 5.4vmin, 50px); }
+  #timeline.roundview .ov { display: flex; padding-top: clamp(4px, 1.4vmin, 14px); }
+  #timeline.roundview .ov .tl-t { color: var(--muted); }
+  .ov-track { position: relative; height: clamp(8px, 1.5vmin, 14px); }
+  .ov-seg { position: absolute; top: 0; bottom: 0; border-radius: 99px; background: rgba(255,255,255,.16); overflow: hidden; }
+  .ov-seg i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: rgba(255,255,255,.9); }
+  .ov-seg.prep i { background: #fdb022; }
+  .ov-seg.brk { background: radial-gradient(circle, rgba(201,184,255,.95) 1.6px, transparent 2.1px) 0 0/6px 6px, rgba(255,255,255,.08); }
+  .ov-seg.brk i { background: #c9b8ff; }
+  .ov-seg.brk.cur { box-shadow: 0 0 0 2px #fff, 0 0 12px 3px rgba(201,184,255,.8); }
+  /* Frogue relaxes with a water bottle during a round break */
+  .mascot .bottle { display: none; }
+  body[data-brk="1"] .mascot .bottle { display: block; }
+  body[data-brk="1"] .mascot .eye { transform: scaleY(.35); transform-box: fill-box; transform-origin: center; animation: none; }
+  /* "Round 3 of 14 complete" moment at the start of a round break */
+  #roundDone { position: fixed; inset: 0; z-index: 39; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.4vmin;
+               background: radial-gradient(circle at 50% 45%, #4a3a96, #2a1b5e 70%); color: #fff; text-align: center; pointer-events: none; transition: opacity .45s; }
+  #roundDone[hidden] { display: none; }
+  #roundDone.out { opacity: 0; }
+  .rd-say { display: flex; align-items: center; gap: 1.6vmin; margin-top: 1vmin; }
+  .rd-frog { width: clamp(64px, 15vmin, 170px); }
+  .rd-bubble { background: rgba(255,255,255,.2); border-radius: 2.2vmin; padding: 1.4vmin 2.2vmin; font-size: clamp(16px, 3.2vmin, 42px); font-weight: 800; }
+  /* in this moment Frogue celebrates (not the sleepy break pose) */
+  #roundDone .mascot .hopper { animation: frog-celebrate .9s ease-in-out infinite; }
+  #roundDone .mascot .eye { transform: none; animation: none; }
+  #roundDone .mascot .bottle { display: none; }
+  #roundDone .mascot .sparkle { opacity: 1; animation: frog-twinkle .8s ease-in-out infinite alternate; }
+  /* during a round break the round bar is hidden (the overall bar stays) */
+  body[data-brk="1"] #timeline.roundview .tl-main:not(.ov) { visibility: hidden; }
+  .rd-badge { width: 26vmin; height: 26vmin; border-radius: 50%; background: #c9b8ff; display: flex; align-items: center; justify-content: center;
+              box-shadow: 0 0 0 2vmin rgba(201,184,255,.25), 0 0 0 4.4vmin rgba(201,184,255,.12); animation: cdpop .7s ease-out; }
+  .rd-badge svg { width: 60%; height: 60%; }
+  .rd-sub { font-size: clamp(16px, 3.4vmin, 44px); font-weight: 800; letter-spacing: .24em; color: #c9b8ff; text-transform: uppercase; }
+  .rd-big { font-size: clamp(40px, 11vmin, 150px); font-weight: 900; line-height: 1; letter-spacing: .02em; }
+  .ov-seg.cur { box-shadow: 0 0 0 2px rgba(255,255,255,.75); }
+  .ov-rounds { height: 1.5em; margin-top: 2px; font-size: clamp(10px, 2vmin, 20px); }
+  .ov-rounds .rl { border-top: 0; padding-top: 0; }
+  .ov-rounds .rl.cur { color: #fff; }
+  /* credit sits at the very bottom edge of the timer screen */
+  #timer > .credit { grid-area: credit; align-self: end; margin: 0; padding-top: .4vmin; line-height: 1.2; font-size: clamp(10px, 1.7vmin, 18px); }
+
+  /* welcome-back countdown after an accidental refresh */
+  #countdown { position: fixed; inset: 0; z-index: 40; display: flex; flex-direction: column; align-items: center; justify-content: center;
+               gap: 1vmin; background: rgba(122,74,0,.9); color: #fdb022; pointer-events: none; text-align: center; padding: 3vmin; }
+  .cdmsg { font-size: clamp(20px, 5vmin, 56px); font-weight: 800; }
+  .cdnum { font-size: clamp(120px, 40vmin, 480px); font-weight: 900; line-height: 1; color: #fff; }
+  .cdnum.tick { animation: cdpop .8s ease-out; }
+  @keyframes cdpop { 0% { transform: scale(1.45); opacity: .2; } 35% { opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .cdnum { animation: none !important; } }
+  /* Any landscape screen (TV, laptop, phone on its side): big ring on the left, details on the right,
+     progress bar along the bottom. */
+  /* portrait: a long thin bar is too cramped, so show round count + overall % instead */
+  #pcompact { display: none; width: 100%; text-align: center; }
+  @media (orientation: portrait) {
+    #pcompact { display: none; }
+    /* portrait: bars get the full width; the time labels move underneath them */
+    #timeline .tl-main { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0; row-gap: 0; }
+    #timeline .tl-main > .tl-col { grid-area: 1 / 1 / 2 / 3; }
+    #timeline .tl-main > .tl-tw:first-child { grid-area: 2 / 1; }
+    #timeline .tl-main > .tl-tw.r { grid-area: 2 / 2; }
+    #timeline.roundview .tl-tw { width: auto; display: flex; gap: .6em; align-items: baseline; }
+    #timeline.roundview .tl-tw.r { justify-content: flex-end; }
+    #timeline.roundview .cap { margin: 0; }
+    #timeline:not(.roundview) .ov { display: none; }
+    .pc-top { display: flex; justify-content: space-between; align-items: baseline; font-weight: 800;
+              font-size: clamp(16px, 4.6vmin, 30px); }
+    #pcLeft { color: var(--muted); font-weight: 700; font-size: .8em; }
+    .pc-dots { display: flex; gap: 6px; justify-content: center; margin: 8px 0 10px; flex-wrap: wrap; }
+    .pc-dots i { width: 14px; height: 14px; border-radius: 50%; background: rgba(255,255,255,.18); }
+    .pc-dots i.done { background: var(--accent, #4ade80); }
+    .pc-dots i.cur { background: #fff; box-shadow: 0 0 0 3px rgba(255,255,255,.35); }
+    .pc-bar { height: 14px; border-radius: 8px; background: rgba(255,255,255,.18); overflow: hidden; }
+    .pc-bar i { display: block; height: 100%; width: 0; background: var(--accent, #4ade80); border-radius: 8px; }
+    .pc-pct { margin-top: 6px; color: var(--muted); font-weight: 700; font-size: clamp(14px, 3.8vmin, 24px); }
+    .pc-pct b { color: #fff; font-size: 1.15em; }
+  }
+  @media (orientation: landscape) {
+    #timer.active { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+                    grid-template-rows: 1fr 1fr auto auto; grid-template-areas: "ring top" "ring bottom" "bar bar" "credit credit";
+                    column-gap: 3vmin; row-gap: 1vmin; }
+    #timer .top { grid-area: top; align-self: end; }
+    /* stretch explicitly: #timer centres its children, and the ring inside is absolutely positioned,
+       so without this the ring's box collapses to 0 x 0 and nothing is drawn */
+    #timer .ringwrap { grid-area: ring; min-width: 0; min-height: 0; align-self: stretch; justify-self: stretch; }
+    #timer .bottom { grid-area: bottom; justify-content: flex-start; align-self: start; }
+    #timeline { grid-area: bar; }
+    /* take the ring out of the grid's sizing so it simply fills whatever room the rows leave */
+    svg#ring { position: absolute; inset: 0; margin: auto; height: 100%; width: auto; max-height: none; max-width: 100%; }
+    .ctrl button { padding: 1.2vmin 2.2vmin; }
+  }
 </style>
 </head>
 <body data-phase="idle">
@@ -189,8 +422,11 @@
 <section id="setup" class="screen active">
   <div class="wrap">
     <div class="titlebar">
-      <div class="brand"><span class="mascot"></span><h1>Interval Timer</h1></div>
-      <button class="castbtn" id="castBtn" title="Steps for casting this to a Chromecast (shortcut: C)">📺 Cast to TV</button>
+      <div class="brand">
+        <span class="mascot brandfrog" id="brandFrog"></span>
+        <div><h1>Frogue Interval Timer</h1><div class="sub" id="setupSay"></div></div>
+      </div>
+      <button class="fsbtn" id="fsBtn" title="Full screen (shortcut: F)">⛶ Full screen</button>
     </div>
 
     <h2>Saved workouts</h2>
@@ -199,6 +435,7 @@
       <input id="wkName" type="text" maxlength="40" placeholder="Workout name" aria-label="Workout name">
       <button id="wkNew" title="Create a new workout">＋ New</button>
       <button id="wkCopy" title="Duplicate this workout">⧉ Copy</button>
+      <button id="wkShare" title="Share this workout with a friend">🔗 Share</button>
       <button id="wkDel" class="del" title="Delete this workout">🗑 Delete</button>
       <button id="wkExport" title="Download all your workouts as a backup file">⬇ Export</button>
       <button id="wkImport" title="Add workouts from a backup file">⬆ Import</button>
@@ -208,23 +445,50 @@
     <h2>Workout settings</h2>
     <div class="globals">
       <div class="g"><div class="lbl">Rounds (repeat the list)</div>
-        <div class="steps"><button data-act="g" data-k="rounds" data-d="-1" data-hold>−</button><div class="val" id="v-rounds"></div><button data-act="g" data-k="rounds" data-d="1" data-hold>+</button></div></div>
+        <div class="steps"><button data-act="g" data-k="rounds" data-d="-1" data-hold>−</button><input class="val tin" id="v-rounds" data-k="rounds" type="text" inputmode="numeric" aria-label="Number of rounds"><button data-act="g" data-k="rounds" data-d="1" data-hold>+</button></div></div>
       <div class="g"><div class="lbl">Rest between rounds</div>
-        <div class="steps"><button data-act="g" data-k="roundRest" data-d="-5" data-hold>−</button><div class="val" id="v-roundRest"></div><button data-act="g" data-k="roundRest" data-d="5" data-hold>+</button></div></div>
+        <div class="steps"><button data-act="g" data-k="roundRest" data-d="-5" data-hold>−</button><input class="val tin" id="v-roundRest" data-k="roundRest" type="text" inputmode="numeric" aria-label="Rest between rounds (seconds or m:ss)" title="Type seconds (90) or minutes:seconds (1:30)"><button data-act="g" data-k="roundRest" data-d="5" data-hold>+</button></div></div>
       <div class="g"><div class="lbl">Get ready countdown</div>
-        <div class="steps"><button data-act="g" data-k="prep" data-d="-5" data-hold>−</button><div class="val" id="v-prep"></div><button data-act="g" data-k="prep" data-d="5" data-hold>+</button></div></div>
+        <div class="steps"><button data-act="g" data-k="prep" data-d="-5" data-hold>−</button><input class="val tin" id="v-prep" data-k="prep" type="text" inputmode="numeric" aria-label="Get ready countdown (seconds or m:ss)" title="Type seconds (10) or minutes:seconds (0:10)"><button data-act="g" data-k="prep" data-d="5" data-hold>+</button></div></div>
     </div>
 
     <h2>Exercises (in order)</h2>
+    <div class="allrow">
+      <div class="allhead">Set every exercise to</div>
+      <div class="mini"><div class="lbl">Work</div>
+        <div class="steps"><button data-act="ast" data-f="allWork" data-d="-5" data-hold>−</button><input class="val tin" id="allWork" type="text" inputmode="numeric" aria-label="Work time for all exercises" title="Type seconds (40) or minutes:seconds (1:30)"><button data-act="ast" data-f="allWork" data-d="5" data-hold>+</button></div></div>
+      <div class="mini"><div class="lbl">Rest after</div>
+        <div class="steps"><button data-act="ast" data-f="allRest" data-d="-5" data-hold>−</button><input class="val tin" id="allRest" type="text" inputmode="numeric" aria-label="Rest time for all exercises" title="Type seconds (20) or minutes:seconds (0:20)"><button data-act="ast" data-f="allRest" data-d="5" data-hold>+</button></div></div>
+      <button class="apply" id="applyAll">Apply to all</button>
+    </div>
     <div id="exList"></div>
     <button class="addbtn" data-act="add">＋ Add exercise</button>
 
-    <div class="summary" id="summary"></div>
+    <div class="soundrow">
+      <button id="muteBtn" title="Mute / unmute (M)" aria-label="Mute or unmute sound">🔊</button>
+      <input type="range" id="vol" min="0" max="100" step="5" aria-label="Volume">
+      <span id="volPct"></span>
+      <button id="testSound" title="Play the start-of-interval sound">▶ Test sound</button>
+    </div>
+
     <label class="toggle"><input type="checkbox" id="wakeToggle" checked><span class="sw"></span><span>Keep screen awake during workouts</span></label>
     <div class="wakeinfo" id="wakeStatus"></div>
-    <button class="big" id="startBtn">START</button>
-    <div class="hint">Hold a +/− button to change faster · Space = start/pause · ← → = back/skip · Esc = stop · F = fullscreen · C = cast help</div>
+    <div class="hint">Hold a +/− button to change faster · Space = start/pause · ← → = back/skip · Esc = stop · F = full screen · M = mute · Tap a time to type it · Double-tap the timer to pause</div>
     <div class="credit">A Bouncy Production · Made for Haz</div>
+
+    <div class="startbar">
+      <div class="pv" id="pv" aria-hidden="true">
+        <div class="tl-track pv-track" id="pvTrack"></div>
+        <div class="tl-rounds pv-rounds" id="pvRounds"></div>
+      </div>
+      <div class="srow">
+        <div class="sumwrap">
+          <div class="summary" id="summary"></div>
+          <div class="legend"><span><i class="work" style="--c:#32d583"></i>Work</span><span><i class="rest" style="--c:#53b1fd"></i>Rest</span><span><i class="prep" style="--c:#fdb022"></i>Get ready</span><span><i class="brk"></i>Round break</span></div>
+        </div>
+        <button class="big" id="startBtn">START</button>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -234,59 +498,129 @@
     <div id="phaseLabel">Work</div>
     <div id="roundLabel"></div>
   </div>
-  <div class="ringwrap">
+  <div class="ringwrap" id="ringwrap">
     <svg id="ring" viewBox="0 0 200 200">
       <circle class="track" cx="100" cy="100" r="92" fill="none" stroke-width="7"/>
       <circle class="bar" id="bar" cx="100" cy="100" r="92" fill="none" stroke-width="7"
               stroke-linecap="round" transform="rotate(-90 100 100)"/>
     </svg>
     <div id="time">0:00</div>
-    <div id="pausedTag">Paused</div>
-    <div class="mascot corner"></div>
+    <div id="pausedTag"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1.4"/><rect x="14" y="4" width="5" height="16" rx="1.4"/></svg>Paused</div>
+    <div id="pauseVeil" aria-hidden="true"></div>
     <div class="mascot hero"></div>
   </div>
+
+  <div id="pcompact" aria-hidden="true">
+    <div class="pc-top"><span id="pcRound">Round 1 of 1</span><span id="pcLeft"></span></div>
+    <div class="pc-dots" id="pcDots"></div>
+    <div class="pc-bar"><i id="pcFill"></i></div>
+    <div class="pc-pct"><b id="pcPct">0%</b> complete</div>
+  </div>
+
+  <div id="timeline" aria-hidden="true">
+    <div class="tl-main">
+      <div class="tl-tw"><small class="cap">This round</small><span class="tl-t" id="tlElapsed">0:00</span></div>
+      <div class="tl-col">
+        <div class="tl-track" id="tlTrack"></div>
+        <div class="tl-rounds" id="tlRounds"></div>
+      </div>
+      <div class="tl-tw r"><small class="cap" id="rCap"></small><span class="tl-t" id="tlLeft">-0:00</span></div>
+    </div>
+    <!-- second bar, only for big workouts: the whole workout, round by round -->
+    <div class="tl-main ov" id="ov">
+      <div class="tl-tw"><small class="cap">Overall</small><span class="tl-t" id="ovElapsed">0:00</span></div>
+      <div class="tl-col">
+        <div class="ov-track" id="ovTrack"></div>
+        <div class="tl-rounds ov-rounds" id="ovRounds"></div>
+      </div>
+      <div class="tl-tw r"><small class="cap ovpct" id="ovPct">0%</small><span class="tl-t" id="ovLeft">-0:00</span></div>
+    </div>
+    <div class="tl-info" id="tlInfo"></div>
+  </div>
+
   <div class="bottom">
+    <div class="frogrow"><div class="mascot say"></div><div id="frogSay" role="status" aria-live="polite"></div></div>
     <div id="nextUp"></div>
     <div id="totalLeft"></div>
-    <div id="wakeStatus2"></div>
+    <div id="wakeStatus2" hidden></div>
     <div class="ctrl">
       <button id="backBtn">⏮ Back</button>
       <button id="pauseBtn" class="primary">⏸ Pause</button>
       <button id="skipBtn">Skip ⏭</button>
       <button id="stopBtn">⏹ Stop</button>
-      <button id="castBtn2">📺 Cast</button>
+      <button id="fsBtn2">⛶ Full screen</button>
+      <button id="muteBtn2" title="Mute / unmute (M)" aria-label="Mute or unmute sound">🔊</button>
     </div>
-    <div class="credit">A Bouncy Production · Made for Haz</div>
   </div>
+  <div class="credit">A Bouncy Production · Made for Haz</div>
 </section>
+
+<!-- Welcome-back countdown (after resuming an interrupted workout) -->
+<div id="roundDone" hidden aria-live="polite">
+  <div class="rd-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#2a1b5e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div>
+  <div class="rd-sub" id="rdSub">Round 1 of 1</div>
+  <div class="rd-big">Complete</div>
+  <div class="rd-say"><span class="mascot rd-frog"></span><span class="rd-bubble" id="rdBubble">Big breather!</span></div>
+</div>
+<div id="countdown" hidden role="status" aria-live="assertive">
+  <div class="cdmsg">Get ready…</div>
+  <div class="cdnum" id="cdNum">3</div>
+</div>
 
 <div id="toast" role="status"></div>
 
-<!-- CAST HELPER -->
-<div id="castModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="castTitle">
+<!-- One reusable dialog: confirmations, sharing, shared workouts, resume -->
+<div id="dlg" class="modal" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
   <div class="card">
-    <h3 id="castTitle">📺 Cast to your TV</h3>
-    <ol>
-      <li>Put your laptop and Chromecast on the same Wi‑Fi network.</li>
-      <li>In Chrome, open the menu (⋮) and choose <b>Cast, save and share → Cast…</b> (the wording varies a little between Chrome versions).</li>
-      <li>In the Cast window, open <b>Sources</b> and choose <b>Cast tab</b>, then click your Chromecast.</li>
-      <li>Come back here, press <b>Test sound</b> to check the TV is playing audio, then <b>Start workout</b> and <b>Fullscreen</b> (or press <kbd>F</kbd>).</li>
-    </ol>
-    <div class="row2">
-      <button id="castTest">🔊 Test sound</button>
-      <button id="castFull">⛶ Fullscreen</button>
-      <button id="castStart" class="go">▶ Start workout</button>
-      <button id="castClose">Close</button>
-    </div>
-    <div class="note">Websites can't open Chrome's Cast window themselves, which is why the steps above happen in Chrome's menu. Tab casting also sends this tab's sound to the TV. Keep this tab open while you train, and control the timer from the laptop.</div>
-    <div class="note" id="castExtra"></div>
+    <div class="dlghead"><div class="mascot dlgfrog"></div><h3 id="dlgTitle"></h3></div>
+    <div class="dlgbody" id="dlgBody"></div>
+    <div class="row2" id="dlgBtns"></div>
   </div>
 </div>
 
+<script src="frogue-messages.js"></script>
 <script>
 (() => {
   'use strict';
   const $ = (id) => document.getElementById(id);
+
+  /* ---------- Frogue (original artwork, drawn in code) ---------- */
+  const FROG_SVG = `
+<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <ellipse cx="60" cy="112" rx="30" ry="5" fill="rgba(0,0,0,.25)"/>
+  <g class="hopper">
+    <ellipse cx="32" cy="104" rx="16" ry="7" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+    <ellipse cx="88" cy="104" rx="16" ry="7" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
+    <circle cx="38" cy="36" r="15" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
+    <circle cx="82" cy="36" r="15" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
+    <ellipse cx="60" cy="72" rx="40" ry="33" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
+    <ellipse cx="60" cy="86" rx="25" ry="16" fill="#dcfce7"/>
+    <g class="eye"><circle cx="38" cy="36" r="10" fill="#fff"/><circle cx="40" cy="37" r="5" fill="#1f2937"/><circle cx="42" cy="35" r="1.8" fill="#fff"/></g>
+    <g class="eye"><circle cx="82" cy="36" r="10" fill="#fff"/><circle cx="80" cy="37" r="5" fill="#1f2937"/><circle cx="82" cy="35" r="1.8" fill="#fff"/></g>
+    <path d="M26 58 Q60 47 94 58 L93 67 Q60 56 27 67 Z" fill="#fb923c" stroke="#c2410c" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="55" cy="71" r="1.6" fill="#166534"/><circle cx="65" cy="71" r="1.6" fill="#166534"/>
+    <circle cx="31" cy="78" r="6" fill="#fb7185" opacity=".6"/><circle cx="89" cy="78" r="6" fill="#fb7185" opacity=".6"/>
+    <path class="smile" d="M43 78 Q60 95 77 78" fill="none" stroke="#166534" stroke-width="3.5" stroke-linecap="round"/>
+    <path class="flat" d="M45 88 Q60 78 75 88" fill="none" stroke="#166534" stroke-width="3.5" stroke-linecap="round"/>
+    <path class="sweat" d="M102 24 q6 9 0 13 q-6 -4 0 -13z" fill="#7dd3fc" stroke="#0284c7" stroke-width="1.5"/>
+    <g class="bottle"><rect x="96" y="64" width="17" height="36" rx="5" fill="#8fd3ff" stroke="#3b82c4" stroke-width="3"/><rect x="100" y="57" width="9" height="9" rx="2" fill="#3b82c4"/><rect x="96" y="82" width="17" height="11" fill="#fff" opacity=".45"/></g>
+    <text class="zzz" x="98" y="26" font-size="22" font-weight="800" fill="#bfdbfe" font-family="system-ui,sans-serif">z</text>
+    <text class="zzz" x="110" y="12" font-size="14" font-weight="800" fill="#bfdbfe" font-family="system-ui,sans-serif">z</text>
+  </g>
+  <g class="sparkle" fill="#fde047">
+    <path d="M12 22 L14 28 L20 30 L14 32 L12 38 L10 32 L4 30 L10 28Z"/>
+    <path d="M108 14 L109.5 18.5 L114 20 L109.5 21.5 L108 26 L106.5 21.5 L102 20 L106.5 18.5Z"/>
+    <path d="M110 62 L111.5 66.5 L116 68 L111.5 69.5 L110 74 L108.5 69.5 L104 68 L108.5 66.5Z"/>
+  </g>
+</svg>`;
+  // Frogue's head: rides along the progress bar
+  const HEAD_SVG = `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+<circle cx='35' cy='38' r='19' fill='#4ade80' stroke='#15803d' stroke-width='6'/><circle cx='85' cy='38' r='19' fill='#4ade80' stroke='#15803d' stroke-width='6'/>
+<ellipse cx='60' cy='72' rx='50' ry='40' fill='#4ade80' stroke='#15803d' stroke-width='6'/>
+<circle cx='35' cy='38' r='12' fill='#fff'/><circle cx='85' cy='38' r='12' fill='#fff'/><circle cx='38' cy='40' r='6.5' fill='#1f2937'/><circle cx='82' cy='40' r='6.5' fill='#1f2937'/>
+<path d='M16 62 Q60 46 104 62 L102 74 Q60 58 18 74 Z' fill='#fb923c' stroke='#c2410c' stroke-width='3' stroke-linejoin='round'/>
+<path d='M38 88 Q60 106 82 88' fill='none' stroke='#166534' stroke-width='6' stroke-linecap='round'/></svg>`;
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   /* ---------- Settings ---------- */
   const LIM = { work: [5, 3600], rest: [0, 3600], rounds: [1, 99], roundRest: [0, 900], prep: [0, 60] };
@@ -301,6 +635,7 @@
   });
   /* Saved workouts: { current: id, workouts: { id: {name, prep, rounds, roundRest, exercises} } } */
   const STORE_KEY = 'intervalTimerStore1';
+  const SESS_KEY = 'intervalTimerSession1';
   const newId = () => 'w' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
   const validWorkout = (w) => w && Array.isArray(w.exercises) && w.exercises.length;
   let store = null;
@@ -323,19 +658,58 @@
   const clamp = (v, k) => Math.min(LIM[k][1], Math.max(LIM[k][0], v));
 
   const fmt = (s) => { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
-  const exName = (i) => (cfg.exercises[i].name || '').trim() || `Exercise ${i + 1}`;
+  const fmtFloor = (s) => { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  const exName = (c, i) => (c.exercises[i].name || '').trim() || `Exercise ${i + 1}`;
+  const wkLabel = (w) => (w.name || '').trim() || 'Untitled workout';
+  const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+
+  function cleanWorkout(w) {
+    if (!w || typeof w !== 'object' || !Array.isArray(w.exercises)) return null;
+    const num = (v, k, d) => { v = Math.round(Number(v)); return Number.isFinite(v) ? clamp(v, k) : d; };
+    const exercises = w.exercises.slice(0, 30).map((e) => ({
+      name: String((e && e.name) || '').slice(0, 40),
+      work: num(e && e.work, 'work', 40),
+      rest: num(e && e.rest, 'rest', 20),
+    }));
+    if (!exercises.length) return null;
+    return {
+      name: String(w.name || '').slice(0, 40),
+      prep: num(w.prep, 'prep', 10),
+      rounds: num(w.rounds, 'rounds', 3),
+      roundRest: num(w.roundRest, 'roundRest', 60),
+      exercises,
+    };
+  }
+
+  function buildPhases(c) {
+    const p = [];
+    const n = c.exercises.length;
+    if (c.prep > 0) p.push({ type: 'prep', dur: c.prep, xi: -1 });
+    for (let r = 1; r <= c.rounds; r++) {
+      for (let i = 0; i < n; i++) {
+        const ex = c.exercises[i];
+        p.push({ type: 'work', dur: ex.work, name: exName(c, i), round: r, ex: i + 1, xi: i });
+        const lastEx = i === n - 1, lastRound = r === c.rounds;
+        if (!lastEx) {
+          if (ex.rest > 0) p.push({ type: 'rest', dur: ex.rest, round: r, upNext: exName(c, i + 1), xi: i });
+        } else if (!lastRound && c.roundRest > 0) {
+          p.push({ type: 'rest', dur: c.roundRest, round: r, roundBreak: true, upNext: exName(c, 0), xi: i });
+        }
+      }
+    }
+    return p;
+  }
 
   function renderGlobals() {
-    $('v-rounds').textContent = cfg.rounds;
-    $('v-roundRest').textContent = fmt(cfg.roundRest);
-    $('v-prep').textContent = fmt(cfg.prep);
+    $('v-rounds').value = cfg.rounds;
+    $('v-roundRest').value = fmt(cfg.roundRest);
+    $('v-prep').value = fmt(cfg.prep);
     renderSummary();
   }
   function renderSummary() {
-    const p = buildPhases();
-    const total = p.reduce((a, x) => a + x.dur, 0);
-    $('summary').textContent =
-      `${cfg.exercises.length} exercise${cfg.exercises.length > 1 ? 's' : ''} × ${cfg.rounds} round${cfg.rounds > 1 ? 's' : ''} · total ${fmt(total)}`;
+    const total = buildPhases(cfg).reduce((a, x) => a + x.dur, 0);
+    $('summary').textContent = `${plural(cfg.exercises.length, 'exercise')} × ${plural(cfg.rounds, 'round')} · total ${fmt(total)}`;
+    renderPreview();
   }
 
   function renderExercises() {
@@ -350,13 +724,13 @@
         <div class="mini"><div class="lbl">Work</div>
           <div class="steps">
             <button data-act="x" data-i="${i}" data-f="work" data-d="-5" data-hold>−</button>
-            <div class="val" data-v="${i}-work"></div>
+            <input class="val tin" type="text" inputmode="numeric" data-v="${i}-work" data-i="${i}" data-f="work" aria-label="Work time, exercise ${i + 1} (seconds or m:ss)" title="Type seconds (40) or minutes:seconds (1:30)">
             <button data-act="x" data-i="${i}" data-f="work" data-d="5" data-hold>+</button>
           </div></div>
         <div class="mini"><div class="lbl">Rest after</div>
           <div class="steps">
             <button data-act="x" data-i="${i}" data-f="rest" data-d="-5" data-hold>−</button>
-            <div class="val" data-v="${i}-rest"></div>
+            <input class="val tin" type="text" inputmode="numeric" data-v="${i}-rest" data-i="${i}" data-f="rest" aria-label="Rest time, exercise ${i + 1} (seconds or m:ss)" title="Type seconds (20) or minutes:seconds (0:20)">
             <button data-act="x" data-i="${i}" data-f="rest" data-d="5" data-hold>+</button>
           </div></div>
         <div class="exact">
@@ -369,14 +743,73 @@
       list.appendChild(row);
       updateExVals(i);
     });
+    // the "set every exercise to" fields start from the first exercise's times
+    if (document.activeElement !== $('allWork')) $('allWork').value = fmt(cfg.exercises[0].work);
+    if (document.activeElement !== $('allRest')) $('allRest').value = fmt(cfg.exercises[0].rest);
     renderSummary();
   }
   function updateExVals(i) {
     const w = document.querySelector(`[data-v="${i}-work"]`), r = document.querySelector(`[data-v="${i}-rest"]`);
-    if (w) w.textContent = fmt(cfg.exercises[i].work);
-    if (r) r.textContent = fmt(cfg.exercises[i].rest);
+    if (w) w.value = fmt(cfg.exercises[i].work);
+    if (r) r.value = fmt(cfg.exercises[i].rest);
   }
 
+  /* ---------- Typing times: "90", "1:30" or "1m30" ---------- */
+  function parseTime(str) {
+    const s = String(str).trim().replace(/s$/i, '');
+    let m = /^(\d{1,3}):(\d{1,2})$/.exec(s);
+    if (m) return (+m[1]) * 60 + (+m[2]);
+    m = /^(\d+(?:\.\d+)?)$/.exec(s);
+    if (m) return Math.round(+m[1]);
+    m = /^(\d+)\s*m(?:in)?(?:\s*(\d+)\s*s?)?$/i.exec(s);
+    if (m) return (+m[1]) * 60 + (+(m[2] || 0));
+    return NaN;
+  }
+  const isTin = (el) => !!(el && el.classList && el.classList.contains('tin'));
+  document.addEventListener('focusin', (e) => {
+    if (isTin(e.target)) { const t = e.target; setTimeout(() => { try { t.select(); } catch (err) {} }, 0); }
+  });
+  document.addEventListener('change', (e) => {
+    const el = e.target;
+    if (!isTin(el)) return;
+    if (el.id === 'allWork' || el.id === 'allRest') {              // "set every exercise to" fields: not applied until the button
+      const k = el.id === 'allWork' ? 'work' : 'rest';
+      const v = parseTime(el.value);
+      el.value = fmt(clamp(Number.isFinite(v) ? v : cfg.exercises[0][k], k));
+      return;
+    }
+    if (el.dataset.k) {                                              // rounds / rest between rounds / get ready
+      const k = el.dataset.k;
+      const v = k === 'rounds' ? parseInt(el.value, 10) : parseTime(el.value);
+      if (Number.isFinite(v)) cfg[k] = clamp(v, k);
+      renderGlobals(); save();
+      return;
+    }
+    const i = +el.dataset.i, f = el.dataset.f;                       // one exercise's work / rest
+    const v = parseTime(el.value);
+    if (Number.isFinite(v)) cfg.exercises[i][f] = clamp(v, f);
+    updateExVals(i); renderSummary(); save();
+  });
+  document.addEventListener('keydown', (e) => {                      // Enter = done, Esc = undo
+    const t = e.target;
+    if (!isTin(t) || (e.key !== 'Enter' && e.key !== 'Escape')) return;
+    e.preventDefault();
+    if (e.key === 'Escape') {
+      if (t.id === 'allWork') t.value = fmt(cfg.exercises[0].work);
+      else if (t.id === 'allRest') t.value = fmt(cfg.exercises[0].rest);
+      else if (t.dataset.k) renderGlobals();
+      else updateExVals(+t.dataset.i);
+    }
+    t.blur();
+  }, true);
+  $('applyAll').addEventListener('click', () => {
+    const w = parseTime($('allWork').value), r = parseTime($('allRest').value);
+    const nw = Number.isFinite(w) ? clamp(w, 'work') : null, nr = Number.isFinite(r) ? clamp(r, 'rest') : null;
+    if (nw === null && nr === null) { toast('Type a work or rest time first'); return; }
+    cfg.exercises.forEach((x) => { if (nw !== null) x.work = nw; if (nr !== null) x.rest = nr; });
+    save(); renderExercises();
+    toast(`Set ${plural(cfg.exercises.length, 'exercise')} to ${fmt(cfg.exercises[0].work)} work · ${fmt(cfg.exercises[0].rest)} rest`);
+  });
   $('exList').addEventListener('input', (e) => {
     if (e.target.classList.contains('exname')) {
       cfg.exercises[+e.target.dataset.i].name = e.target.value;
@@ -384,8 +817,122 @@
     }
   });
 
+  /* ---------- Dialogs (one reusable, in-page, themed with Frogue) ---------- */
+  const dlg = $('dlg');
+  let dlgResolve = null, dlgCancel = null;
+  const dlgOpen = () => dlg.classList.contains('open');
+  function closeDialog(v) {
+    dlg.classList.remove('open');
+    const r = dlgResolve; dlgResolve = null;
+    if (r) r(v);
+  }
+  /* buttons: [{label, value, kind:'go'|'danger', focus, keepOpen, onClick(el)}] */
+  function openDialog({ title, body, buttons, mood, cancel = null }) {
+    if (dlgOpen()) closeDialog(null);
+    return new Promise((resolve) => {
+      $('dlgTitle').textContent = title;
+      const b = $('dlgBody'); b.innerHTML = '';
+      if (typeof body === 'string') { const p = document.createElement('div'); p.textContent = body; b.appendChild(p); }
+      else if (body) b.appendChild(body);
+      const row = $('dlgBtns'); row.innerHTML = '';
+      let focusEl = null;
+      buttons.forEach((btn) => {
+        const el = document.createElement('button');
+        el.textContent = btn.label;
+        if (btn.kind) el.className = btn.kind;
+        el.addEventListener('click', () => { if (btn.onClick) btn.onClick(el); if (!btn.keepOpen) closeDialog(btn.value); });
+        row.appendChild(el);
+        if (btn.focus) focusEl = el;
+      });
+      dlg.querySelector('.card').classList.toggle('worry', mood === 'worry');
+      dlgResolve = resolve; dlgCancel = cancel;
+      dlg.classList.add('open');
+      (focusEl || row.firstChild).focus();
+    });
+  }
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) closeDialog(dlgCancel); });
+
+  /* ---------- Toast ---------- */
+  let toastT = null;
+  function toast(msg) {
+    const t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastT);
+    toastT = setTimeout(() => t.classList.remove('show'), 3500);
+  }
+
+  /* ---------- Work / rest bar (used in setup as a preview, and on the timer as the progress bar) ---------- */
+  const BAR_COL = { work: '#32d583', rest: '#53b1fd', prep: '#fdb022' };
+  function layoutBar(trackEl, roundsEl, ph, rounds) {
+    trackEl.innerHTML = ''; roundsEl.innerHTML = '';
+    const st = []; let tot = 0;
+    ph.forEach((p) => { st.push(tot); tot += p.dur; });
+    const w = trackEl.getBoundingClientRect().width || (trackEl.parentElement && trackEl.parentElement.getBoundingClientRect().width) || 320;
+    // if the shortest interval would be a sliver, draw one striped block per round instead
+    const minPx = ph.reduce((m, p) => (p.type === 'prep' ? m : Math.min(m, p.dur / tot * w)), Infinity);   // the short get-ready lead-in doesn't count
+    const compact = ph.length > 1 && minPx < 7;
+    const dense = ph.length > 1 && minPx < 12;          // drawable, but too fiddly to read at a glance
+    const els = []; let shade = null;
+    const mk = (cls, a, z) => {
+      const d = document.createElement('div');
+      d.className = cls;
+      d.style.left = (a / tot * 100) + '%';
+      d.style.width = `max(2px, calc(${(z - a) / tot * 100}% - 3px))`;
+      trackEl.appendChild(d);
+      return d;
+    };
+    if (!compact) {
+      ph.forEach((p, i) => {
+        const d = mk('seg ' + (p.roundBreak ? 'brk' : p.type), st[i], st[i] + p.dur);
+        d.dataset.x = p.xi;
+        d.appendChild(document.createElement('i'));
+        els.push(d);
+      });
+    } else {
+      if (ph[0].type === 'prep') mk('seg cblock', 0, ph[0].dur).style.background = BAR_COL.prep;
+      for (let r = 1; r <= rounds; r++) {
+        const idxs = ph.map((p, i) => (p.round === r ? i : -1)).filter((i) => i >= 0);
+        if (!idxs.length) continue;
+        const a = st[idxs[0]], z = st[idxs[idxs.length - 1]] + ph[idxs[idxs.length - 1]].dur;
+        const stops = idxs.map((i) => `${ph[i].roundBreak ? '#c9b8ff' : BAR_COL[ph[i].type]} ${(st[i] - a) / (z - a) * 100}% ${(st[i] + ph[i].dur - a) / (z - a) * 100}%`).join(',');
+        mk('seg cblock', a, z).style.background = `linear-gradient(to right, ${stops})`;
+      }
+      shade = document.createElement('div'); shade.className = 'shade';
+      trackEl.appendChild(shade);
+    }
+    if (rounds > 1) {
+      for (let r = 1; r <= rounds; r++) {
+        const idxs = ph.map((p, i) => (p.round === r ? i : -1)).filter((i) => i >= 0);
+        if (!idxs.length) continue;
+        const a = st[idxs[0]], z = st[idxs[idxs.length - 1]] + ph[idxs[idxs.length - 1]].dur;
+        const px = (z - a) / tot * w;
+        const d = document.createElement('div');
+        d.className = 'rl';
+        d.style.left = (a / tot * 100) + '%';
+        d.style.width = `calc(${(z - a) / tot * 100}% - 3px)`;
+        d.textContent = px < 14 ? '' : px < 150 ? String(r) : `Round ${r}`;
+        roundsEl.appendChild(d);
+      }
+    }
+    return { els, compact, dense, shade };
+  }
+  function renderPreview() {
+    if (!$('pvTrack')) return;
+    layoutBar($('pvTrack'), $('pvRounds'), buildPhases(cfg), cfg.rounds);
+  }
+  // tapping/typing in an exercise lights up its work + rest in the bar, in every round
+  function highlightExercise(i) {
+    document.querySelectorAll('#pvTrack .seg.hl').forEach((e) => e.classList.remove('hl'));
+    if (i !== null) document.querySelectorAll(`#pvTrack .seg[data-x="${i}"]`).forEach((e) => e.classList.add('hl'));
+  }
+  $('exList').addEventListener('focusin', (e) => {
+    const row = e.target.closest && e.target.closest('.ex');
+    if (row) highlightExercise(row.querySelector('.exname').dataset.i);
+  });
+  $('exList').addEventListener('focusout', () => highlightExercise(null));
+
   /* ---------- Saved workouts ---------- */
-  const wkLabel = (w) => (w.name || '').trim() || 'Untitled workout';
   function renderWorkoutBar() {
     const sel = $('wkSelect');
     sel.innerHTML = '';
@@ -427,10 +974,15 @@
     store.workouts[id] = copy;
     switchTo(id);
   });
-  $('wkDel').addEventListener('click', () => {
+  $('wkDel').addEventListener('click', async () => {
     const ids = Object.keys(store.workouts);
     if (ids.length <= 1) return;
-    if (!confirm(`Delete "${wkLabel(cfg)}"? This can't be undone.`)) return;
+    const v = await openDialog({
+      title: `Delete "${wkLabel(cfg)}"?`, mood: 'worry', cancel: 'no',
+      body: "This can't be undone. (Tip: Export first if you want a backup.)",
+      buttons: [{ label: 'Keep it', value: 'no', focus: true }, { label: 'Delete workout', kind: 'danger', value: 'yes' }],
+    });
+    if (v !== 'yes') return;
     const i = ids.indexOf(store.current);
     delete store.workouts[store.current];
     const rest = Object.keys(store.workouts);
@@ -448,6 +1000,11 @@
       const f = b.dataset.f;
       cfg.exercises[i][f] = clamp(cfg.exercises[i][f] + +b.dataset.d, f);
       updateExVals(i); renderSummary();
+    } else if (act === 'ast') {                                       // +/- on the "set every exercise to" fields
+      const el = $(b.dataset.f), k = b.dataset.f === 'allWork' ? 'work' : 'rest';
+      const cur = parseTime(el.value);
+      el.value = fmt(clamp((Number.isFinite(cur) ? cur : cfg.exercises[0][k]) + +b.dataset.d, k));
+      return;                                                         // nothing changes until "Apply to all"
     } else if (act === 'add') {
       const last = cfg.exercises[cfg.exercises.length - 1] || { work: 40, rest: 20 };
       if (cfg.exercises.length >= 30) return;
@@ -473,6 +1030,7 @@
     const b = e.target.closest('button[data-act]');
     if (!b) return;
     e.preventDefault();
+    if (isTin(document.activeElement)) document.activeElement.blur();   // commit anything half-typed first
     doAct(b);
     if (b.hasAttribute('data-hold')) {
       stopHold();
@@ -483,50 +1041,89 @@
   window.addEventListener('blur', stopHold);
 
   /* ---------- Audio ---------- */
-  let ac = null;
+  let ac = null, master = null;
+  let vol = 100, muted = false;                    // volume 0-100 (100 = as loud as the cues were designed), remembered between visits
+  try {
+    const sv = JSON.parse(localStorage.getItem('intervalTimerVol') || 'null');
+    if (sv) { const n = Number(sv.v); if (Number.isFinite(n)) vol = Math.min(100, Math.max(0, Math.round(n))); muted = !!sv.m; }
+  } catch (e) {}
+  const isSilent = () => muted || vol === 0;
+  function applyVolume() {
+    if (master) master.gain.value = isSilent() ? 0 : Math.pow(vol / 100, 2);
+    $('vol').value = vol;
+    $('volPct').textContent = muted ? 'Muted' : vol + '%';
+    ['muteBtn', 'muteBtn2'].forEach((id) => {
+      $(id).textContent = isSilent() ? '🔇' : '🔊';
+      $(id).setAttribute('aria-pressed', isSilent() ? 'true' : 'false');
+    });
+    try { localStorage.setItem('intervalTimerVol', JSON.stringify({ v: vol, m: muted })); } catch (e) {}
+  }
   function ensureAudio() {
-    if (!ac) { const AC = window.AudioContext || window.webkitAudioContext; if (AC) ac = new AC(); }
+    if (!ac) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) { ac = new AC(); master = ac.createGain(); master.connect(ac.destination); applyVolume(); }
+    }
     if (ac && ac.state === 'suspended') ac.resume();
   }
+  function toggleMute() {
+    if (isSilent() && vol === 0) vol = 60;        // unmuting from a zero slider should actually be audible
+    muted = !isSilent() ? true : false;
+    applyVolume();
+    toast(isSilent() ? 'Sound off' : `Sound on · ${vol}%`);
+  }
   function beep(freq, dur = 0.15, delay = 0, vol = 0.5, type = 'sine') {
-    if (!ac) return;
+    if (!ac) return null;
     const t = ac.currentTime + delay;
     const o = ac.createOscillator(), g = ac.createGain();
     o.type = type; o.frequency.value = freq;
     g.gain.setValueAtTime(0.0001, t);
     g.gain.exponentialRampToValueAtTime(vol, t + 0.01);
     g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    o.connect(g).connect(ac.destination);
+    o.connect(g).connect(master || ac.destination);
     o.start(t); o.stop(t + dur + 0.05);
+    o._g = g;
+    return o;
   }
   const cues = {
     prep()  { beep(520, 0.12); },
     work()  { beep(988, 0.18, 0, 0.6, 'square'); beep(988, 0.18, 0.25, 0.6, 'square'); beep(1318, 0.45, 0.5, 0.6, 'square'); },
     rest()  { beep(523, 0.35, 0, 0.6, 'triangle'); beep(392, 0.55, 0.38, 0.6, 'triangle'); },
-    tick()  { beep(740, 0.09, 0, 0.35); },
+    roundBreak() { beep(523, 0.55, 0, 0.5, 'sine'); beep(659, 0.55, 0.38, 0.5, 'sine'); beep(784, 1.0, 0.76, 0.5, 'sine'); },
+    roundStart() { [523, 659, 784].forEach((f, i) => beep(f, 0.14, i * 0.12, 0.55, 'triangle')); beep(988, 0.18, 0.5, 0.6, 'square'); beep(988, 0.18, 0.75, 0.6, 'square'); beep(1318, 0.5, 1.0, 0.6, 'square'); },
     done()  { [523, 659, 784, 1047].forEach((f, i) => beep(f, 0.3, i * 0.2, 0.55, 'triangle')); beep(1047, 0.9, 0.85, 0.55, 'triangle'); },
   };
 
-  /* ---------- Timer state ---------- */
-  let phases = [], idx = 0, remaining = 0, endAt = 0, running = false, active = false, lastWhole = null, iv = null;
+  /* BBC-style pips: a short 1 kHz pip at 3, 2 and 1 seconds remaining. They are scheduled on the
+     audio clock (not the page timer) so they stay precise, and are cancelled on pause/skip/stop. */
+  let pipNodes = [];
+  function cancelPips() {
+    pipNodes.forEach((o) => { try { o.stop(); } catch (e) {} try { o._g && o._g.disconnect(); } catch (e) {} });
+    pipNodes = [];
+  }
+  function armPips() {
+    cancelPips();
+    if (!running || !ac || !phases[idx]) return;
+    const rem = endAt - performance.now();
+    const dur = phases[idx].dur;
+    [3, 2, 1].forEach((k) => {
+      if (k >= dur) return;                       // too short a phase to count down
+      const t = (rem - k * 1000) / 1000;
+      if (t < 0.02) return;                       // already past this pip (e.g. resumed late)
+      const o = beep(1000, 0.11, t, 0.6, 'sine');
+      if (o) pipNodes.push(o);
+    });
+  }
 
-  function buildPhases() {
-    const p = [];
-    const n = cfg.exercises.length;
-    if (cfg.prep > 0) p.push({ type: 'prep', dur: cfg.prep });
-    for (let r = 1; r <= cfg.rounds; r++) {
-      for (let i = 0; i < n; i++) {
-        const ex = cfg.exercises[i];
-        p.push({ type: 'work', dur: ex.work, name: exName(i), round: r, ex: i + 1 });
-        const lastEx = i === n - 1, lastRound = r === cfg.rounds;
-        if (!lastEx) {
-          if (ex.rest > 0) p.push({ type: 'rest', dur: ex.rest, round: r, upNext: exName(i + 1) });
-        } else if (!lastRound && cfg.roundRest > 0) {
-          p.push({ type: 'rest', dur: cfg.roundRest, round: r, roundBreak: true, upNext: exName(0) });
-        }
-      }
-    }
-    return p;
+  /* ---------- Timer state ---------- */
+  let run = null, phases = [], starts = [], total = 0, lastWorkIdx = -1, halfSaid = false;
+  let idx = 0, remaining = 0, endAt = 0, running = false, active = false, lastWhole = null, iv = null;
+  let segEls = [];
+  const isDone = () => document.body.dataset.phase === 'done';
+
+  function computeStarts() {
+    starts = []; let t = 0; lastWorkIdx = -1;
+    phases.forEach((p, i) => { starts.push(t); t += p.dur; if (p.type === 'work') lastWorkIdx = i; });
+    total = t;
   }
 
   function show(id) { document.querySelectorAll('.screen').forEach((s) => s.classList.toggle('active', s.id === id)); }
@@ -535,29 +1132,197 @@
   const R = 2 * Math.PI * 92;
   $('bar').setAttribute('stroke-dasharray', R);
 
-  function labelFor(p) {
-    return p.type === 'prep' ? 'Get ready' : p.type === 'rest' ? 'Rest' : p.name;
+  function labelFor(p) { return p.type === 'prep' ? 'Get ready' : p.roundBreak ? 'Round break' : p.type === 'rest' ? 'Rest' : p.name; }
+
+  /* ---- Frogue's speech bubble ---- */
+  let curMsg = '';
+  function say(text, opts) {
+    const o = opts || {};
+    const b = $('frogSay');
+    b.textContent = text;
+    b.classList.toggle('count', !!o.count);
+    b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop');
+    if (!o.temp && !o.count) curMsg = text;
+  }
+  /* Frogue's lines: the built-in ones plus anything you add in frogue-messages.js (optional file) */
+  const USER_MSG = (window.FROGUE_MESSAGES && typeof window.FROGUE_MESSAGES === 'object') ? window.FROGUE_MESSAGES : {};
+  function msg(key, builtin, ctx) {
+    const extra = Array.isArray(USER_MSG[key]) ? USER_MSG[key].filter((x) => typeof x === 'string' && x.trim()) : [];
+    const all = USER_MSG.replace === true && extra.length ? extra : builtin.concat(extra);
+    return String(pick(all)).replace(/\{(\w+)\}/g, (m, k) => (ctx && ctx[k] != null ? ctx[k] : ''));
+  }
+  const WORK_LINES = ["You've got this!", 'Strong and steady!', 'Nice form — keep it controlled!',
+    'Ribbit-ing effort!', 'Breathe and push!', 'Almost there, keep going!', 'Make every rep count!'];
+  let brkT = null, rdT = null;
+  function hideRoundDone() { clearTimeout(rdT); const el = $('roundDone'); el.hidden = true; el.classList.remove('out'); }
+  function showRoundDone(p) {
+    hideRoundDone();
+    const el = $('roundDone');
+    $('rdSub').textContent = `Round ${p.round} of ${run.rounds}`;
+    $('rdBubble').textContent = msg('roundComplete', ['Big breather!', 'Round done. Nice work!', 'That’s another one!'], { round: p.round, nextRound: p.round + 1, rounds: run.rounds });
+    el.hidden = false;
+    rdT = setTimeout(() => { el.classList.add('out'); rdT = setTimeout(hideRoundDone, 500); }, 1900);
+  }
+  function sayForPhase(p) {
+    if (p.roundBreak) {
+      say(msg('roundBreak', ['Round {round} done. Big breather!'], { round: p.round, nextRound: p.round + 1, rounds: run.rounds }));
+      const my = idx;
+      brkT = setTimeout(() => { if (idx === my && phases[idx] && phases[idx].roundBreak && !isDone()) say(msg('roundBreakSettled', ['Water and breathe — round {nextRound} next.'], { round: p.round, nextRound: p.round + 1, rounds: run.rounds })); }, 2300);
+      return;
+    }
+    if (p.type === 'prep') return say(msg('prep', ['Get set… first up: {exercise}!'], { exercise: exName(run, 0) }));
+    if (p.type === 'rest') {
+      return say(p.roundBreak
+        ? `Round ${p.round} done! Big breather, then ${p.upNext}.`
+        : msg('rest', ['Breathe… {next} is next!', 'Shake it out! {next} next.', 'Water break! {next} is next.'], { next: p.upNext, round: p.round, rounds: run.rounds }));
+    }
+    if (idx === lastWorkIdx) return say(msg('lastInterval', ['Last one! Give it everything!'], { exercise: p.name }));
+    if (run.rounds > 1 && p.round === run.rounds && p.ex === 1) return say(msg('lastRound', ['Last round — make it count!'], { exercise: p.name, round: p.round, rounds: run.rounds }));
+    if (!halfSaid && total > 0 && starts[idx] / total >= 0.5) { halfSaid = true; return say(msg('halfway', ['Halfway through the workout!'], { exercise: p.name })); }
+    return say(msg('work', WORK_LINES, { exercise: p.name, round: p.round, rounds: run.rounds }));
+  }
+
+  /* ---- Landscape progress bar ---- */
+  let barCompact = false, shadeEl = null;
+  // roundView: when the whole workout can't be drawn in enough detail, draw just the current round instead
+  let roundView = false, rvRound = 0, rvA = 0, rvZ = 1;
+  const roundOf = (i) => Math.max(1, (phases[i] && phases[i].round) || 1);
+  // which round the round-bar shows: during the break after round r it already shows round r+1 (so a round ends on its last exercise)
+  const viewRoundOf = (i) => { const p = phases[i]; return p && p.roundBreak ? p.round + 1 : roundOf(i); };
+  function buildTimeline() {
+    const tl = $('timeline');
+    const r = layoutBar($('tlTrack'), $('tlRounds'), phases, run.rounds);
+    roundView = false;
+    if ((r.compact || r.dense) && run.rounds > 1 && tl.offsetWidth > 0) {       // not enough room for every interval: bar per round + overall bar
+      rvRound = viewRoundOf(idx);
+      const gi = phases.map((p, i) => (!p.roundBreak && viewRoundOf(i) === rvRound && (p.type !== 'prep' || rvRound === 1) ? i : -1)).filter((i) => i >= 0);
+      const sub = layoutBar($('tlTrack'), $('tlRounds'), gi.map((i) => Object.assign({}, phases[i], { round: 1 })), 1);
+      roundView = true;
+      rvA = starts[gi[0]]; rvZ = starts[gi[gi.length - 1]] + phases[gi[gi.length - 1]].dur;
+      segEls = [];
+      if (!sub.compact) { gi.forEach((g, k) => { segEls[g] = sub.els[k]; }); barCompact = false; shadeEl = null; }
+      else { barCompact = true; shadeEl = sub.shade; }         // even one round is dense: shaded overview of the round
+    }
+    tl.classList.toggle('roundview', roundView);
+    if (roundView) buildOverall();
+    else { segEls = r.els; barCompact = r.compact; shadeEl = r.shade; }
+    const fr = document.createElement('div');
+    fr.className = 'tl-frog'; fr.id = 'tlFrog'; fr.innerHTML = HEAD_SVG;
+    $('tlTrack').appendChild(fr);
+  }
+  let ovEls = [];
+  function buildOverall() {
+    const tr = $('ovTrack'), rl = $('ovRounds');
+    tr.innerHTML = ''; rl.innerHTML = ''; ovEls = [];
+    const w = tr.getBoundingClientRect().width || 600;
+    const add = (cls, a, z, label) => {
+      const d = document.createElement('div');
+      d.className = 'ov-seg ' + cls;
+      d.style.left = (a / total * 100) + '%';
+      d.style.width = `max(${cls ? 7 : 3}px, calc(${(z - a) / total * 100}% - 3px))`;   // get-ready and breaks stay visible even when short
+      d.appendChild(document.createElement('i'));
+      tr.appendChild(d);
+      let lab = null;
+      if (label) {
+        lab = document.createElement('div');
+        lab.className = 'rl';
+        lab.style.left = d.style.left; lab.style.width = `calc(${(z - a) / total * 100}% - 3px)`;
+        const px = (z - a) / total * w;
+        lab.textContent = px < 14 ? '' : px < 150 ? String(label) : `Round ${label}`;
+        rl.appendChild(lab);
+      }
+      ovEls.push({ d, lab, a, z, r: label || 0 });
+    };
+    if (phases[0].type === 'prep') add('prep', 0, phases[0].dur, 0);
+    for (let r = 1; r <= run.rounds; r++) {
+      const gi = phases.map((p, i) => (p.round === r && !p.roundBreak ? i : -1)).filter((i) => i >= 0);
+      if (gi.length) add('', starts[gi[0]], starts[gi[gi.length - 1]] + phases[gi[gi.length - 1]].dur, r);
+      const bi = phases.findIndex((p) => p.roundBreak && p.round === r);
+      if (bi >= 0) { add('brk', starts[bi], starts[bi] + phases[bi].dur, 0); ovEls[ovEls.length - 1].brk = r; }
+    }
+  }
+  function updateOverall(elapsed, done) {
+    const cur = roundOf(idx);
+    ovEls.forEach((o) => {
+      const f = done ? 1 : Math.max(0, Math.min(1, (elapsed - o.a) / (o.z - o.a)));
+      o.d.firstChild.style.width = (f * 100) + '%';
+      const p = phases[idx];
+      const isCur = !done && (p.roundBreak ? o.brk === p.round : (!o.brk && o.r === cur));
+      o.d.classList.toggle('cur', isCur);
+      if (o.lab) o.lab.classList.toggle('cur', isCur);
+    });
+    $('ovElapsed').textContent = fmtFloor(elapsed);
+    $('ovLeft').textContent = '-' + fmt(Math.max(0, total - elapsed));
+    $('ovPct').textContent = (done ? 100 : Math.min(99, Math.floor(elapsed / total * 100))) + '%';
+    const pp = phases[idx];
+    $('rCap').textContent = done ? '' : pp.roundBreak ? `Next: round ${pp.round + 1}` : `Round ${cur} of ${run.rounds}`;
+  }
+  function updateTimeline() {
+    if (roundView && viewRoundOf(idx) !== rvRound) buildTimeline();    // moved into a new round: redraw the bar for it
+    if (barCompact) return;                       // compact mode uses a shade instead (see draw)
+    segEls.forEach((el, i) => {
+      el.classList.toggle('done', i < idx);
+      el.classList.toggle('current', i === idx);
+      if (i !== idx) el.firstChild.style.width = '';
+    });
+  }
+  function applyDoneBar() {
+    if (barCompact) { if (shadeEl) shadeEl.style.width = '100%'; }
+    else segEls.forEach((el) => { el.classList.add('done'); el.classList.remove('current'); });
+    const fr = $('tlFrog'); if (fr) fr.style.left = '100%';
+  }
+  // the bar is redrawn if its width changes (rotating a phone, resizing the window) so it never turns to slivers
+  let relayT = null;
+  function relayoutBar() {
+    if (!active || !phases.length || !$('tlTrack').offsetWidth) return;
+    buildTimeline(); updateTimeline();
+    if (isDone()) applyDoneBar(); else draw(running ? Math.max(0, endAt - performance.now()) : remaining);
+  }
+  if (window.ResizeObserver) new ResizeObserver(() => { cancelAnimationFrame(relayT); relayT = requestAnimationFrame(relayoutBar); }).observe($('tlTrack'));
+
+  /* what comes after this interval: "Rest 0:05, then Plank" / "Next: Squats · 0:40" */
+  function nextText(i) {
+    const n = phases[i + 1];
+    if (!n) return 'Last interval — finish strong!';
+    if (n.type === 'rest') {
+      const after = phases[i + 2];
+      return `${n.roundBreak ? 'Round break' : 'Rest'} ${fmt(n.dur)}` + (after ? `, then ${labelFor(after)}` : '');
+    }
+    return `Next: ${labelFor(n)} · ${fmt(n.dur)}`;
+  }
+
+  function sizeTime() {
+    const r = $('ring').getBoundingClientRect();
+    const s = Math.min(r.width, r.height);
+    if (s > 0) document.documentElement.style.setProperty('--tfs', Math.round(s * 0.35) + 'px');
   }
 
   function enterPhase(i, announce) {
     idx = i;
     const p = phases[i];
-    const n = cfg.exercises.length;
+    const n = run.exercises.length;
+    clearTimeout(brkT); hideRoundDone();
     document.body.dataset.phase = p.type;
+    document.body.dataset.brk = p.roundBreak ? '1' : '';
     $('phaseLabel').textContent = labelFor(p);
     if (p.type === 'prep') {
-      $('roundLabel').textContent = `Up first: ${exName(0)}`;
+      $('roundLabel').textContent = `${plural(run.rounds, 'round')} · ${plural(n, 'exercise')}`;
     } else if (p.type === 'work') {
-      $('roundLabel').textContent = `Round ${p.round} of ${cfg.rounds} · Exercise ${p.ex} of ${n}`;
+      $('roundLabel').textContent = `Round ${p.round} of ${run.rounds} · Exercise ${p.ex} of ${n}`;
     } else {
-      $('roundLabel').textContent = (p.roundBreak ? `Round ${p.round} complete · ` : '') + `Up next: ${p.upNext}`;
+      if (p.roundBreak) $('roundLabel').innerHTML = `<span aria-hidden="true">✓</span> Round ${p.round} of ${run.rounds} done`;
+      else $('roundLabel').textContent = `Round ${p.round} of ${run.rounds}`;   // what's next is the line below
     }
-    const nxt = phases[i + 1];
-    $('nextUp').textContent = nxt
-      ? `Next: ${nxt.type === 'rest' ? (nxt.roundBreak ? 'Round break' : 'Rest') : labelFor(nxt)} · ${fmt(nxt.dur)}`
-      : 'Last interval — finish strong!';
+    $('nextUp').textContent = nextText(i);
     lastWhole = null;
-    if (announce) { flash(); cues[p.type](); }
+    if (announce) {
+      flash();
+      const prev = phases[i - 1];
+      (p.roundBreak ? cues.roundBreak : p.type === 'work' && prev && prev.roundBreak ? cues.roundStart : cues[p.type])();
+      if (p.roundBreak) showRoundDone(p);
+    }
+    updateTimeline();
+    sayForPhase(p);
     draw(p.dur * 1000);
   }
 
@@ -567,12 +1332,48 @@
     const label = fmt(sec);
     $('time').textContent = label;
     $('time').classList.toggle('long', label.length > 4); // e.g. 10:00 needs a smaller font to fit the ring
-    const frac = p.dur > 0 ? Math.max(0, Math.min(1, remMs / (p.dur * 1000))) : 0;
-    $('bar').setAttribute('stroke-dashoffset', R * (1 - frac));
-    let tot = remMs / 1000;
-    for (let j = idx + 1; j < phases.length; j++) tot += phases[j].dur;
-    $('totalLeft').textContent = `Workout remaining: ${fmt(tot)}`;
-    document.title = `${fmt(sec)} · ${labelFor(p)}`;
+    const used = p.dur > 0 ? Math.max(0, Math.min(1, 1 - remMs / (p.dur * 1000))) : 1;
+    $('bar').setAttribute('stroke-dashoffset', R * used);
+    const elapsed = starts[idx] + p.dur * used;
+    $('totalLeft').textContent = `Workout remaining: ${fmt(total - elapsed)}`;
+    $('tlElapsed').textContent = fmtFloor(elapsed);
+    $('tlLeft').textContent = '-' + fmt(total - elapsed);
+    if (barCompact) { if (shadeEl) shadeEl.style.width = (roundView ? Math.max(0, Math.min(1, (elapsed - rvA) / (rvZ - rvA))) : elapsed / total) * 100 + '%'; }
+    else { const cur = segEls[idx]; if (cur) cur.firstChild.style.width = (used * 100) + '%'; }
+    const fr = $('tlFrog');
+    if (fr) fr.style.left = (roundView ? Math.max(0, Math.min(1, (elapsed - rvA) / (rvZ - rvA))) * 100 : elapsed / total * 100) + '%';
+    if (roundView) {
+      $('tlElapsed').textContent = fmtFloor(Math.max(0, elapsed - rvA));
+      $('tlLeft').textContent = '-' + fmt(Math.max(0, rvZ - elapsed));
+      updateOverall(elapsed);
+    }
+    updateCompact(elapsed);
+    document.title = `${label} · ${labelFor(p)}`;
+  }
+
+  /* portrait summary: round X of N, rounds left, overall % */
+  let pcN = 0;
+  function updateCompact(elapsed, done) {
+    if (!run) return;
+    const N = run.rounds, p = phases[idx];
+    const cur = done ? N : Math.max(1, (p && p.round) || 1);
+    const pct = done ? 100 : Math.min(99, Math.floor(elapsed / total * 100));
+    const dots = $('pcDots');
+    if (pcN !== N) {
+      pcN = N; dots.innerHTML = '';
+      if (N <= 15) for (let i = 0; i < N; i++) dots.appendChild(document.createElement('i'));
+    }
+    [...dots.children].forEach((d, i) => { d.className = (i + 1 < cur || done) ? 'done' : (i + 1 === cur ? 'cur' : ''); });
+    $('pcRound').textContent = done ? 'All rounds done' : (p && p.type === 'prep' ? 'Get ready' : `Round ${cur} of ${N}`);
+    const left = done ? 0 : N - cur;
+    $('pcLeft').textContent = done ? '' : (left === 0 ? 'Final round' : `${left} to go`);
+    // one line under the bars: progress on the left, and (tapped) rounds to go / time left
+    const toGo = left === 0 ? 'final round' : left === 1 ? '1 round to go' : left + ' rounds to go';
+    const timeLeft = fmt(Math.max(0, total - elapsed));
+    $('tlInfo').innerHTML = done ? '<span>100%</span><span></span>'
+      : `<span>${pct}%${N > 1 ? `<em> · ${toGo}</em>` : ''}</span><span>${roundView ? `<em>${timeLeft} left</em>` : ''}</span>`;
+    $('pcFill').style.width = pct + '%';
+    $('pcPct').textContent = pct + '%';
   }
 
   function tick() {
@@ -585,59 +1386,143 @@
       endAt += phases[next].dur * 1000;
       if (endAt < now) endAt = now + phases[next].dur * 1000;
       enterPhase(next, true);
+      armPips();
       rem = endAt - now;
+      persist();
     }
     draw(rem);
     const whole = Math.ceil(rem / 1000);
     if (whole !== lastWhole) {
-      if (whole >= 1 && whole <= 3 && phases[idx].dur > 3) cues.tick();
       lastWhole = whole;
+      if (whole >= 1 && whole <= 3 && phases[idx].dur > whole) say(String(whole), { count: true });
+      persist();
     }
   }
   function startLoop() { clearInterval(iv); iv = setInterval(tick, 100); }
 
+  /* ---------- Resume after an accidental refresh / closed tab ---------- */
+  function persist() {
+    if (!active || isDone()) return;
+    try {
+      const rem = running ? Math.max(0, endAt - performance.now()) : remaining;
+      localStorage.setItem(SESS_KEY, JSON.stringify({ v: 1, run, idx, rem, savedAt: Date.now() }));
+    } catch (e) {}
+  }
+  function clearSession() { try { localStorage.removeItem(SESS_KEY); } catch (e) {} }
+  function readSession() {
+    try {
+      const s = JSON.parse(localStorage.getItem(SESS_KEY) || 'null');
+      if (!s || s.v !== 1 || Date.now() - s.savedAt > 12 * 3600 * 1000) return null;
+      const r = cleanWorkout(s.run);
+      if (!r) return null;
+      const ph = buildPhases(r);
+      if (!Number.isInteger(s.idx) || s.idx < 0 || s.idx >= ph.length) return null;
+      const rem = Math.max(0, Math.min(Number(s.rem) || 0, ph[s.idx].dur * 1000));
+      return { run: r, idx: s.idx, rem, label: labelFor(ph[s.idx]) };
+    } catch (e) { return null; }
+  }
+
+  function beginRun(r) {
+    run = r;
+    phases = buildPhases(run);
+    computeStarts();
+    active = true;
+    show('timer');
+    buildTimeline();                              // after show(), so the bar can be measured
+    $('timer').classList.remove('paused', 'is-done');
+    $('pauseBtn').textContent = '⏸ Pause';
+    requestAnimationFrame(sizeTime);
+  }
+
   function start() {
     ensureAudio();
     stopHold();
-    phases = buildPhases();
-    active = true;
-    show('timer');
-    $('timer').classList.remove('paused');
-    $('timer').classList.remove('is-done');
-    enterPhase(0, true);
+    clearSession();
+    halfSaid = false;
+    beginRun(JSON.parse(JSON.stringify(cfg)));
     remaining = phases[0].dur * 1000;
     endAt = performance.now() + remaining;
     running = true;
-    $('pauseBtn').textContent = '⏸ Pause';
+    enterPhase(0, true);
     startLoop();
+    armPips();
     requestWake();
-    kickIdle();
+    document.body.classList.add('hide-ui');        // controls stay out of the way until the screen is tapped
+    try { if (!localStorage.getItem('intervalTimerTip')) { localStorage.setItem('intervalTimerTip', '1'); setTimeout(() => { if (active && running) toast('Tip: double-tap the screen to pause'); }, 3000); } } catch (e) {}
+    persist();
+  }
+  function restoreSession(s) {
+    ensureAudio();
+    stopHold();
+    beginRun(s.run);
+    halfSaid = total > 0 && starts[s.idx] / total >= 0.5;
+    remaining = s.rem;
+    running = false;
+    enterPhase(s.idx, false);
+    draw(remaining);
+    say(msg('welcomeBack', ['Welcome back! Get ready…']));
+    holdPaused(true);
+    persist();
+    startCountdown(() => resume());
+  }
+  /* 3-2-1 before a restored workout restarts, so you can get back into position */
+  let cdT = null, cdOn = false;
+  function cancelCountdown() {
+    clearTimeout(cdT); cdT = null;
+    if (cdOn) { cdOn = false; $('countdown').hidden = true; }
+  }
+  function startCountdown(then) {
+    cancelCountdown(); cdOn = true;
+    const box = $('countdown'), num = $('cdNum');
+    box.hidden = false;
+    let n = 3;
+    const step = () => {
+      if (!cdOn) return;
+      if (n === 0) { cancelCountdown(); beep(1000, 0.4, 0, 0.6, 'sine'); then(); return; }
+      num.textContent = n;
+      num.classList.remove('tick'); void num.offsetWidth; num.classList.add('tick');
+      beep(1000, 0.11, 0, 0.6, 'sine');
+      n--;
+      cdT = setTimeout(step, 1000);
+    };
+    step();
+  }
+  function holdPaused(on) {
+    $('timer').classList.toggle('paused', on);
+    $('pauseBtn').textContent = on ? '▶ Resume' : '⏸ Pause';
   }
   function pause() {
     if (!active || !running) return;
     remaining = Math.max(0, endAt - performance.now());
     running = false;
     clearInterval(iv);
+    cancelPips();
     $('timer').classList.add('paused');
     $('pauseBtn').textContent = '▶ Resume';
     document.body.classList.remove('hide-ui');
+    say(msg('paused', ['Paused — I’ll wait for you!']), { temp: true });
+    persist();
   }
   function resume() {
     if (!active || running) return;
     ensureAudio();
+    cancelCountdown();
     endAt = performance.now() + remaining;
     running = true;
-    $('timer').classList.remove('paused');
-    $('pauseBtn').textContent = '⏸ Pause';
+    holdPaused(false);
+    say(curMsg || 'Let’s go!');
     startLoop();
+    armPips();
+    requestWake();
     kickIdle();
   }
   function toggle() {
-    if (!active || document.body.dataset.phase === 'done') { start(); return; }
-    running ? pause() : resume();
+    if (!active || isDone()) { start(); return; }
+    if (cdOn) { cancelCountdown(); say(msg('paused', ['Paused — I’ll wait for you!']), { temp: true }); return; }   // tap during 3-2-1 = hold
+    if (running) pause(); else startCountdown(resume);      // same 3-2-1 count-in as Get ready
   }
   function jump(i) {
-    if (!active || document.body.dataset.phase === 'done') return;
+    if (!active || isDone()) return;
     i = Math.max(0, i);
     if (i >= phases.length) { finish(); return; }
     ensureAudio();
@@ -645,6 +1530,8 @@
     endAt = performance.now() + remaining;
     enterPhase(i, true);
     if (!running) draw(remaining);
+    armPips();
+    persist();
   }
   function skip() { jump(idx + 1); }
   function back() {
@@ -653,31 +1540,91 @@
   }
   function finish() {
     running = false;
+    cancelCountdown();
     clearInterval(iv);
+    cancelPips();
+    clearSession();
     document.body.dataset.phase = 'done';
+    document.body.dataset.brk = ''; clearTimeout(brkT); hideRoundDone();
     $('phaseLabel').textContent = 'Done!';
-    $('roundLabel').textContent = `${cfg.rounds} round${cfg.rounds > 1 ? 's' : ''} complete 💪`;
+    $('roundLabel').textContent = `${plural(run.rounds, 'round')} complete 💪`;
     $('time').textContent = '0:00';
     $('bar').setAttribute('stroke-dashoffset', 0);
-    $('nextUp').textContent = 'Frogue says: great work!';
-    $('timer').classList.add('is-done');
+    $('nextUp').textContent = '';
     $('totalLeft').textContent = '';
+    applyDoneBar();
+    updateCompact(total, true);
+    $('tlElapsed').textContent = fmtFloor(roundView ? rvZ - rvA : total);
+    $('tlLeft').textContent = '-0:00';
+    if (roundView) updateOverall(total, true);
+    $('timer').classList.add('is-done');
     $('timer').classList.remove('paused');
+    say(msg('finish', ['Frogue says: great work!']));
     $('pauseBtn').textContent = '↺ Restart';
     document.body.classList.remove('hide-ui');
-    document.title = 'Done · Interval Timer';
+    document.title = 'Done · Frogue Interval Timer';
     flash(); cues.done();
     releaseWake();
   }
   function stop() {
     running = false; active = false;
+    cancelCountdown();
     clearInterval(iv);
+    cancelPips();
+    clearSession();
     document.body.dataset.phase = 'idle';
-    document.title = 'Interval Timer';
+    document.body.dataset.brk = ''; clearTimeout(brkT); hideRoundDone();
+    document.title = 'Frogue Interval Timer';
     document.body.classList.remove('hide-ui');
-    $('timer').classList.remove('is-done');
+    $('timer').classList.remove('is-done', 'paused');
     show('setup');
     releaseWake();
+    requestAnimationFrame(renderPreview);
+  }
+  async function askStop() {
+    if (!active) return;
+    if (isDone()) { stop(); return; }
+    const p = phases[idx];
+    const left = total - (starts[idx] + p.dur - (running ? endAt - performance.now() : remaining) / 1000);
+    const where = p.round ? `You’re on round ${p.round} of ${run.rounds}` : 'You’re just getting started';
+    // hold the clock while they decide, so a stray tap on Stop doesn't cost them time
+    const wasCd = cdOn;
+    if (wasCd) cancelCountdown();
+    const wasRunning = running;
+    if (wasRunning) pause();
+    const v = await openDialog({
+      title: 'Stop this workout?', mood: 'worry', cancel: 'keep',
+      body: `${where}, with ${fmt(left)} still to go. Frogue would hate to see you quit now! The timer is paused while you decide.`,
+      buttons: [{ label: 'Keep going', kind: 'go', value: 'keep', focus: true },
+                { label: 'Stop workout', kind: 'danger', value: 'stop' }],
+    });
+    if (v === 'stop' && active) stop();
+    else if (wasRunning && active && !running && !isDone()) resume();
+    else if (wasCd && active && !running && !isDone()) startCountdown(() => resume());
+  }
+
+  /* Warn before leaving mid-workout, and save progress in case it happens anyway */
+  window.addEventListener('beforeunload', (e) => {
+    if (active && !isDone()) { persist(); e.preventDefault(); e.returnValue = ''; }
+  });
+  window.addEventListener('pagehide', persist);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') persist(); });
+
+  async function offerResume(s) {
+    const body = document.createElement('div');
+    const a = document.createElement('div');
+    a.textContent = `${wkLabel(s.run)} — ${s.label}, ${fmt(s.rem / 1000)} left in that interval.`;
+    const b = document.createElement('div'); b.className = 'note';
+    b.textContent = 'It looks like the page was closed or refreshed in the middle of a workout.';
+    body.append(a, b);
+    const v = await openDialog({
+      title: 'Pick up where you left off?', cancel: 'later', body,
+      buttons: [{ label: 'Resume workout', kind: 'go', value: 'resume', focus: true },
+                { label: 'Discard it', kind: 'danger', value: 'discard' },
+                { label: 'Not now', value: 'later' }],
+    });
+    if (v === 'resume') restoreSession(s);
+    else if (v === 'discard') clearSession();
   }
 
   /* ---------- Wake lock + auto-hide controls ---------- */
@@ -699,6 +1646,7 @@
     }[wakeState];
     $('wakeStatus').textContent = msg;
     $('wakeStatus2').textContent = msg;
+    $('wakeStatus2').hidden = ['idle', 'active', 'off'].includes(wakeState); // only shown on the timer when something's wrong
     $('wakeToggle').checked = wakeOn;
   }
   async function requestWake() {
@@ -740,42 +1688,29 @@
   document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && running) requestWake(); });
 
   let idleT = null;
+  // double-tap (or double-click) anywhere on the timer = pause / resume in one gesture
+  let lastTapT = 0;
+  document.addEventListener('pointerup', (e) => {
+    if (!active || isDone() || dlgOpen() || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    if (e.target.closest && e.target.closest('button, .ctrl, #dlg, a, input, select, label')) return;
+    const now = performance.now();
+    if (now - lastTapT < 350) { lastTapT = 0; toggle(); } else lastTapT = now;
+  });
+  // the tap that reveals the controls must not also press whatever button appears under the finger
+  let revealAt = 0;
+  document.addEventListener('click', (e) => {
+    if (performance.now() - revealAt < 450 && e.target.closest && e.target.closest('.ctrl')) { e.stopPropagation(); e.preventDefault(); }
+  }, true);
   function kickIdle() {
+    if (document.body.classList.contains('hide-ui')) revealAt = performance.now();
     document.body.classList.remove('hide-ui');
     clearTimeout(idleT);
     idleT = setTimeout(() => { if (running) document.body.classList.add('hide-ui'); }, 6000);
   }
-  ['mousemove', 'click', 'keydown', 'touchstart'].forEach((ev) =>
+  ['click', 'keydown', 'touchstart'].forEach((ev) =>
     document.addEventListener(ev, () => { if (active && running) kickIdle(); }, { passive: true }));
 
-  /* ---------- Toast ---------- */
-  let toastT = null;
-  function toast(msg) {
-    const t = $('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    clearTimeout(toastT);
-    toastT = setTimeout(() => t.classList.remove('show'), 3500);
-  }
-
-  /* ---------- Export / import ---------- */
-  function cleanWorkout(w) {
-    if (!w || typeof w !== 'object' || !Array.isArray(w.exercises)) return null;
-    const num = (v, k, d) => { v = Math.round(Number(v)); return Number.isFinite(v) ? clamp(v, k) : d; };
-    const exercises = w.exercises.slice(0, 30).map((e) => ({
-      name: String((e && e.name) || '').slice(0, 40),
-      work: num(e && e.work, 'work', 40),
-      rest: num(e && e.rest, 'rest', 20),
-    }));
-    if (!exercises.length) return null;
-    return {
-      name: String(w.name || '').slice(0, 40),
-      prep: num(w.prep, 'prep', 10),
-      rounds: num(w.rounds, 'rounds', 3),
-      roundRest: num(w.roundRest, 'roundRest', 60),
-      exercises,
-    };
-  }
+  /* ---------- Export / import (backup file) ---------- */
   $('wkExport').addEventListener('click', () => {
     const list = Object.values(store.workouts);
     const data = { app: 'interval-timer', version: 1, exported: new Date().toISOString(), workouts: list };
@@ -785,7 +1720,7 @@
     a.download = 'interval-timer-workouts.json';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
-    toast(`Exported ${list.length} workout${list.length > 1 ? 's' : ''}`);
+    toast(`Exported ${plural(list.length, 'workout')}`);
   });
   $('wkImport').addEventListener('click', () => $('wkFile').click());
   $('wkFile').addEventListener('change', async (e) => {
@@ -807,89 +1742,198 @@
         firstId = firstId || id;
       });
       switchTo(firstId);
-      toast(`Imported ${clean.length} workout${clean.length > 1 ? 's' : ''} (added to your list)`);
+      toast(`Imported ${plural(clean.length, 'workout')} (added to your list)`);
     } catch (err) {
-      toast("Couldn't read that file. Is it a workouts file exported from this timer?");
+      toast("Frogue couldn't read that file. Is it a workouts file exported from this timer?");
     }
   });
 
-  /* ---------- Cast helper ---------- */
-  const castModal = $('castModal');
-  function castOpen() {
-    $('castExtra').textContent = location.protocol === 'file:'
-      ? "You're running this from a local file, which works fine for casting. If you host it online (for example on GitHub Pages) you can open the same page from any device."
-      : '';
-    castModal.classList.add('open');
+  /* ---------- Share a workout with a friend (a link that carries the workout) ---------- */
+  const b64e = (s) => btoa(encodeURIComponent(s).replace(/%([0-9A-F]{2})/g, (m, h) => String.fromCharCode(parseInt(h, 16))))
+    .replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const b64d = (s) => {
+    s = s.replace(/-/g, '+').replace(/_/g, '/');
+    while (s.length % 4) s += '=';
+    return decodeURIComponent(atob(s).split('').map((c) => '%' + c.charCodeAt(0).toString(16).padStart(2, '0')).join(''));
+  };
+  function encodeWorkout(w) {
+    return '1.' + b64e(JSON.stringify({ n: w.name, p: w.prep, r: w.rounds, q: w.roundRest,
+      e: w.exercises.map((x) => [x.name, x.work, x.rest]) }));
   }
-  function castClose() { castModal.classList.remove('open'); }
-  $('castBtn').addEventListener('click', castOpen);
-  $('castBtn2').addEventListener('click', castOpen);
-  $('castClose').addEventListener('click', castClose);
-  castModal.addEventListener('click', (e) => { if (e.target === castModal) castClose(); });
-  $('castTest').addEventListener('click', () => { ensureAudio(); cues.work(); flash(); });
-  $('castFull').addEventListener('click', () => { castClose(); fullscreen(); });
-  $('castStart').addEventListener('click', () => { castClose(); if (!active) start(); });
-
-  /* ---------- Wiring ---------- */
-  $('startBtn').addEventListener('click', start);
-  $('pauseBtn').addEventListener('click', toggle);
-  $('skipBtn').addEventListener('click', skip);
-  $('backBtn').addEventListener('click', back);
-  $('stopBtn').addEventListener('click', stop);
-
-  function fullscreen() {
-    if (document.fullscreenElement) document.exitFullscreen();
-    else document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+  function decodeWorkout(code) {
+    try {
+      if (!code || code.length > 20000 || code.slice(0, 2) !== '1.') return null;
+      const o = JSON.parse(b64d(code.slice(2)));
+      return cleanWorkout({ name: o.n, prep: o.p, rounds: o.r, roundRest: o.q,
+        exercises: (Array.isArray(o.e) ? o.e : []).map((a) => ({ name: (a || [])[0], work: (a || [])[1], rest: (a || [])[2] })) });
+    } catch (e) { return null; }
   }
-  document.addEventListener('keydown', (e) => {
-    if (castModal.classList.contains('open')) { if (e.code === 'Escape') castClose(); return; }
-    const tag = e.target && e.target.tagName;
-    if (tag === 'INPUT' || tag === 'SELECT') return; // typing a name / choosing a workout
-    if (e.code === 'Space') { e.preventDefault(); if (active || document.activeElement === document.body) toggle(); }
-    else if (e.code === 'ArrowRight') skip();
-    else if (e.code === 'ArrowLeft') back();
-    else if (e.code === 'Escape' && active) stop();
-    else if (e.key === 'f' || e.key === 'F') fullscreen();
-    else if (e.key === 'c' || e.key === 'C') castOpen();
+  const shareLink = (w) => location.href.split('#')[0] + '#w=' + encodeWorkout(w);
+  const sharedFromHash = () => { const m = /^#w=([A-Za-z0-9_.\-]+)$/.exec(location.hash); return m ? decodeWorkout(m[1]) : null; };
+  const clearHash = () => { try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} };
+  const totalOf = (w) => buildPhases(w).reduce((a, x) => a + x.dur, 0);
+
+  function addWorkout(w) {
+    const key = JSON.stringify(w);
+    const same = Object.entries(store.workouts).find(([, x]) => JSON.stringify(cleanWorkout(x)) === key);
+    if (same) { switchTo(same[0]); toast('You already have this workout — switched to it'); return; }
+    const id = newId();
+    store.workouts[id] = w;
+    switchTo(id);
+    toast(`Added "${wkLabel(w)}" to your workouts`);
+  }
+
+  async function copyText(text, inputEl) {
+    try { await navigator.clipboard.writeText(text); return true; } catch (e) {}
+    try { inputEl.focus(); inputEl.select(); return document.execCommand('copy'); } catch (e) { return false; }
+  }
+  $('wkShare').addEventListener('click', () => {
+    const w = cleanWorkout(cfg);
+    const url = shareLink(w);
+    const body = document.createElement('div');
+    const p = document.createElement('div');
+    p.textContent = `Send this link to a friend. When they open it, Frogue will offer to add “${wkLabel(w)}” (${plural(w.exercises.length, 'exercise')}, ${plural(w.rounds, 'round')}) to their timer.`;
+    const inp = document.createElement('input');
+    inp.type = 'text'; inp.readOnly = true; inp.value = url; inp.setAttribute('aria-label', 'Share link');
+    inp.addEventListener('focus', () => inp.select());
+    body.append(p, inp);
+    if (location.protocol === 'file:') {
+      const n = document.createElement('div'); n.className = 'note';
+      n.textContent = 'Heads up: you’re running this from a file on your computer, so this link only works on this computer. Put the page online (for example on GitHub Pages) and links will work for everyone.';
+      body.appendChild(n);
+    }
+    const buttons = [{
+      label: '📋 Copy link', kind: 'go', keepOpen: true, focus: true,
+      onClick: async (el) => { const ok = await copyText(url, inp); el.textContent = ok ? '✓ Copied!' : 'Press Ctrl+C to copy'; if (ok) toast('Link copied — paste it into a message'); },
+    }];
+    if (navigator.share) {
+      buttons.push({ label: '📤 Share…', keepOpen: true,
+        onClick: () => { navigator.share({ title: `${wkLabel(w)} — Frogue Interval Timer`, text: `Try my “${wkLabel(w)}” workout!`, url }).catch(() => {}); } });
+    }
+    buttons.push({ label: 'Done', value: 'done' });
+    openDialog({ title: `Share “${wkLabel(w)}”`, body, buttons, cancel: 'done' });
   });
 
-  renderWorkoutBar();
-  renderGlobals();
-  renderExercises();
-  /* ---------- Frog mascot (original artwork, drawn in code) ---------- */
-  const FROG_SVG = `
-<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-  <ellipse cx="60" cy="112" rx="30" ry="5" fill="rgba(0,0,0,.25)"/>
-  <g class="hopper">
-    <ellipse cx="32" cy="104" rx="16" ry="7" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
-    <ellipse cx="88" cy="104" rx="16" ry="7" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
-    <circle cx="38" cy="36" r="15" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
-    <circle cx="82" cy="36" r="15" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
-    <ellipse cx="60" cy="72" rx="40" ry="33" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
-    <ellipse cx="60" cy="86" rx="25" ry="16" fill="#dcfce7"/>
-    <g class="eye"><circle cx="38" cy="36" r="10" fill="#fff"/><circle cx="40" cy="37" r="5" fill="#1f2937"/><circle cx="42" cy="35" r="1.8" fill="#fff"/></g>
-    <g class="eye"><circle cx="82" cy="36" r="10" fill="#fff"/><circle cx="80" cy="37" r="5" fill="#1f2937"/><circle cx="82" cy="35" r="1.8" fill="#fff"/></g>
-    <path d="M26 58 Q60 47 94 58 L93 67 Q60 56 27 67 Z" fill="#fb923c" stroke="#c2410c" stroke-width="2" stroke-linejoin="round"/>
-    <circle cx="55" cy="71" r="1.6" fill="#166534"/><circle cx="65" cy="71" r="1.6" fill="#166534"/>
-    <circle cx="31" cy="78" r="6" fill="#fb7185" opacity=".6"/><circle cx="89" cy="78" r="6" fill="#fb7185" opacity=".6"/>
-    <path d="M43 78 Q60 95 77 78" fill="none" stroke="#166534" stroke-width="3.5" stroke-linecap="round"/>
-    <path class="sweat" d="M102 24 q6 9 0 13 q-6 -4 0 -13z" fill="#7dd3fc" stroke="#0284c7" stroke-width="1.5"/>
-  </g>
-  <g class="sparkle" fill="#fde047">
-    <path d="M12 22 L14 28 L20 30 L14 32 L12 38 L10 32 L4 30 L10 28Z"/>
-    <path d="M108 14 L109.5 18.5 L114 20 L109.5 21.5 L108 26 L106.5 21.5 L102 20 L106.5 18.5Z"/>
-    <path d="M110 62 L111.5 66.5 L116 68 L111.5 69.5 L110 74 L108.5 69.5 L104 68 L108.5 66.5Z"/>
-  </g>
-</svg>`;
+  async function offerShared() {
+    const w = sharedFromHash();
+    if (!w) return;
+    const body = document.createElement('div');
+    const head = document.createElement('div');
+    head.style.fontWeight = '800'; head.textContent = wkLabel(w);
+    const sum = document.createElement('div'); sum.className = 'note';
+    sum.textContent = `${plural(w.exercises.length, 'exercise')} × ${plural(w.rounds, 'round')} · total ${fmt(totalOf(w))}`;
+    const ul = document.createElement('ul');
+    w.exercises.slice(0, 8).forEach((x, i) => {
+      const li = document.createElement('li');
+      li.textContent = `${exName(w, i)} — ${fmt(x.work)} work, ${fmt(x.rest)} rest`;
+      ul.appendChild(li);
+    });
+    if (w.exercises.length > 8) { const li = document.createElement('li'); li.textContent = `…and ${w.exercises.length - 8} more`; ul.appendChild(li); }
+    body.append(head, sum, ul);
+    const v = await openDialog({
+      title: 'Frogue brought you a workout!', body, cancel: 'no',
+      buttons: [{ label: 'Add to my workouts', kind: 'go', value: 'add', focus: true }, { label: 'No thanks', value: 'no' }],
+    });
+    clearHash();
+    if (v === 'add') addWorkout(w);
+  }
+  window.addEventListener('hashchange', () => { if (!active && !dlgOpen()) offerShared(); });
+
+  /* ---------- Full screen ---------- */
+  const fsOk = !!(document.documentElement.requestFullscreen && document.fullscreenEnabled !== false);
+  function fullscreen() {
+    if (!fsOk) return;
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  function updateFs() {
+    const label = document.fullscreenElement ? '⛶ Exit full screen' : '⛶ Full screen';
+    ['fsBtn', 'fsBtn2'].forEach((id) => { $(id).hidden = !fsOk; $(id).textContent = label; });
+  }
+  document.addEventListener('fullscreenchange', () => { updateFs(); sizeTime(); });
+  $('fsBtn').addEventListener('click', fullscreen);
+  $('fsBtn2').addEventListener('click', fullscreen);
+
+  /* ---------- Frogue on the setup screen: tap him! ---------- */
+  const HELLOS = ['Ready to hop to it?', 'Let’s get moving!', 'Pick a workout and ribbit!', 'Warm up first!', 'Today’s the day!', 'Stretch, then START!'];
+  function hopFrog() {
+    const f = $('brandFrog');
+    $('setupSay').textContent = pick(HELLOS);
+    f.classList.remove('hop'); void f.offsetWidth; f.classList.add('hop');
+    clearTimeout(hopFrog.t); hopFrog.t = setTimeout(() => f.classList.remove('hop'), 700);
+  }
   document.querySelectorAll('.mascot').forEach((el) => {
     el.innerHTML = FROG_SVG;
     el.title = 'Frogue';
     el.setAttribute('role', 'img');
     el.setAttribute('aria-label', 'Frogue the frog');
   });
+  const bf = $('brandFrog');
+  bf.setAttribute('role', 'button'); bf.setAttribute('tabindex', '0');
+  bf.setAttribute('aria-label', 'Frogue the frog — tap for a hello'); bf.title = 'Frogue — tap me!';
+  bf.addEventListener('click', hopFrog);
+  bf.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hopFrog(); } });
+  $('setupSay').textContent = pick(HELLOS);
 
+  /* ---------- Wiring ---------- */
+  $('startBtn').addEventListener('click', start);
+  $('pauseBtn').addEventListener('click', toggle);
+  $('skipBtn').addEventListener('click', skip);
+  $('backBtn').addEventListener('click', back);
+  $('stopBtn').addEventListener('click', askStop);
+
+  document.addEventListener('keydown', (e) => {
+    if (dlgOpen()) {
+      if (e.code === 'Escape') { e.preventDefault(); closeDialog(dlgCancel); }
+      else if (e.key === 'Tab') { // keep keyboard focus inside the dialog
+        const f = [...dlg.querySelectorAll('button, input')].filter((x) => !x.disabled);
+        if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+      return;
+    }
+    const tag = e.target && e.target.tagName;
+    if (tag === 'INPUT' || tag === 'SELECT') return; // typing a name / choosing a workout
+    if (e.code === 'Space') { e.preventDefault(); if (active || document.activeElement === document.body) toggle(); }
+    else if (e.code === 'ArrowRight') skip();
+    else if (e.code === 'ArrowLeft') back();
+    else if (e.code === 'Escape' && active) askStop();
+    else if (e.key === 'f' || e.key === 'F') fullscreen();
+    else if (e.key === 'm' || e.key === 'M') toggleMute();
+  });
+
+  $('vol').addEventListener('input', () => {
+    vol = +$('vol').value; if (vol > 0) muted = false;
+    ensureAudio(); applyVolume();
+  });
+  $('vol').addEventListener('change', () => { ensureAudio(); beep(1000, 0.11, 0, 0.6, 'sine'); });
+  $('muteBtn').addEventListener('click', toggleMute);
+  $('muteBtn2').addEventListener('click', toggleMute);
+  $('testSound').addEventListener('click', () => { ensureAudio(); cues.work(); flash(); });
+  if (window.ResizeObserver) new ResizeObserver(() => { if (!active) requestAnimationFrame(renderPreview); }).observe($('pv'));
+  applyVolume();
+
+  window.addEventListener('resize', sizeTime);
+  if (window.ResizeObserver) new ResizeObserver(sizeTime).observe($('ringwrap'));
+
+  // installable app (Chrome "Install app"): only works when served over https, e.g. GitHub Pages
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) navigator.serviceWorker.register('sw.js').catch(() => {});
+
+  renderWorkoutBar();
+  renderGlobals();
+  renderExercises();
   renderWake();
+  updateFs();
   probeWake();
+
+  // On load: offer to resume an interrupted workout, then any workout a friend shared
+  (async () => {
+    const s = readSession();
+    if (s) await offerResume(s);
+    if (!active) offerShared();
+  })();
 })();
 </script>
 </body>
