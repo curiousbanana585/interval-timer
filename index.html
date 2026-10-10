@@ -551,6 +551,9 @@
 
   /* ---------- Narrow screens (phones): tidier builder ---------- */
   #wkMore, #wkMenu, .exsum, .qtog { display: none; }
+  .exvals { display: contents; }
+  .mini.off { opacity: .4; }
+  .mini.off .lbl { text-transform: none; letter-spacing: 0; }
   .wkbar { position: relative; }
   #wkMenu { position: absolute; right: 0; top: 100%; margin-top: 6px; z-index: 20; min-width: 230px; flex-direction: column; background: #1d232d; border: 1px solid rgba(255,255,255,.14); border-radius: 16px; padding: 6px; box-shadow: 0 14px 40px rgba(0,0,0,.55); }
   #wkMenu button { display: block; text-align: left; background: transparent; padding: 14px 14px; font-size: 16px; font-weight: 700; border-radius: 10px; }
@@ -576,19 +579,21 @@
     .allrow { display: none; }
     .allrow.open { display: flex; }
     .allrow .apply { flex: 1 1 100%; min-height: 48px; }
-    .ex { padding: 8px 10px; gap: 8px; flex-wrap: wrap; }
-    .ex .exname { flex: 1 1 0; min-width: 0; min-height: 44px; font-size: 17px; }
-    .exsum { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 8px; background: transparent; font-size: 14px; font-weight: 700; color: rgba(255,255,255,.7); }
+    .ex { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 8px 10px; }
+    .ex .exnum { width: 32px; height: 32px; font-size: 15px; }
+    .ex .exname { grid-column: 2; width: 100%; min-width: 0; min-height: 46px; font-size: 17px; }
+    .exsum { grid-column: 3; display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 6px; background: transparent; font-size: 14px; font-weight: 700; color: rgba(255,255,255,.7); white-space: nowrap; }
     .exsum .chev { transition: transform .15s; font-size: 12px; }
     .ex.open .exsum .chev { transform: rotate(90deg); }
-    .ex:not(.open) .mini, .ex:not(.open) .exact { display: none; }
+    .ex.open .exsum [data-sum] { display: none; }
+    .ex:not(.open) .exvals, .ex:not(.open) .exact { display: none; }
     .ex.open { background: rgba(255,255,255,.1); box-shadow: inset 0 0 0 2px rgba(50,213,131,.55); }
-    .ex.open .mini { flex: 1 1 calc(50% - 4px); min-width: 0; background: rgba(0,0,0,.2); border-radius: 12px; padding: 6px 4px 8px; }
-    .ex.open .mini .steps { width: 100%; justify-content: space-between; }
-    .ex.open .mini .steps button { width: 38px; height: 40px; flex: none; }
-    .startbar .big { white-space: nowrap; font-size: 19px; padding: 0 18px; }
-    .ex.open .mini .val { min-width: 0; width: auto; flex: 1; font-size: 22px; }
-    .ex.open .exact { flex: 1 1 100%; margin: 0; justify-content: flex-end; gap: 8px; }
+    .ex.open .exvals { display: grid; grid-column: 1 / -1; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .ex.open .mini { min-width: 0; background: rgba(0,0,0,.2); border-radius: 12px; padding: 6px 6px 8px; }
+    .ex.open .mini .steps { display: grid; grid-template-columns: 38px minmax(0, 1fr) 38px; gap: 4px; width: 100%; align-items: center; }
+    .ex.open .mini .steps button { width: 100%; height: 40px; }
+    .ex.open .mini .val { min-width: 0; width: 100%; font-size: 22px; }
+    .ex.open .exact { grid-column: 1 / -1; display: flex; margin: 0; justify-content: flex-end; gap: 8px; }
     .ex.open .exact button { width: 44px; height: 40px; }
   }
 
@@ -631,7 +636,7 @@
 
     <h2>Workout settings</h2>
     <div class="globals">
-      <div class="g"><div class="lbl">Rounds (repeat the list)</div>
+      <div class="g" title="How many times the whole list repeats"><div class="lbl">Rounds</div>
         <div class="steps"><button data-act="g" data-k="rounds" data-d="-1" data-hold>−</button><input class="val tin" id="v-rounds" data-k="rounds" type="text" inputmode="numeric" aria-label="Number of rounds"><button data-act="g" data-k="rounds" data-d="1" data-hold>+</button></div></div>
       <div class="g"><div class="lbl">Rest between rounds</div>
         <div class="steps"><button data-act="g" data-k="roundRest" data-d="-5" data-hold>−</button><input class="val tin" id="v-roundRest" data-k="roundRest" type="text" inputmode="numeric" aria-label="Rest between rounds (seconds or m:ss)" title="Type seconds (90) or minutes:seconds (1:30)"><button data-act="g" data-k="roundRest" data-d="5" data-hold>+</button></div></div>
@@ -694,7 +699,7 @@
   <div class="dwait" id="dspWait">
     <div class="dw-top">
       <div class="dw-brand">Frogue Interval Timer</div>
-      <div class="dw-pill"><span class="dw-dot"></span><span>Phone connected · <b id="dwCode"></b></span></div>
+      <div class="dw-pill"><span class="dw-dot"></span><span>Phone connected</span></div>
     </div>
     <div class="dw-mid">
       <div class="dw-frog" id="dwFrog">
@@ -979,8 +984,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         const lastEx = i === n - 1, lastRound = r === c.rounds;
         if (!lastEx) {
           if (ex.rest > 0) p.push({ type: 'rest', dur: ex.rest, round: r, upNext: exName(c, i + 1), xi: i });
-        } else if (!lastRound && c.roundRest > 0) {
-          p.push({ type: 'rest', dur: c.roundRest, round: r, roundBreak: true, upNext: exName(c, 0), xi: i });
+        } else if (!lastRound) {
+          if (c.roundRest > 0) p.push({ type: 'rest', dur: c.roundRest, round: r, roundBreak: true, upNext: exName(c, 0), xi: i });
+          else if (ex.rest > 0) p.push({ type: 'rest', dur: ex.rest, round: r, upNext: exName(c, 0), xi: i });   // no round break set: the last exercise's own rest is used
         }
       }
     }
@@ -991,7 +997,26 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     $('v-rounds').value = cfg.rounds;
     $('v-roundRest').value = fmt(cfg.roundRest);
     $('v-prep').value = fmt(cfg.prep);
+    markLastRest();
     renderSummary();
+  }
+  /* the last exercise's "rest after" only matters between rounds, and only when there is no round break */
+  const lastRestOff = () => (cfg.rounds <= 1 ? 'Not used' : cfg.roundRest > 0 ? 'Round break used' : '');
+  function markLastRest() {
+    const rows = document.querySelectorAll('#exList .ex');
+    rows.forEach((r) => {
+      const m = r.querySelectorAll('.mini')[1]; if (!m) return;
+      m.classList.remove('off'); m.removeAttribute('title'); m.querySelector('.lbl').textContent = 'Rest after';
+      m.querySelectorAll('button, input').forEach((x) => { x.disabled = false; });
+    });
+    const why = lastRestOff(), last = rows[rows.length - 1];
+    if (last && why) {
+      const m = last.querySelectorAll('.mini')[1];
+      m.classList.add('off'); m.querySelector('.lbl').textContent = why;
+      m.title = cfg.rounds <= 1 ? 'Only one round, so there is nothing to rest before.' : 'The round break replaces this rest. Set “Rest between rounds” to 0:00 to use this one instead.';
+      m.querySelectorAll('button, input').forEach((x) => { x.disabled = true; });
+    }
+    if (last) updateExVals(rows.length - 1);
   }
   function renderSummary() {
     const total = buildPhases(cfg).reduce((a, x) => a + x.dur, 0);
@@ -1010,7 +1035,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
         <div class="exnum">${i + 1}</div>
         <input class="exname" type="text" maxlength="40" placeholder="Exercise ${i + 1}" data-i="${i}">
         <button class="exsum" data-act="tog" data-i="${i}" aria-label="Show or hide times for exercise ${i + 1}"><span data-sum="${i}"></span><span class="chev">▸</span></button>
-        <div class="mini"><div class="lbl">Work</div>
+        <div class="exvals"><div class="mini"><div class="lbl">Work</div>
           <div class="steps">
             <button data-act="x" data-i="${i}" data-f="work" data-d="-5" data-hold>−</button>
             <input class="val tin" type="text" inputmode="numeric" data-v="${i}-work" data-i="${i}" data-f="work" aria-label="Work time, exercise ${i + 1} (seconds or m:ss)" title="Type seconds (40) or minutes:seconds (1:30)">
@@ -1021,7 +1046,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             <button data-act="x" data-i="${i}" data-f="rest" data-d="-5" data-hold>−</button>
             <input class="val tin" type="text" inputmode="numeric" data-v="${i}-rest" data-i="${i}" data-f="rest" aria-label="Rest time, exercise ${i + 1} (seconds or m:ss)" title="Type seconds (20) or minutes:seconds (0:20)">
             <button data-act="x" data-i="${i}" data-f="rest" data-d="5" data-hold>+</button>
-          </div></div>
+          </div></div></div>
         <div class="exact">
           <button data-act="up" data-i="${i}" title="Move up">↑</button>
           <button data-act="down" data-i="${i}" title="Move down">↓</button>
@@ -1033,6 +1058,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       list.appendChild(row);
       updateExVals(i);
     });
+    markLastRest();
     // the "set every exercise to" fields start from the first exercise's times
     if (document.activeElement !== $('allWork')) $('allWork').value = fmt(cfg.exercises[0].work);
     if (document.activeElement !== $('allRest')) $('allRest').value = fmt(cfg.exercises[0].rest);
@@ -1049,7 +1075,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if (w) w.value = fmt(cfg.exercises[i].work);
     if (r) r.value = fmt(cfg.exercises[i].rest);
     const sm = document.querySelector(`[data-sum="${i}"]`);
-    if (sm) sm.textContent = fmt(cfg.exercises[i].work) + ' · ' + fmt(cfg.exercises[i].rest);
+    const off = i === cfg.exercises.length - 1 && lastRestOff();
+    if (sm) sm.textContent = fmt(cfg.exercises[i].work) + ' · ' + (off ? '–' : fmt(cfg.exercises[i].rest));
   }
 
   /* ---------- Typing times: "90", "1:30" or "1m30" ---------- */
@@ -1331,7 +1358,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   function stopHold() { clearTimeout(holdT); clearInterval(holdI); holdT = holdI = null; }
   $('setup').addEventListener('pointerdown', (e) => {
     const b = e.target.closest('button[data-act]');
-    if (!b) return;
+    if (!b || b.disabled) return;
     e.preventDefault();
     if (isTin(document.activeElement)) document.activeElement.blur();   // commit anything half-typed first
     doAct(b);
@@ -2332,16 +2359,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       onStatus(s) {
         const was = linkStatus; linkStatus = s;
         if (s === 'online' && was !== 'online') {
-          if (role === 'display') { relay.putState({ v: 1, seq: ++seq, state: 'idle' }); beat(); pub(); }
+          if (role === 'display') { relay.putState({ v: 1, seq: ++seq, state: 'idle', owner: dspPid || null }); beat(); pub(); }
           else { sendCmd({ t: 'hi' }); lastDraftS = ''; draftPub(); }
         }
         renderScreens();
       },
-      onState(s) { if (role === 'remote') { lastSnap = s; if (s && s.state !== 'idle') clearTimeout(startWait); mirror(s); renderScreens(); } },
-      onHb(v) { if (role === 'remote') { lastHb = Number(v) || 0; if (!follower && lastSnap) mirror(lastSnap); tvTagUpdate(); renderScreens(); } },
+      onState(s) { if (role === 'remote') { lastSnap = s; checkOwner(); if (sync.role !== 'remote') return; if (s && s.state !== 'idle') clearTimeout(startWait); mirror(s); renderScreens(); } },
+      onHb(v) { if (role === 'remote') { lastHb = Number(v) || 0; checkOwner(); if (sync.role !== 'remote') return; if (!follower && lastSnap) mirror(lastSnap); tvTagUpdate(); renderScreens(); } },
       onCmd(c, key) { if (role === 'display') { if (key) relay.ackCmd(key); onCmd(c); } },
       onHello() { if (role === 'display') { beat(); pub(); } },
-      onDraft(d) { if (role === 'display') setDraft(d); },
+      onDraft(d) { if (role === 'display') { if (d && dspPid && d.p && d.p !== dspPid) return; setDraft(d); } },
     };
     relay = SYNC_DB ? makeFirebaseRelay(sync.code, role, h) : makeDemoRelay(sync.code, role, h);
     clearInterval(connect.hb);
@@ -2359,16 +2386,20 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   function pub() {
     if (sync.role !== 'display' || !relay) return;
     const st = !active ? 'idle' : isDone() ? 'done' : running ? 'running' : 'paused';
-    if (st === 'idle') { relay.putState({ v: 1, seq: ++seq, state: 'idle' }); return; }
+    if (st === 'idle') { relay.putState({ v: 1, seq: ++seq, state: 'idle', owner: dspPid || null }); return; }
     const rem = running ? Math.max(0, endAt - performance.now()) : remaining;
-    relay.putState({ v: 1, seq: ++seq, state: st, run, idx, rem: Math.round(rem), endAtServer: running ? Math.round(srvNow() + rem) : 0, runId, cd: !!cdOn });
+    relay.putState({ v: 1, seq: ++seq, state: st, run, idx, rem: Math.round(rem), endAtServer: running ? Math.round(srvNow() + rem) : 0, runId, cd: !!cdOn, owner: dspPid || null });
   }
   function onCmd(c) {
     if (!c || typeof c !== 'object' || c.v !== 1 || typeof c.t !== 'string') return;
     if (c.at && Math.abs(srvNow() - c.at) > 30000) return;                    // stale: don't start a workout from yesterday
-    if (c.t !== 'bye') { const wasHere = dspPhone; dspPhone = Date.now(); if (!wasHere) { dspMsg = null; clearTimeout(dspMsgT); renderDisplay(); } }   // any message proves the phone is there
+    const from = String(c.p || 'anon');
+    if (dspPid && from !== dspPid) return;                                     // another phone is already connected: ignore this one
+    if (c.t === 'bye') { if (dspPid) phoneGone('bye'); return; }
+    if (!dspPid) { dspPid = from; pub(); }                                     // first phone in becomes the controller
+    saveOwner();
+    { const wasHere = dspPhone; dspPhone = Date.now(); if (!wasHere) { dspMsg = null; clearTimeout(dspMsgT); renderDisplay(); } }   // any message proves the phone is there
     if (c.t === 'hi') { if (!hiSeen) { hiSeen = true; beat(); pub(); } renderDisplay(); tvTagUpdate(); return; }
-    if (c.t === 'bye') { phoneGone('bye'); return; }
     if (dlgOpen()) closeDialog(null);
     if (c.t === 'start') { const w = cleanWorkout(c.run); if (w) { dspPhone = Date.now(); start(w); } }
     else if (c.t === 'restart') { if (run) start(run); }
@@ -2380,7 +2411,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   }
 
   /* --- phone side: send commands, mirror the TV --- */
-  function sendCmd(c) { if (!relay || sync.role !== 'remote') return false; c.v = 1; c.at = Math.round(srvNow()); relay.sendCmd(c); return true; }
+  function sendCmd(c) { if (!relay || sync.role !== 'remote') return false; c.v = 1; c.p = PID; c.at = Math.round(srvNow()); relay.sendCmd(c); return true; }
   function remoteCmd(t) { if (!tvAlive()) toast('The TV isn’t responding'); sendCmd({ t }); }
   function startOnTv() {
     if (linkStatus !== 'online') { toast('Still connecting…'); return; }
@@ -2395,6 +2426,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   function mirror(s) {
     if (sync.role !== 'remote') return;
     if (!s || s.state === 'idle') { if (follower) endMirror(); return; }
+    if (s.owner && s.owner !== PID) return;                                     // someone else's workout
     if (!follower && !tvAlive()) return;                                       // a stale snapshot from a TV that's gone
     const r = cleanWorkout(s.run);
     if (!r || !Number.isInteger(s.idx)) return;
@@ -2434,6 +2466,18 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   }
   setInterval(() => { if (sync.role === 'remote') { tvTagUpdate(); if (!active) renderScreens(); } }, 4000);
 
+  /* --- phone identity: the TV only lets one phone control it at a time --- */
+  const PID = (() => {
+    try { let p = localStorage.getItem('intervalTimerPid'); if (!p) { p = 'p' + Math.random().toString(36).slice(2, 10); localStorage.setItem('intervalTimerPid', p); } return p; }
+    catch (e) { return 'p' + Math.random().toString(36).slice(2, 10); }
+  })();
+  function checkOwner() {                          // someone else is controlling this TV: step aside
+    if (sync.role !== 'remote' || !lastSnap || !lastSnap.owner || lastSnap.owner === PID || !tvAlive()) return;
+    if (follower) { follower = false; mirrorRun = null; if (active) stop(); }
+    disconnect(); sync = { role: null, code: null }; saveSync(); tvTagUpdate(); renderScreens();
+    toast('That TV is already connected to another phone');
+  }
+
   /* --- phone: show the TV what is being set up --- */
   let draftT = null, lastDraftS = '';
   function draftPub() {
@@ -2444,7 +2488,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       const str = JSON.stringify(w);
       if (str === lastDraftS) return;
       lastDraftS = str;
-      relay.putDraft({ v: 1, at: Math.round(srvNow()), run: w });
+      relay.putDraft({ v: 1, p: PID, at: Math.round(srvNow()), run: w });
     }, 400);
   }
 
@@ -2506,9 +2550,14 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     note.textContent = SYNC_DB ? '' : 'Sync isn’t set up yet, so screens only find each other inside this one browser (demo). See sync-config.js.';
     note.hidden = !note.textContent;
   }
-  let dspPhone = 0, dspMsg = null, dspMsgT = null, hiSeen = false;
+  let dspPhone = 0, dspMsg = null, dspMsgT = null, hiSeen = false, dspPid = null;
+  const OWNER_KEY = 'intervalTimerOwner';
+  function saveOwner() { try { if (dspPid) localStorage.setItem(OWNER_KEY, JSON.stringify({ pid: dspPid, at: Date.now() })); else localStorage.removeItem(OWNER_KEY); } catch (e) {} }
+  function restoreOwner() {                        // the TV page was refreshed: let the same phone carry on
+    try { const o = JSON.parse(localStorage.getItem(OWNER_KEY) || 'null'); if (o && o.pid && Date.now() - o.at < 5 * 60000) { dspPid = o.pid; dspPhone = Date.now(); } } catch (e) {}
+  }
   function phoneGone(why) {                       // the phone said goodbye, or went quiet
-    dspPhone = 0; hiSeen = false; dspMsg = why; clearTimeout(dspMsgT); dspDraft = null; lastDraftKey = '';
+    dspPhone = 0; hiSeen = false; dspPid = null; saveOwner(); pub(); dspMsg = why; clearTimeout(dspMsgT); dspDraft = null; lastDraftKey = '';
     if (why === 'bye') dspMsgT = setTimeout(() => { dspMsg = null; renderDisplay(); }, 12000);
     if (active) { toast(why === 'bye' ? '📱 Phone disconnected — use the TV remote' : '📱 Phone went quiet'); }
     renderDisplay(); tvTagUpdate();
@@ -2528,7 +2577,6 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     const snd = $('dspSound'); snd.hidden = !!(ac && ac.state === 'running');
     $('dwSound').hidden = snd.hidden;
     $('display').classList.toggle('connected', phone);
-    $('dwCode').textContent = sync.code.slice(0, 3) + ' ' + sync.code.slice(3);
     if (phone && !active) waitStart(); else waitStop();
     if (!phone && dspDraft) { dspDraft = null; renderWait(); }
   }
@@ -2598,6 +2646,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   }
   function enterDisplay() {
     if (sync.role !== 'display') { sync = { role: 'display', code: genCode() }; saveSync(); }
+    restoreOwner();
     connect(); ensureAudio(); drawQr(); renderDisplay(); renderScreens();
     if (!active) show('display');
     setTimeout(() => { renderDisplay(); const b = $('dspSound'); if (!b.hidden) b.focus(); }, 500);
@@ -2605,6 +2654,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   function exitDisplay() {
     if (relay) { try { relay.destroy(); } catch (e) {} }
     setTimeout(disconnect, 400);
+    dspPid = null; saveOwner(); dspPhone = 0;
     sync = { role: null, code: null }; saveSync(); renderScreens();
     show('setup');
   }
@@ -2723,7 +2773,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     const q = new URLSearchParams(location.search);
     const pc = normCode(q.get('pair'));
     if (q.has('display')) { if (sync.role !== 'display') { sync = { role: 'display', code: genCode() }; saveSync(); } }
-    else if (CODE_RE.test(pc)) { sync = { role: 'remote', code: pc }; saveSync(); setTimeout(() => toast('Connecting to TV ' + pc + '…'), 600); }
+    else if (CODE_RE.test(pc)) { sync = { role: 'remote', code: pc }; saveSync(); setTimeout(() => { if (sync.role === 'remote') toast('Connecting to TV ' + pc + '…'); }, 600); }
     if (q.has('display') || q.has('pair')) { q.delete('display'); q.delete('pair'); const qs = q.toString(); history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); }
   } catch (e) {}
   renderScreens();
