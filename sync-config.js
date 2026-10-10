@@ -10,5 +10,5 @@
    pairing then only works between tabs of the same browser (a demo).
    --------------------------------------------------------------------------- */
 window.SYNC_CONFIG = {
-  databaseURL: ''
+  databaseURL: 'https://interval-timer-4f6b0-default-rtdb.europe-west1.firebasedatabase.app/'
 };
