@@ -17,6 +17,8 @@
         {round}      the round just finished / current round number
         {nextRound}  the number of the round about to start
         {rounds}     total number of rounds
+        {exercises}  how many exercises are in the workout (TV waiting screen)
+        {minutes}    the workout's total length in minutes (TV waiting screen)
     - After editing, refresh the page (on an installed copy, close and
       reopen the app once or twice so it picks up the new file).
 
@@ -85,5 +87,20 @@ window.FROGUE_MESSAGES = {
   // the finish screen
   finish: [
     // "Frogue says: you smashed it!",
+  ],
+
+  // ---- the TV's waiting screen (phone connected, workout not started yet) ----
+
+  // Frogue's warm-up chatter while he waits. A new line every few seconds.
+  tvWaiting: [
+    // "Waiting for my coach…",
+    // "Just doing my hamstrings. Again.",
+  ],
+
+  // Frogue's reaction when you change the workout on your phone.
+  // You can also use {minutes} (total length) and {exercises} (how many) here.
+  tvDraft: [
+    // "{rounds} rounds? Bring it on!",
+    // "{minutes} minutes. I'm sweating already.",
   ],
 };
