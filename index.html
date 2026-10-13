@@ -905,42 +905,73 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   'use strict';
   const $ = (id) => document.getElementById(id);
 
-  /* ---------- Frogue (original artwork, drawn in code) ---------- */
-  const FROG_SVG = `
-<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-  <ellipse cx="60" cy="112" rx="30" ry="5" fill="rgba(0,0,0,.25)"/>
-  <g class="hopper">
-    <ellipse cx="32" cy="104" rx="16" ry="7" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
-    <ellipse cx="88" cy="104" rx="16" ry="7" fill="#22c55e" stroke="#15803d" stroke-width="3"/>
-    <circle cx="38" cy="36" r="15" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
-    <circle cx="82" cy="36" r="15" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
-    <ellipse cx="60" cy="72" rx="40" ry="33" fill="#4ade80" stroke="#15803d" stroke-width="3"/>
-    <ellipse cx="60" cy="86" rx="25" ry="16" fill="#dcfce7"/>
-    <g class="eye"><circle cx="38" cy="36" r="10" fill="#fff"/><circle cx="40" cy="37" r="5" fill="#1f2937"/><circle cx="42" cy="35" r="1.8" fill="#fff"/></g>
-    <g class="eye"><circle cx="82" cy="36" r="10" fill="#fff"/><circle cx="80" cy="37" r="5" fill="#1f2937"/><circle cx="82" cy="35" r="1.8" fill="#fff"/></g>
-    <path d="M26 58 Q60 47 94 58 L93 67 Q60 56 27 67 Z" fill="#fb923c" stroke="#c2410c" stroke-width="2" stroke-linejoin="round"/>
-    <circle cx="55" cy="71" r="1.6" fill="#166534"/><circle cx="65" cy="71" r="1.6" fill="#166534"/>
-    <circle cx="31" cy="78" r="6" fill="#fb7185" opacity=".6"/><circle cx="89" cy="78" r="6" fill="#fb7185" opacity=".6"/>
-    <path class="smile" d="M43 78 Q60 95 77 78" fill="none" stroke="#166534" stroke-width="3.5" stroke-linecap="round"/>
-    <path class="flat" d="M45 88 Q60 78 75 88" fill="none" stroke="#166534" stroke-width="3.5" stroke-linecap="round"/>
-    <path class="sweat" d="M102 24 q6 9 0 13 q-6 -4 0 -13z" fill="#7dd3fc" stroke="#0284c7" stroke-width="1.5"/>
-    <g class="bottle"><rect x="96" y="64" width="17" height="36" rx="5" fill="#8fd3ff" stroke="#3b82c4" stroke-width="3"/><rect x="100" y="57" width="9" height="9" rx="2" fill="#3b82c4"/><rect x="96" y="82" width="17" height="11" fill="#fff" opacity=".45"/></g>
-    <text class="zzz" x="98" y="26" font-size="22" font-weight="800" fill="#bfdbfe" font-family="system-ui,sans-serif">z</text>
-    <text class="zzz" x="110" y="12" font-size="14" font-weight="800" fill="#bfdbfe" font-family="system-ui,sans-serif">z</text>
+  /* ---------- Frogue (original artwork, drawn in code) ----------
+     One drawing, four looks. He changes look each time the app opens, when you tap him on the
+     setup screen, and every few warm-ups on the TV waiting screen. */
+  const LOOKS = ['classic', 'gym', 'cheeky', 'tache'];   // tache = the original app-icon look: sweatband worn as a moustache
+  const FG = '#4ade80', FD = '#15803d', FM = '#166534', FB = '#f59e0b';
+  const star = (x, y, r) => `<path d="M${x} ${y - r}L${x + r * .28} ${y - r * .28}L${x + r} ${y}L${x + r * .28} ${y + r * .28}L${x} ${y + r}L${x - r * .28} ${y + r * .28}L${x - r} ${y}L${x - r * .28} ${y - r * .28}Z"/>`;
+  const eyeOpen = (cx, cy, px, r = 15, pr = 8) => `<g class="eye"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff"/><circle class="pup" cx="${px}" cy="${cy + 3}" r="${pr}" fill="#1f2937"/><circle cx="${px + 3}" cy="${cy - 1}" r="${pr * .3}" fill="#fff"/></g>`;
+  function frogSvg(look, tv) {
+    const gym = look === 'gym', cheeky = look === 'cheeky', tache = look === 'tache';
+    const band = (x, rot) => gym ? `<rect x="${x}" y="62" width="26" height="11" rx="4" transform="rotate(${rot})" fill="#fb923c" stroke="#c2410c" stroke-width="3"/>` : '';
+    const mouth = cheeky ? `<g class="smile"><path d="M82 114q28 30 56 0z" fill="${FM}" stroke="${FM}" stroke-width="4" stroke-linejoin="round"/><ellipse cx="116" cy="128" rx="10" ry="5.5" fill="#fb7185"/></g>`
+      : `<path class="smile" d="${tache ? 'M86 132q24 20 48 0' : 'M84 120q26 22 52 0'}" fill="none" stroke="${FM}" stroke-width="6" stroke-linecap="round"/>`;
+    return `<svg viewBox="${tv ? '0 0 220 200' : '-8 -16 236 236'}" xmlns="http://www.w3.org/2000/svg" ${tv ? 'role="img" aria-label="Frogue warming up"' : 'aria-hidden="true" focusable="false"'}>
+  ${tv ? '' : '<ellipse cx="110" cy="198" rx="62" ry="8" fill="rgba(0,0,0,.25)"/>'}
+  <g class="hopper fg">
+    ${tv ? `<path class="dw-sweat" d="M18 70q-16 -26 4 -48M202 70q16 -26 -4 -48" fill="none" stroke="rgba(50,213,131,.55)" stroke-width="6" stroke-linecap="round" stroke-dasharray="2 12"/>` : ''}
+    <g class="arm l"><ellipse cx="34" cy="92" rx="13" ry="38" transform="rotate(-24 34 92)" fill="${FG}" stroke="${FD}" stroke-width="6"/>${band(21, '-24 34 92')}</g>
+    <g class="arm r"><ellipse cx="186" cy="92" rx="13" ry="38" transform="rotate(24 186 92)" fill="${FG}" stroke="${FD}" stroke-width="6"/>${band(173, '24 186 92')}</g>
+    <g class="leg l"><ellipse cx="62" cy="172" rx="30" ry="15" fill="${FG}" stroke="${FD}" stroke-width="6"/></g>
+    <g class="leg r"><ellipse cx="158" cy="172" rx="30" ry="15" fill="${FG}" stroke="${FD}" stroke-width="6"/></g>
+    <g class="fb">
+      <ellipse cx="110" cy="128" rx="70" ry="50" fill="${FG}" stroke="${FD}" stroke-width="6"/>
+      ${gym ? '<ellipse cx="110" cy="146" rx="40" ry="22" fill="#bbf7d0"/>' : ''}
+      <circle cx="72" cy="66" r="30" fill="${FG}" stroke="${FD}" stroke-width="6"/><circle cx="148" cy="66" r="30" fill="${FG}" stroke="${FD}" stroke-width="6"/>
+      ${cheeky ? `<path d="M58 72q14 -12 28 0" fill="none" stroke="${FM}" stroke-width="6" stroke-linecap="round"/>` : eyeOpen(72, 66, 75)}
+      ${eyeOpen(148, 66, cheeky ? 144 : 145)}
+      ${gym ? `<path d="M174 56q14 4 24 16M174 56q16 -4 30 2" fill="none" stroke="${FB}" stroke-width="7" stroke-linecap="round"/>` : ''}
+      ${tache ? '<path d="M40 100Q110 80 180 100L178 116Q110 96 42 116Z" fill="#fb923c" stroke="#c2410c" stroke-width="4" stroke-linejoin="round"/>'
+        : `<path d="${cheeky ? 'M42 48Q110 36 178 62' : 'M44 56Q110 36 176 56'}" fill="none" stroke="${FB}" stroke-width="9" stroke-linecap="round"/>`}
+      ${gym ? '<circle cx="66" cy="122" r="9" fill="#fda4af" opacity=".9"/><circle cx="154" cy="122" r="9" fill="#fda4af" opacity=".9"/>' : ''}
+      ${mouth}
+      <path class="flat" d="${tache ? 'M88 142Q110 130 132 142' : 'M86 132Q110 118 134 132'}" fill="none" stroke="${FM}" stroke-width="6" stroke-linecap="round"/>
+    </g>
+    ${tv ? '' : `<path class="sweat" d="M200 22q9 13 0 19q-9 -6 0 -19z" fill="#7dd3fc" stroke="#0284c7" stroke-width="2.5"/>
+    <g class="bottle"><rect x="188" y="120" width="24" height="50" rx="7" fill="#8fd3ff" stroke="#3b82c4" stroke-width="4"/><rect x="194" y="110" width="12" height="12" rx="3" fill="#3b82c4"/><rect x="188" y="145" width="24" height="14" fill="#fff" opacity=".45"/></g>
+    <text class="zzz" x="184" y="24" font-size="36" font-weight="800" fill="#bfdbfe" font-family="system-ui,sans-serif">z</text>
+    <text class="zzz" x="206" y="0" font-size="24" font-weight="800" fill="#bfdbfe" font-family="system-ui,sans-serif">z</text>`}
   </g>
-  <g class="sparkle" fill="#fde047">
-    <path d="M12 22 L14 28 L20 30 L14 32 L12 38 L10 32 L4 30 L10 28Z"/>
-    <path d="M108 14 L109.5 18.5 L114 20 L109.5 21.5 L108 26 L106.5 21.5 L102 20 L106.5 18.5Z"/>
-    <path d="M110 62 L111.5 66.5 L116 68 L111.5 69.5 L110 74 L108.5 69.5 L104 68 L108.5 66.5Z"/>
-  </g>
+  ${tv ? '' : `<g class="sparkle" fill="#fde047">${star(14, 34, 14)}${star(206, 14, 10)}${star(210, 112, 10)}</g>`}
 </svg>`;
-  // Frogue's head: rides along the progress bar
-  const HEAD_SVG = `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-<circle cx='35' cy='38' r='19' fill='#4ade80' stroke='#15803d' stroke-width='6'/><circle cx='85' cy='38' r='19' fill='#4ade80' stroke='#15803d' stroke-width='6'/>
-<ellipse cx='60' cy='72' rx='50' ry='40' fill='#4ade80' stroke='#15803d' stroke-width='6'/>
-<circle cx='35' cy='38' r='12' fill='#fff'/><circle cx='85' cy='38' r='12' fill='#fff'/><circle cx='38' cy='40' r='6.5' fill='#1f2937'/><circle cx='82' cy='40' r='6.5' fill='#1f2937'/>
-<path d='M16 62 Q60 46 104 62 L102 74 Q60 58 18 74 Z' fill='#fb923c' stroke='#c2410c' stroke-width='3' stroke-linejoin='round'/>
-<path d='M38 88 Q60 106 82 88' fill='none' stroke='#166534' stroke-width='6' stroke-linecap='round'/></svg>`;
+  }
+  // Frogue's head: rides along the progress bar (and is the app icon)
+  function headSvg(look) {
+    const gym = look === 'gym', cheeky = look === 'cheeky', tache = look === 'tache';
+    return `<svg viewBox="0 -20 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+<ellipse cx="110" cy="118" rx="84" ry="54" fill="${FG}" stroke="${FD}" stroke-width="10"/>
+<circle cx="68" cy="64" r="32" fill="${FG}" stroke="${FD}" stroke-width="10"/><circle cx="152" cy="64" r="32" fill="${FG}" stroke="${FD}" stroke-width="10"/>
+${cheeky ? `<path d="M52 70q16 -13 32 0" fill="none" stroke="${FM}" stroke-width="10" stroke-linecap="round"/>` : '<circle cx="68" cy="64" r="16" fill="#fff"/><circle cx="71" cy="67" r="9" fill="#1f2937"/>'}
+<circle cx="152" cy="64" r="16" fill="#fff"/><circle cx="${cheeky ? 148 : 149}" cy="67" r="9" fill="#1f2937"/>
+${gym ? `<path d="M184 54q14 6 22 20M184 54q16 -2 28 6" fill="none" stroke="${FB}" stroke-width="11" stroke-linecap="round"/>` : ''}
+${tache ? '<path d="M22 104Q110 80 198 104L196 122Q110 98 24 122Z" fill="#fb923c" stroke="#c2410c" stroke-width="5" stroke-linejoin="round"/>'
+  : `<path d="${cheeky ? 'M32 46Q110 30 188 62' : 'M34 54Q110 30 186 54'}" fill="none" stroke="${FB}" stroke-width="14" stroke-linecap="round"/>`}
+${gym ? '<circle cx="56" cy="122" r="12" fill="#fda4af" opacity=".9"/><circle cx="164" cy="122" r="12" fill="#fda4af" opacity=".9"/>' : ''}
+${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-width="6" stroke-linejoin="round"/><ellipse cx="114" cy="129" rx="11" ry="6" fill="#fb7185"/>`
+  : `<path d="${tache ? 'M84 138q26 20 52 0' : 'M80 122q30 24 60 0'}" fill="none" stroke="${FM}" stroke-width="10" stroke-linecap="round"/>`}
+</svg>`;
+  }
+  let lookI = 0;
+  try { const prev = localStorage.getItem('frogueLook'); lookI = prev === null ? 0 : (Number(prev) + 1) % LOOKS.length || 0; localStorage.setItem('frogueLook', lookI); } catch (e) {}
+  function drawFrogue() {
+    const look = LOOKS[lookI];
+    document.querySelectorAll('.mascot').forEach((el) => { el.innerHTML = frogSvg(look); });
+    const tl = document.getElementById('tlFrog'); if (tl) tl.innerHTML = headSvg(look);
+    const dw = document.getElementById('dwFrog'), old = dw && dw.querySelector('svg');
+    if (old) old.outerHTML = frogSvg(look, true);
+  }
+  function nextLook() { lookI = (lookI + 1) % LOOKS.length; try { localStorage.setItem('frogueLook', lookI); } catch (e) {} drawFrogue(); }
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   /* ---------- Settings ---------- */
@@ -1584,7 +1615,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if (roundView) buildOverall();
     else { segEls = r.els; barCompact = r.compact; shadeEl = r.shade; }
     const fr = document.createElement('div');
-    fr.className = 'tl-frog'; fr.id = 'tlFrog'; fr.innerHTML = HEAD_SVG;
+    fr.className = 'tl-frog'; fr.id = 'tlFrog'; fr.innerHTML = headSvg(LOOKS[lookI]);
     $('tlTrack').appendChild(fr);
   }
   let ovEls = [];
@@ -2251,13 +2282,14 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   /* ---------- Frogue on the setup screen: tap him! ---------- */
   const HELLOS = ['Ready to hop to it?', 'Let’s get moving!', 'Pick a workout and ribbit!', 'Warm up first!', 'Today’s the day!', 'Stretch, then START!'];
   function hopFrog() {
+    nextLook();                                   // a tap swaps his outfit
     const f = $('brandFrog');
     $('setupSay').textContent = pick(HELLOS);
     f.classList.remove('hop'); void f.offsetWidth; f.classList.add('hop');
     clearTimeout(hopFrog.t); hopFrog.t = setTimeout(() => f.classList.remove('hop'), 700);
   }
+  drawFrogue();
   document.querySelectorAll('.mascot').forEach((el) => {
-    el.innerHTML = FROG_SVG;
     el.title = 'Frogue';
     el.setAttribute('role', 'img');
     el.setAttribute('aria-label', 'Frogue the frog');
@@ -2639,6 +2671,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   function dwStep() {
     const f = $('dwFrog'); MOVES.forEach((m) => f.classList.remove(m));
     moveI = (moveI + 1) % MOVES.length; f.classList.add(MOVES[moveI]);
+    if (moveI === 0) nextLook();                  // a new look after each full warm-up routine
     dwBubble(msg('tvWaiting', WAIT_LINES));
   }
   function waitStart() {
