@@ -2054,6 +2054,19 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   }
 
   /* ---------- Wake lock + auto-hide controls ---------- */
+  // In the Android app: its browser view has no wake lock, so the app keeps the screen on for us
+  if (!('wakeLock' in navigator) && window.FrogueApp) {
+    let held = 0;
+    const appLock = { request: () => {
+      held++; window.FrogueApp.keepAwake(true);
+      let gone = false;
+      return Promise.resolve({ addEventListener() {}, release() {
+        if (!gone) { gone = true; held--; if (!held) window.FrogueApp.keepAwake(false); }
+        return Promise.resolve();
+      } });
+    } };
+    try { Object.defineProperty(navigator, 'wakeLock', { value: appLock, configurable: true }); } catch (e) {}
+  }
   let wl = null, wakeOn = true;
   try { wakeOn = localStorage.getItem('intervalTimerWake') !== '0'; } catch (e) {}
   const wakeSupported = () => 'wakeLock' in navigator;
@@ -2140,6 +2153,8 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   $('wkExport').addEventListener('click', () => {
     const list = Object.values(store.workouts);
     const data = { app: 'interval-timer', version: 1, exported: new Date().toISOString(), workouts: list };
+    // the Android app can't take browser downloads, so it asks where to save the file instead
+    if (window.FrogueApp && window.FrogueApp.saveFile) { window.FrogueApp.saveFile('interval-timer-workouts.json', JSON.stringify(data, null, 2)); return; }
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -2266,7 +2281,8 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   window.addEventListener('hashchange', () => { if (!active && !dlgOpen()) offerShared(); });
 
   /* ---------- Full screen ---------- */
-  const fsOk = !!(document.documentElement.requestFullscreen && document.fullscreenEnabled !== false);
+  // (the Fire TV app is always full screen, so it has no use for it)
+  const fsOk = !!(document.documentElement.requestFullscreen && document.fullscreenEnabled !== false) && !(window.FrogueApp && window.FrogueApp.isTv());
   function fullscreen() {
     if (!fsOk) return;
     if (document.fullscreenElement) document.exitFullscreen();
@@ -2865,6 +2881,11 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     }
     const tag = e.target && e.target.tagName;
     if (tag === 'INPUT' || tag === 'SELECT') return; // typing a name / choosing a workout
+    // TV remote during a workout: the arrows are back/skip, so they mustn't also hop focus onto the buttons (Fire TV apps do that)
+    if (sync.role === 'display' && active && /^Arrow/.test(e.code)) {
+      e.preventDefault();
+      if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+    }
     if (e.code === 'Space' || e.code === 'MediaPlayPause' || ((e.code === 'Enter' || e.code === 'NumpadEnter') && active && document.activeElement === document.body)) { e.preventDefault(); if (active || document.activeElement === document.body) toggle(); }
     else if (e.code === 'ArrowRight') skip();
     else if (e.code === 'ArrowLeft') back();

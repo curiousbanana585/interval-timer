@@ -1,0 +1,96 @@
+# Builds the Frogue Timer Android app (the thin shell in android/) for phones and Fire TV. Run it from the Actions tab: Build Frogue app > Run workflow.
+# You only need to run it again when the android/ folder changes. Changes to the timer itself reach the app with a normal upload.
+name: Build Frogue app
+on:
+  workflow_dispatch:
+    inputs:
+      address:
+        description: "The timer's address (leave empty to use this repo's GitHub Pages address)"
+        required: false
+        default: ""
+  # a test build whenever a pull request changes the app, so a broken build shows up before it's merged
+  pull_request:
+    paths: ["android/**", ".github/workflows/build-frogue-app.yml"]
+permissions:
+  contents: read
+  pages: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Work out the timer's address
+        id: url
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GIVEN: ${{ inputs.address }}
+        run: |
+          if [ -n "$GIVEN" ]; then url="$GIVEN"; else
+            base=$(gh api "repos/${{ github.repository }}/pages" --jq .html_url 2>/dev/null || true)
+            if [ -z "$base" ]; then echo "::error::GitHub Pages isn't on for this repo. Turn it on (Settings > Pages), or type the timer's address when you run this."; exit 1; fi
+            # find the folder holding the timer's index.html (the repo root, or a folder)
+            dir=$(grep -l "<title>Frogue Interval Timer</title>" $(git ls-files '*index.html') 2>/dev/null | grep -v '^android/' | head -1 | xargs -r dirname)
+            if [ -z "$dir" ]; then echo "::error::Couldn't find the timer's index.html in this repo. Type its address when you run this."; exit 1; fi
+            url="${base%/}/"; [ "$dir" != "." ] && url="${url}${dir}/"
+          fi
+          case "$url" in https://*) ;; *) echo "::error::The address must start with https://"; exit 1;; esac
+          case "$url" in */) ;; *.html) ;; *) url="$url/";; esac
+          echo "The timer's address: $url"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Check the signing key is there
+        env:
+          FROGUE_KEYSTORE: ${{ secrets.FROGUE_KEYSTORE }}
+          FROGUE_KEY_PASSWORD: ${{ secrets.FROGUE_KEY_PASSWORD }}
+        run: |
+          if [ -n "$FROGUE_KEYSTORE" ] && [ -n "$FROGUE_KEY_PASSWORD" ]; then
+            echo "$FROGUE_KEYSTORE" | base64 -d > "$RUNNER_TEMP/frogue.jks"
+            echo "FROGUE_KEY_PASSWORD=$FROGUE_KEY_PASSWORD" >> "$GITHUB_ENV"
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            # a test build only: signed with a throwaway key, so it can't update an installed copy
+            echo "::warning::No signing secrets here, so this test build uses a throwaway key."
+            keytool -genkeypair -keystore "$RUNNER_TEMP/frogue.jks" -alias frogue -keyalg RSA -keysize 2048 -validity 30 -storepass testtest -keypass testtest -dname "CN=Test" -noprompt
+            echo "FROGUE_KEY_PASSWORD=testtest" >> "$GITHUB_ENV"
+          else
+            echo "::error::The two secrets FROGUE_KEYSTORE and FROGUE_KEY_PASSWORD are missing. See Part 2 of ANDROID-GUIDE.md."; exit 1
+          fi
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # GitHub's runners come with the Android SDK. If one ever doesn't, fetch Google's command-line tools.
+      - name: Android 16 SDK
+        run: |
+          sdk="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-$HOME/android-sdk}}"
+          sm="$sdk/cmdline-tools/latest/bin/sdkmanager"
+          if [ ! -x "$sm" ]; then
+            echo "No Android SDK on this runner, fetching the command-line tools"
+            mkdir -p "$sdk/cmdline-tools"
+            curl -fsSL -o "$RUNNER_TEMP/tools.zip" https://dl.google.com/android/repository/commandlinetools-linux-13114758_latest.zip
+            unzip -q "$RUNNER_TEMP/tools.zip" -d "$RUNNER_TEMP/tools"
+            rm -rf "$sdk/cmdline-tools/latest"; mv "$RUNNER_TEMP/tools/cmdline-tools" "$sdk/cmdline-tools/latest"
+          fi
+          echo "ANDROID_HOME=$sdk" >> "$GITHUB_ENV"
+          echo "ANDROID_SDK_ROOT=$sdk" >> "$GITHUB_ENV"
+          yes | "$sm" --licenses > /dev/null || true
+          "$sm" --install "platforms;android-36" "build-tools;36.0.0"
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.14.3
+
+      - name: Build
+        env:
+          FROGUE_KEYSTORE_FILE: ${{ runner.temp }}/frogue.jks
+        run: gradle -p android assembleRelease -PfrogueUrl="${{ steps.url.outputs.url }}" -PfrogueVersion=${{ github.run_number }}
+
+      - name: Name the app file
+        run: cp android/app/build/outputs/apk/release/app-release.apk "Frogue-${{ github.run_number }}.apk"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Frogue-app
+          path: Frogue-${{ github.run_number }}.apk

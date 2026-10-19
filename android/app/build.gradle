@@ -1,0 +1,34 @@
+plugins { id 'com.android.application' }
+
+// The address the timer lives at. The GitHub build fills it in from your Pages address; you never need to edit it.
+def frogueUrl = (findProperty('frogueUrl') ?: 'https://YOUR-NAME.github.io/YOUR-REPO/').toString()
+def ver = (findProperty('frogueVersion') ?: '1').toString().toInteger()
+
+android {
+    namespace 'com.bouncy.frogue'
+    compileSdk 36
+    defaultConfig {
+        applicationId 'com.bouncy.frogue'
+        minSdk 22             // Android 5.1 and newer, so older Fire TV sticks (Fire OS 5) are covered too
+        targetSdk 36
+        versionCode ver
+        versionName "1.${ver}"
+        resValue 'string', 'app_url', frogueUrl
+    }
+    signingConfigs {
+        release {
+            // the one signing key, kept as a GitHub secret. The same key every time, so updates install over the top and keep your workouts.
+            storeFile file(System.getenv('FROGUE_KEYSTORE_FILE') ?: 'frogue.jks')
+            storePassword System.getenv('FROGUE_KEY_PASSWORD')
+            keyAlias 'frogue'
+            keyPassword System.getenv('FROGUE_KEY_PASSWORD')
+        }
+    }
+    buildTypes {
+        release { minifyEnabled false; signingConfig signingConfigs.release }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
