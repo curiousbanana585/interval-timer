@@ -1,6 +1,6 @@
 {
- "name": "Interval Timer",
- "short_name": "Intervals",
+ "name": "Frogue Interval Timer",
+ "short_name": "Frogue",
  "description": "Gym interval timer with Frogue. A Bouncy Production \u00b7 Made for Haz.",
  "start_url": "./index.html",
  "scope": "./",
