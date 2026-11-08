@@ -626,6 +626,124 @@
     #setup h1 { font-size: clamp(22px, 6.4vw, 30px); }
   }
 
+  /* =========================================================================
+     Fun pass (Nov 2026): chattier Frogue, Up-next card, last-3-seconds moment,
+     round-done party, finish party. Kept at the end so it wins over the rules above.
+     ========================================================================= */
+  /* setup: Frogue's line is a proper speech bubble; the start bar leads with the total time */
+  #setupSay:not(:empty) { display: inline-block; background: #fff; color: #1b2029; border-radius: 14px; padding: 6px 12px; margin-top: 6px; font-weight: 700; line-height: 1.3; }
+  .sum-t { display: block; font-size: clamp(22px, 4vmin, 40px); font-weight: 900; color: #fff; line-height: 1.1; }
+  .sum-d { color: var(--muted); }
+  .sum-w { display: none; }
+
+  /* Frogue's bubble: white with dark text, everywhere */
+  #frogSay { background: #fff; color: #1b2029; font-weight: 800; }
+  #frogSay::before { border-right-color: #fff; }
+  .rm-bub { background: #fff; color: #1b2029; }
+  .rd-bubble { background: #fff; color: #2a1b5e; }
+  /* a bigger Frogue while you train */
+  .mascot.say { width: clamp(64px, 24vmin, 200px); }
+  .frogrow { min-height: clamp(64px, 24vmin, 200px); }
+  .rm-say .mascot { width: 84px; }
+
+  /* rest: an "Up next" card; round break: the next round's exercises as chips */
+  #nextUp.nu-card { display: flex; align-items: center; justify-content: space-between; gap: 2vmin; width: min(100%, 900px);
+                    background: rgba(255,255,255,.1); border: 3px solid #4ade80; border-radius: 2.4vmin; padding: 1.2vmin 2.4vmin; color: #fff; text-align: left; }
+  #nextUp.nu-card small { font-size: clamp(11px, 2vmin, 20px); font-weight: 900; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+  #nextUp.nu-card b { flex: 1; min-width: 0; font-size: clamp(22px, 5.4vmin, 64px); font-weight: 900; color: #4ade80; text-transform: uppercase; overflow-wrap: anywhere; line-height: 1.05; }
+  #nextUp.nu-card > span { font-size: clamp(20px, 5vmin, 56px); font-weight: 900; font-variant-numeric: tabular-nums; }
+  #nextUp.nu-brk { flex-direction: column; align-items: flex-start; border-color: transparent; }
+  .nu-chips { display: flex; flex-wrap: wrap; gap: 1vmin; }
+  .nu-chip { background: rgba(0,0,0,.28); border-radius: 99px; padding: .7vmin 1.8vmin; font-size: clamp(14px, 2.8vmin, 30px); font-weight: 700; color: #fff; }
+  .nu-chip.first { background: #32d583; color: #052e16; font-weight: 900; }
+  /* round break: Frogue flops on a stripy towel (his water bottle is already in the drawing) */
+  body[data-brk="1"] #timer .mascot.say { position: relative; isolation: isolate; }
+  body[data-brk="1"] #timer .mascot.say::after { content: ""; position: absolute; left: -14%; right: -14%; bottom: -2%; height: 16%; z-index: -1;
+      border-radius: 1vmin; background: repeating-linear-gradient(90deg, #f97316 0 10%, #fdb022 10% 20%); }
+
+  /* the last 3 seconds of an exercise: the screen edge glows, the number pumps, Frogue jumps */
+  body.last3 #timer { box-shadow: inset 0 0 0 clamp(6px, 1.4vmin, 16px) var(--accent); }
+  body.last3 #time { animation: cdpop .9s ease-out infinite; }
+  body.last3 #timer .frogrow .mascot .hopper { animation: frog-celebrate .5s ease-in-out infinite; }
+
+  /* round complete: a big DONE!, Frogue mid-jump, confetti and round chips (replaces the tick badge) */
+  #roundDone .rd-badge { display: none; }
+  #roundDone .rd-say { flex-direction: column; }
+  #roundDone .rd-frog { width: clamp(140px, 40vmin, 340px); }
+  .rd-dots { display: flex; gap: 1.6vmin; flex-wrap: wrap; justify-content: center; }
+  .rd-dots:empty { display: none; }
+  .rd-dots span { width: clamp(36px, 8vmin, 80px); height: clamp(36px, 8vmin, 80px); border-radius: 50%; border: clamp(3px, .5vmin, 6px) solid #5b4a99;
+                  display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: clamp(16px, 3.4vmin, 38px); color: #ddd3ff; }
+  .rd-dots span.done { background: #c9b8ff; border-color: #c9b8ff; color: #2a1b5e; }
+  .rd-dots span.next { border-style: dashed; border-color: #c9b8ff; }
+  .rd-confetti, #party { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+  .rd-confetti i, #party i { position: absolute; top: -6vmin; width: clamp(8px, 1.4vmin, 16px); height: clamp(14px, 2.6vmin, 30px); border-radius: 3px;
+                             animation: confetti-fall 2.6s linear infinite; }
+  .rd-confetti i:nth-child(5n+1), #party i:nth-child(5n+1) { background: #fdb022; }
+  .rd-confetti i:nth-child(5n+2), #party i:nth-child(5n+2) { background: #32d583; }
+  .rd-confetti i:nth-child(5n+3), #party i:nth-child(5n+3) { background: #53b1fd; }
+  .rd-confetti i:nth-child(5n+4), #party i:nth-child(5n+4) { background: #f472b6; }
+  .rd-confetti i:nth-child(5n+5), #party i:nth-child(5n+5) { background: #c9b8ff; border-radius: 50%; height: clamp(8px, 1.4vmin, 16px); }
+  .rd-confetti i:nth-child(1), #party i:nth-child(1) { left: 6%; animation-delay: -.2s; }
+  .rd-confetti i:nth-child(2), #party i:nth-child(2) { left: 17%; animation-delay: -1.4s; animation-duration: 3.1s; }
+  .rd-confetti i:nth-child(3), #party i:nth-child(3) { left: 28%; animation-delay: -.9s; }
+  .rd-confetti i:nth-child(4), #party i:nth-child(4) { left: 39%; animation-delay: -2.1s; animation-duration: 2.2s; }
+  .rd-confetti i:nth-child(5), #party i:nth-child(5) { left: 50%; animation-delay: -.5s; animation-duration: 3.4s; }
+  .rd-confetti i:nth-child(6), #party i:nth-child(6) { left: 61%; animation-delay: -1.8s; }
+  .rd-confetti i:nth-child(7), #party i:nth-child(7) { left: 72%; animation-delay: -1.1s; animation-duration: 2.4s; }
+  .rd-confetti i:nth-child(8), #party i:nth-child(8) { left: 82%; animation-delay: -2.4s; animation-duration: 3s; }
+  .rd-confetti i:nth-child(9), #party i:nth-child(9) { left: 91%; animation-delay: -.7s; }
+  .rd-confetti i:nth-child(10), #party i:nth-child(10) { left: 97%; animation-delay: -1.6s; animation-duration: 2.8s; }
+  @keyframes confetti-fall { 0% { transform: translateY(0) rotate(0); } 100% { transform: translateY(110vh) rotate(540deg); } }
+
+  /* workout finished: bunting, confetti, and three stat tiles */
+  #timer { isolation: isolate; }
+  #party { display: none; z-index: -1; }
+  #timer.is-done #party { display: block; }
+  #party .bunting { position: absolute; left: 0; right: 0; top: 0; height: clamp(34px, 8vmin, 80px);
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 60'%3E%3Cpath d='M0 6 Q60 18 120 6' fill='none' stroke='%23c9b8ff' stroke-width='2'/%3E%3Cpath d='M4 8 L36 13 L18 52 Z' fill='%23fdb022'/%3E%3Cpath d='M44 13 L76 14 L60 54 Z' fill='%2332d583'/%3E%3Cpath d='M84 13 L116 8 L102 52 Z' fill='%2353b1fd'/%3E%3C/svg%3E") repeat-x left top / auto 100%; }
+  #doneStats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.4vmin; width: min(100%, 760px); }
+  #doneStats[hidden] { display: none; }
+  #timer.is-done .top { padding-top: clamp(30px, 7vmin, 72px); }
+  #doneStats span { background: #4c2a8a; border-radius: 2vmin; padding: 1.2vmin .6vmin; text-align: center;
+                    font-size: clamp(12px, 2.2vmin, 22px); font-weight: 700; color: var(--muted); }
+  #doneStats b { display: block; font-size: clamp(24px, 6vmin, 64px); font-weight: 900; color: #fff; line-height: 1.1; font-variant-numeric: tabular-nums; }
+  @media (prefers-reduced-motion: reduce) {
+    .rd-confetti i, #party i, body.last3 #time { animation: none !important; }
+    .rd-confetti i, #party i { top: auto; }
+  }
+
+  /* the TV is driven by the phone or the remote, so it shows no tap-only buttons */
+  body.tv #timer .ctrl { display: none; }
+
+  /* the phone remote's "On the TV" tag no longer sits on top of the title */
+  #timer.is-done #tvTag { background: #3b1d6e; }
+  #timer:has(#tvTag:not([hidden])) .top { padding-top: clamp(28px, 5vmin, 48px); }
+
+  /* phones held upright: Back | big Pause | Skip, then a quieter row for Stop, Full screen and Sound */
+  @media (orientation: portrait) {
+    #timer #doneStats { order: 4; }
+    #timer .ctrl { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.7fr) minmax(0, 1fr); gap: 10px; width: 100%; max-width: 640px; }
+    body.tv #timer .ctrl { display: none; }
+    #timer .ctrl button { min-height: 46px; padding: 8px 4px; font-size: 15px; white-space: nowrap; }
+    #timer .ctrl #backBtn, #timer .ctrl #skipBtn { min-height: 62px; font-size: 16px; }
+    #timer .ctrl #pauseBtn { min-height: 62px; padding: 8px 4px; font-size: 21px; font-weight: 900; }
+    #timer .ctrl #stopBtn, #timer .ctrl #fsBtn2, #timer .ctrl #muteBtn2 { background: transparent; box-shadow: inset 0 0 0 2px rgba(255,255,255,.2); }
+    #timer.is-done .ctrl #pauseBtn { grid-column: 1 / -1; }
+    #nextUp.nu-card { width: 100%; }
+  }
+
+  /* narrow phones: one-line "Frogue" with a small INTERVAL TIMER under it, and icon-only TV buttons */
+  @media (max-width: 700px) {
+    #setup .titlebar { align-items: center; }
+    #setup h1 { line-height: 1; }
+    #setup h1 .nm1 { display: block; font-size: 30px; }
+    #setup h1 .nm2 { display: block; margin-top: 4px; font-size: 12px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #86efac; }
+    .titlebar .scrbtns button:not(#scrUnpair) { width: 48px; min-width: 48px; height: 48px; min-height: 48px; padding: 0; }
+    .titlebar .scrbtns button:not(#scrUnpair) span:not(.ic) { display: none; }
+    .titlebar .scrbtns button .ic { font-size: 22px; }
+  }
+
 </style>
 </head>
 <body data-phase="idle">
@@ -637,11 +755,11 @@
     <div class="titlebar">
       <div class="brand">
         <span class="mascot brandfrog" id="brandFrog"></span>
-        <div><h1>Frogue Interval Timer</h1><div class="sub" id="setupSay"></div></div>
+        <div><h1 aria-label="Frogue Interval Timer"><span class="nm1">Frogue</span> <span class="nm2">Interval Timer</span></h1><div class="sub" id="setupSay"></div></div>
       </div>
       <div class="scrbtns">
-        <button id="scrDisplay" title="Make this screen the TV: it shows the timer and plays the sound"><span class="ic">📺</span> <span>Use as TV</span></button>
-        <button id="scrPair" title="Run the timer on a TV from this phone"><span class="ic">📱</span> <span>Control a TV</span></button>
+        <button id="scrDisplay" aria-label="Use as TV" title="Make this screen the TV: it shows the timer and plays the sound"><span class="ic">📺</span> <span>Use as TV</span></button>
+        <button id="scrPair" aria-label="Control a TV" title="Run the timer on a TV from this phone"><span class="ic">📱</span> <span>Control a TV</span></button>
         <button id="scrUnpair" class="del" title="Stop controlling the TV" hidden>Disconnect</button>
       </div>
     </div>
@@ -810,6 +928,7 @@
 <!-- TIMER -->
 <section id="timer" class="screen">
   <button id="tvTag" hidden></button>
+  <div id="party" aria-hidden="true"><div class="bunting"></div><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <div class="top">
     <div id="phaseLabel">Work</div>
     <div id="roundLabel"></div>
@@ -857,6 +976,7 @@
   <div class="bottom">
     <div class="frogrow"><div class="mascot say"></div><div id="frogSay" role="status" aria-live="polite"></div></div>
     <div id="nextUp"></div>
+    <div id="doneStats" hidden></div>
     <div id="totalLeft"></div>
     <div id="wakeStatus2" hidden></div>
     <div class="ctrl">
@@ -873,10 +993,12 @@
 
 <!-- Welcome-back countdown (after resuming an interrupted workout) -->
 <div id="roundDone" hidden aria-live="polite">
+  <div class="rd-confetti" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   <div class="rd-badge"><svg viewBox="0 0 24 24" fill="none" stroke="#2a1b5e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div>
   <div class="rd-sub" id="rdSub">Round 1 of 1</div>
-  <div class="rd-big">Complete</div>
+  <div class="rd-big">DONE!</div>
   <div class="rd-say"><span class="mascot rd-frog"></span><span class="rd-bubble" id="rdBubble">Big breather!</span></div>
+  <div class="rd-dots" id="rdDots"></div>
 </div>
 <div id="countdown" hidden role="status" aria-live="assertive">
   <div class="cdmsg">Get ready…</div>
@@ -1080,7 +1202,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   }
   function renderSummary() {
     const total = buildPhases(cfg).reduce((a, x) => a + x.dur, 0);
-    $('summary').textContent = `${plural(cfg.exercises.length, 'exercise')} × ${plural(cfg.rounds, 'round')} · total ${fmt(total)}`;
+    $('summary').innerHTML = `<b class="sum-t">${fmt(total)}</b> <span class="sum-d">${plural(cfg.exercises.length, 'exercise')} × ${plural(cfg.rounds, 'round')}<span class="sum-w"> · total ${fmt(total)}</span></span>`;
     renderPreview();
   }
 
@@ -1533,7 +1655,11 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     total = t;
   }
 
-  function show(id) { document.querySelectorAll('.screen').forEach((s) => s.classList.toggle('active', s.id === id)); }
+  function show(id) {
+    document.querySelectorAll('.screen').forEach((s) => s.classList.toggle('active', s.id === id));
+    let tv = false; try { tv = sync.role === 'display'; } catch (e) {}   // (sync is declared further down)
+    document.body.classList.toggle('tv', tv);   // the TV is driven by a phone or remote: no tap-only buttons
+  }
   function flash() { const f = $('flash'); f.classList.remove('go'); void f.offsetWidth; f.classList.add('go'); }
 
   const R = 2 * Math.PI * 92;
@@ -1567,7 +1693,15 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     hideRoundDone();
     const el = $('roundDone');
     $('rdSub').textContent = `Round ${p.round} of ${run.rounds}`;
-    $('rdBubble').textContent = msg('roundComplete', ['Big breather!', 'Round done. Nice work!', 'That’s another one!'], { round: p.round, nextRound: p.round + 1, rounds: run.rounds });
+    $('rdBubble').textContent = msg('roundComplete', ['Big breather!', 'Round done. Nice work!', 'That’s another one!', 'One down. I’m sweating for you.'], { round: p.round, nextRound: p.round + 1, rounds: run.rounds });
+    // round chips: ✓ for rounds done, the next one dashed (only when they fit on one line)
+    const dots = $('rdDots'); dots.innerHTML = '';
+    if (run.rounds <= 8) for (let r = 1; r <= run.rounds; r++) {
+      const d = document.createElement('span');
+      d.className = r <= p.round ? 'done' : r === p.round + 1 ? 'next' : '';
+      d.textContent = r <= p.round ? '✓' : String(r);
+      dots.appendChild(d);
+    }
     el.hidden = false;
     rdT = setTimeout(() => { el.classList.add('out'); rdT = setTimeout(hideRoundDone, 500); }, 1900);
   }
@@ -1699,6 +1833,28 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     return `Next: ${labelFor(n)} · ${fmt(n.dur)}`;
   }
 
+  /* the line under Frogue: plain text while working; during a rest an "Up next" card,
+     and during a round break the next round's exercises as chips */
+  const escH = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  function setNextUp(i) {
+    const el = $('nextUp'), p = phases[i], n = phases[i + 1];
+    el.className = '';
+    if (p && p.type === 'rest' && n && n.type === 'work') {
+      if (p.roundBreak) {
+        const names = run.exercises.map((x, k) => exName(run, k));
+        const more = names.length > 6 ? `<span class="nu-chip">+${names.length - 5} more</span>` : '';
+        el.className = 'nu-card nu-brk';
+        el.innerHTML = `<small>Up next in round ${p.round + 1}</small><span class="nu-chips"><span class="nu-chip first">${escH(labelFor(n))} ${fmt(n.dur)}</span>`
+          + names.slice(1, names.length > 6 ? 5 : 6).map((x) => `<span class="nu-chip">${escH(x)}</span>`).join('') + more + '</span>';
+        return;
+      }
+      el.className = 'nu-card';
+      el.innerHTML = `<small>Up next</small><b>${escH(labelFor(n))}</b><span>${fmt(n.dur)}</span>`;
+      return;
+    }
+    el.textContent = nextText(i);
+  }
+
   function sizeTime() {
     const r = $('ring').getBoundingClientRect();
     const s = Math.min(r.width, r.height);
@@ -1721,8 +1877,9 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
       if (p.roundBreak) $('roundLabel').innerHTML = `<span aria-hidden="true">✓</span> Round ${p.round} of ${run.rounds} done`;
       else $('roundLabel').textContent = `Round ${p.round} of ${run.rounds}`;   // what's next is the line below
     }
-    $('nextUp').textContent = nextText(i);
-    if (follower) { $('rmName').textContent = $('phaseLabel').textContent; $('rmSub').textContent = $('roundLabel').textContent; $('rmNext').textContent = $('nextUp').textContent; }
+    setNextUp(i);
+    document.body.classList.remove('last3');
+    if (follower) { $('rmName').textContent = $('phaseLabel').textContent; $('rmSub').textContent = $('roundLabel').textContent; $('rmNext').textContent = nextText(i); }
     lastWhole = null;
     if (announce) {
       flash();
@@ -1807,6 +1964,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     if (whole !== lastWhole) {
       lastWhole = whole;
       if (whole >= 1 && whole <= 3 && phases[idx].dur > whole) say(String(whole), { count: true });
+      document.body.classList.toggle('last3', phases[idx].type === 'work' && whole >= 1 && whole <= 3 && phases[idx].dur > whole);
       persist();
     }
   }
@@ -1843,6 +2001,8 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     buildTimeline();                              // after show(), so the bar can be measured
     $('timer').classList.remove('paused', 'is-done');
     $('pauseBtn').textContent = '⏸ Pause';
+    $('stopBtn').textContent = '⏹ Stop';
+    $('doneStats').hidden = true;
     requestAnimationFrame(sizeTime);
   }
 
@@ -1864,7 +2024,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     requestWake();
     if (sync.role === 'display' && ac && ac.state !== 'running') toast('Press OK on the remote to turn the sound on');
     document.body.classList.add('hide-ui');        // controls stay out of the way until the screen is tapped
-    try { if (!localStorage.getItem('intervalTimerTip')) { localStorage.setItem('intervalTimerTip', '1'); setTimeout(() => { if (active && running) toast('Tip: double-tap the screen to pause'); }, 3000); } } catch (e) {}
+    try { if (sync.role !== 'display' && !localStorage.getItem('intervalTimerTip')) { localStorage.setItem('intervalTimerTip', '1'); setTimeout(() => { if (active && running) toast('Tip: double-tap the screen to pause'); }, 3000); } } catch (e) {}
     persist();
   }
   function restoreSession(s) {
@@ -1982,8 +2142,13 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     if (roundView) updateOverall(total, true);
     $('timer').classList.add('is-done');
     $('timer').classList.remove('paused');
-    say(msg('finish', ['Frogue says: great work!']));
-    $('pauseBtn').textContent = '↺ Restart';
+    say(msg('finish', ['Frogue says: great work!', 'Gold medal in not giving up.', 'Smashed it. I need a lie down.', 'That’s a medal. I don’t make the rules.']));
+    const sets = phases.filter((x) => x.type === 'work').length;
+    $('doneStats').innerHTML = `<span><b>${fmt(Math.round(total))}</b>total time</span><span><b>${run.rounds}</b>${run.rounds === 1 ? 'round' : 'rounds'}</span><span><b>${sets}</b>sets done</span>`;
+    $('doneStats').hidden = false;
+    document.body.classList.remove('last3');
+    $('pauseBtn').textContent = '↺ Again!';
+    $('stopBtn').textContent = '⌂ Home';
     document.body.classList.remove('hide-ui');
     document.title = 'Done · Frogue Interval Timer';
     flash(); cues.done();
@@ -2000,7 +2165,9 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     document.body.dataset.phase = 'idle';
     document.body.dataset.brk = ''; clearTimeout(brkT); hideRoundDone();
     document.title = 'Frogue Interval Timer';
-    document.body.classList.remove('hide-ui');
+    document.body.classList.remove('hide-ui', 'last3');
+    $('stopBtn').textContent = '⏹ Stop';
+    $('doneStats').hidden = true;
     $('timer').classList.remove('is-done', 'paused');
     show(sync.role === 'display' ? 'display' : 'setup');
     releaseWake();
