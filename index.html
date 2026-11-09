@@ -744,6 +744,52 @@
     .titlebar .scrbtns button .ic { font-size: 22px; }
   }
 
+  /* =========================================================================
+     Settings panel + tidier workout row (Nov 2026)
+     ========================================================================= */
+  .wkbar #wkName { display: none; }
+  .wkbar.renaming #wkName { display: block; flex: 1 1 220px; }
+  .wkbar.renaming #wkSelect { display: none; }
+  .setpanel { position: fixed; inset: 0; z-index: 50; display: flex; justify-content: flex-end; background: rgba(0,0,0,.55); }
+  .setpanel[hidden] { display: none !important; }
+  .setcard { width: min(460px, 100%); height: 100%; display: flex; flex-direction: column; background: #151a22; border-left: 1px solid rgba(255,255,255,.12);
+             padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) 0; overflow-y: auto; }
+  .sethead { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .sethead h3 { font-size: 26px; font-weight: 800; }
+  .setdone { min-height: 48px; padding: 0 22px; font-size: 17px; font-weight: 800; background: #12b76a; color: #fff; }
+  .setdone:hover { background: #32d583; }
+  .setbody { padding: 16px 20px; display: flex; flex-direction: column; gap: 18px; flex: 1 0 auto; }
+  .setsec { display: flex; flex-direction: column; gap: 8px; }
+  .setsec h4 { font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .setbox { background: var(--panel); border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 12px; }
+  .setpanel .soundrow { display: grid; grid-template-columns: 48px minmax(0, 1fr) auto; gap: 12px; font-size: 16px; }
+  .setpanel .soundrow button { width: 48px; height: 48px; padding: 0; font-size: 20px; }
+  .setpanel .soundrow input[type=range] { width: 100%; }
+  .setpanel .setwide, .set2 button { min-height: 48px; font-size: 16px; font-weight: 700; }
+  .set2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .setpanel .toggle { font-size: 16px; min-height: 44px; }
+  .setpanel .wakeinfo { text-align: left; margin: 0; font-size: 14px; }
+  .setpanel .wakeinfo:empty { display: none; }
+  .setnote { font-size: 14px; color: var(--muted); line-height: 1.4; }
+  .settips { list-style: none; font-size: 15px; color: var(--muted); line-height: 1.7; }
+  .setcredit { padding: 16px 20px 20px; font-size: 13px; }
+  @media (max-width: 700px) {
+    .setcard { width: 100%; border-left: 0; }
+    .wkbar #wkRename { display: none; }
+    .wkbar.renaming #wkName { flex: 1 1 0; order: 0; }
+    .titlebar .scrbtns #setBtn { width: 48px; min-width: 48px; height: 48px; min-height: 48px; padding: 0; }
+    .titlebar .scrbtns #setBtn span:not(.ic) { display: none; }
+  }
+  /* 360-wide phones: three title buttons leave little room, so tighten the gaps and Frogue a touch */
+  @media (max-width: 400px) {
+    .titlebar { gap: 6px; }
+    .titlebar .scrbtns { gap: 4px; }
+    #setup .brand { gap: 6px; }
+    #setup .brand .brandfrog { width: 48px; }
+    #setup h1 .nm2 { letter-spacing: .08em; font-size: 11px; white-space: nowrap; }
+    #setupSay:not(:empty) { font-size: 13px; padding: 5px 10px; }
+  }
+
 </style>
 </head>
 <body data-phase="idle">
@@ -761,6 +807,7 @@
         <button id="scrDisplay" aria-label="Use as TV" title="Make this screen the TV: it shows the timer and plays the sound"><span class="ic">📺</span> <span>Use as TV</span></button>
         <button id="scrPair" aria-label="Control a TV" title="Run the timer on a TV from this phone"><span class="ic">📱</span> <span>Control a TV</span></button>
         <button id="scrUnpair" class="del" title="Stop controlling the TV" hidden>Disconnect</button>
+        <button id="setBtn" aria-label="Settings" title="Sound, screen, backup and tips" aria-haspopup="dialog" aria-expanded="false"><span class="ic">⚙️</span> <span>Settings</span></button>
       </div>
     </div>
     <div class="scr" id="scrBox" hidden>
@@ -768,35 +815,32 @@
       <div class="wakeinfo" id="scrNote" hidden></div>
     </div>
 
-    <h2>Saved workouts</h2>
+    <h2>Workout</h2>
     <div class="wkbar">
       <select id="wkSelect" aria-label="Choose workout"></select>
-      <input id="wkName" type="text" maxlength="40" placeholder="Workout name" aria-label="Workout name">
+      <input id="wkName" type="text" maxlength="40" placeholder="Workout name" aria-label="Workout name" enterkeyhint="done">
       <button id="wkNew" title="Create a new workout">＋ New</button>
+      <button id="wkRename" title="Rename this workout">✎ Rename</button>
       <button id="wkCopy" title="Duplicate this workout">⧉ Copy</button>
       <button id="wkShare" title="Share this workout with a friend">🔗 Share</button>
       <button id="wkDel" class="del" title="Delete this workout">🗑 Delete</button>
-      <button id="wkExport" title="Download all your workouts as a backup file">⬇ Export</button>
-      <button id="wkImport" title="Add workouts from a backup file">⬆ Import</button>
       <button id="wkMore" aria-haspopup="menu" aria-expanded="false" aria-label="More workout actions" title="More">⋯</button>
       <div id="wkMenu" role="menu" hidden>
+        <button role="menuitem" data-do="wkRename">✎ Rename</button>
         <button role="menuitem" data-do="wkCopy">⧉ Copy workout</button>
         <button role="menuitem" data-do="wkShare">🔗 Share link</button>
-        <button role="menuitem" data-do="wkExport">⬇ Export all</button>
-        <button role="menuitem" data-do="wkImport">⬆ Import</button>
         <button role="menuitem" class="del" data-do="wkDel">🗑 Delete workout</button>
       </div>
     </div>
     <input id="wkFile" type="file" accept="application/json,.json" hidden>
 
-    <h2>Workout settings</h2>
     <div class="globals">
       <div class="g" title="How many times the whole list repeats"><div class="lbl">Rounds</div>
         <div class="steps"><button data-act="g" data-k="rounds" data-d="-1" data-hold>−</button><input class="val tin" id="v-rounds" data-k="rounds" type="text" inputmode="numeric" aria-label="Number of rounds"><button data-act="g" data-k="rounds" data-d="1" data-hold>+</button></div></div>
-      <div class="g"><div class="lbl">Rest between rounds</div>
-        <div class="steps"><button data-act="g" data-k="roundRest" data-d="-5" data-hold>−</button><input class="val tin" id="v-roundRest" data-k="roundRest" type="text" inputmode="numeric" aria-label="Rest between rounds (seconds or m:ss)" title="Type seconds (90) or minutes:seconds (1:30)"><button data-act="g" data-k="roundRest" data-d="5" data-hold>+</button></div></div>
-      <div class="g"><div class="lbl">Get ready countdown</div>
-        <div class="steps"><button data-act="g" data-k="prep" data-d="-5" data-hold>−</button><input class="val tin" id="v-prep" data-k="prep" type="text" inputmode="numeric" aria-label="Get ready countdown (seconds or m:ss)" title="Type seconds (10) or minutes:seconds (0:10)"><button data-act="g" data-k="prep" data-d="5" data-hold>+</button></div></div>
+      <div class="g"><div class="lbl">Round break</div>
+        <div class="steps"><button data-act="g" data-k="roundRest" data-d="-5" data-hold>−</button><input class="val tin" id="v-roundRest" data-k="roundRest" type="text" inputmode="numeric" aria-label="Round break (seconds or m:ss)" title="Type seconds (90) or minutes:seconds (1:30)"><button data-act="g" data-k="roundRest" data-d="5" data-hold>+</button></div></div>
+      <div class="g"><div class="lbl">Get ready</div>
+        <div class="steps"><button data-act="g" data-k="prep" data-d="-5" data-hold>−</button><input class="val tin" id="v-prep" data-k="prep" type="text" inputmode="numeric" aria-label="Get ready (seconds or m:ss)" title="Type seconds (10) or minutes:seconds (0:10)"><button data-act="g" data-k="prep" data-d="5" data-hold>+</button></div></div>
     </div>
 
     <div class="exhead"><h2>Exercises (in order)</h2><button id="quickToggle" class="qtog" aria-expanded="false">Quick set ▸</button></div>
@@ -811,16 +855,7 @@
     <div id="exList"></div>
     <button class="addbtn" data-act="add">＋ Add exercise</button>
 
-    <div class="soundrow">
-      <button id="muteBtn" title="Mute / unmute (M)" aria-label="Mute or unmute sound">🔊</button>
-      <input type="range" id="vol" min="0" max="100" step="5" aria-label="Volume">
-      <span id="volPct"></span>
-      <button id="testSound" title="Play the start-of-interval sound">▶ Test sound</button>
-    </div>
-
-    <label class="toggle"><input type="checkbox" id="wakeToggle" checked><span class="sw"></span><span>Keep screen awake during workouts</span></label>
-    <div class="wakeinfo" id="wakeStatus"></div>
-    <div class="hint">Hold a +/− button to change faster · Tap a time to type it · Double-tap the timer to pause</div>
+    <div class="hint">Hold +/− to go faster · Tap a time to type it</div>
     <div class="credit">A Bouncy Production · Made for Haz</div>
 
     <div class="startbar">
@@ -838,6 +873,52 @@
     </div>
   </div>
 </section>
+
+<!-- SETTINGS (from the ⚙ on the setup screen): app-wide things you set once -->
+<div id="setPanel" class="setpanel" role="dialog" aria-modal="true" aria-labelledby="setTitle" hidden>
+  <div class="setcard">
+    <div class="sethead"><h3 id="setTitle">Settings</h3><button id="setDone" class="setdone">Done</button></div>
+    <div class="setbody">
+      <section class="setsec" aria-labelledby="setSnd">
+        <h4 id="setSnd">Sound</h4>
+        <div class="setbox">
+          <div class="soundrow">
+            <button id="muteBtn" title="Mute / unmute (M)" aria-label="Mute or unmute sound">🔊</button>
+            <input type="range" id="vol" min="0" max="100" step="5" aria-label="Volume">
+            <span id="volPct"></span>
+          </div>
+          <button id="testSound" class="setwide" title="Play the start-of-interval sound">▶ Test sound</button>
+        </div>
+      </section>
+      <section class="setsec" aria-labelledby="setScr">
+        <h4 id="setScr">Screen</h4>
+        <div class="setbox">
+          <label class="toggle"><input type="checkbox" id="wakeToggle" checked><span class="sw"></span><span>Keep screen awake during workouts</span></label>
+          <div class="wakeinfo" id="wakeStatus"></div>
+        </div>
+      </section>
+      <section class="setsec" aria-labelledby="setBak">
+        <h4 id="setBak">Backup</h4>
+        <div class="setbox">
+          <div class="setnote">Save all your workouts to a file, or bring them onto another phone.</div>
+          <div class="set2">
+            <button id="wkExport" title="Download all your workouts as a backup file">⬇ Export all</button>
+            <button id="wkImport" title="Add workouts from a backup file">⬆ Import</button>
+          </div>
+        </div>
+      </section>
+      <section class="setsec" aria-labelledby="setTips">
+        <h4 id="setTips">Tips</h4>
+        <ul class="settips">
+          <li>Hold a +/− button to change faster</li>
+          <li>Tap a time to type it</li>
+          <li>Double-tap the timer to pause</li>
+        </ul>
+      </section>
+    </div>
+    <div class="credit setcredit">A Bouncy Production · Made for Haz</div>
+  </div>
+</div>
 
 <!-- TV DISPLAY (pairing screen) -->
 <section id="display" class="screen">
@@ -1195,7 +1276,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     if (last && why) {
       const m = last.querySelectorAll('.mini')[1];
       m.classList.add('off'); m.querySelector('.lbl').textContent = why;
-      m.title = cfg.rounds <= 1 ? 'Only one round, so there is nothing to rest before.' : 'The round break replaces this rest. Set “Rest between rounds” to 0:00 to use this one instead.';
+      m.title = cfg.rounds <= 1 ? 'Only one round, so there is nothing to rest before.' : 'The round break replaces this rest. Set “Round break” to 0:00 to use this one instead.';
       m.querySelectorAll('button, input').forEach((x) => { x.disabled = true; });
     }
     if (last) updateExVals(rows.length - 1);
@@ -1462,6 +1543,14 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     renderWorkoutBar(); renderGlobals(); renderExercises();
   }
   $('wkSelect').addEventListener('change', (e) => switchTo(e.target.value));
+  // Rename: the name box swaps in for the workout picker until you're done typing
+  function renaming(on) {
+    document.querySelector('.wkbar').classList.toggle('renaming', on);
+    if (on) { $('wkName').value = cfg.name || ''; $('wkName').focus(); $('wkName').select(); }
+  }
+  $('wkRename').addEventListener('click', () => renaming(true));
+  $('wkName').addEventListener('blur', () => renaming(false));
+  $('wkName').addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); $('wkName').blur(); } });
   $('wkName').addEventListener('input', (e) => {
     cfg.name = e.target.value;
     const opt = $('wkSelect').selectedOptions[0];
@@ -1473,7 +1562,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     store.workouts[id] = { name: 'New workout', prep: 10, rounds: 3, roundRest: 60,
                            exercises: [{ name: '', work: 40, rest: 20 }] };
     switchTo(id);
-    $('wkName').focus(); $('wkName').select();
+    renaming(true);
   });
   $('wkCopy').addEventListener('click', () => {
     const id = newId();
@@ -1487,7 +1576,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     if (ids.length <= 1) return;
     const v = await openDialog({
       title: `Delete "${wkLabel(cfg)}"?`, mood: 'worry', cancel: 'no',
-      body: "This can't be undone. (Tip: Export first if you want a backup.)",
+      body: "This can't be undone. (Tip: Export it from ⚙ Settings first if you want a backup.)",
       buttons: [{ label: 'Keep it', value: 'no', focus: true }, { label: 'Delete workout', kind: 'danger', value: 'yes' }],
     });
     if (v !== 'yes') return;
@@ -3010,11 +3099,23 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   // for the Fire TV app: Back key = leave a dialog / stop prompt; false = nothing to do (the app may exit)
   window.frogueTvBack = () => {
     if (dlgOpen()) { closeDialog(dlgCancel); return true; }
+    if (setOpen()) { settings(false); return true; }
     if (active) { askStop(); return true; }
     return false;
   };
 
   /* ---------- Phone builder: ⋯ menu and Quick set ---------- */
+  /* Settings panel (⚙): sound, keep awake, backup, tips */
+  const setPanel = $('setPanel');
+  const setOpen = () => !setPanel.hidden;
+  function settings(on) {
+    setPanel.hidden = !on;
+    $('setBtn').setAttribute('aria-expanded', on ? 'true' : 'false');
+    if (on) $('setDone').focus(); else $('setBtn').focus();
+  }
+  $('setBtn').addEventListener('click', () => settings(true));
+  $('setDone').addEventListener('click', () => settings(false));
+  setPanel.addEventListener('click', (e) => { if (e.target === setPanel) settings(false); }); // tap outside the card
   function menuOpen(on) { $('wkMenu').hidden = !on; $('wkMore').setAttribute('aria-expanded', on ? 'true' : 'false'); }
   $('wkMore').addEventListener('click', (e) => { e.stopPropagation(); menuOpen($('wkMenu').hidden); });
   $('wkMenu').addEventListener('click', (e) => { const b = e.target.closest('button[data-do]'); if (!b) return; menuOpen(false); $(b.dataset.do).click(); });
@@ -3044,6 +3145,17 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
       }
+      return;
+    }
+    if (setOpen()) {
+      if (e.code === 'Escape') { e.preventDefault(); settings(false); }
+      else if (e.key === 'Tab') { // keep keyboard focus inside Settings
+        const f = [...setPanel.querySelectorAll('button, input')].filter((x) => !x.disabled && x.offsetParent);
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+      else if ((e.key === 'm' || e.key === 'M') && e.target.tagName !== 'INPUT') toggleMute();
       return;
     }
     const tag = e.target && e.target.tagName;
