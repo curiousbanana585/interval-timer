@@ -773,7 +773,43 @@
   .setnote { font-size: 14px; color: var(--muted); line-height: 1.4; }
   .settips { list-style: none; font-size: 15px; color: var(--muted); line-height: 1.7; }
   .setcredit { padding: 16px 20px 20px; font-size: 13px; }
+  /* Loops (purple Repeat box) and the drag grip */
+  #exList { position: relative; }
+  .grip { flex: none; display: flex; align-items: center; justify-content: center; width: 28px; min-height: 44px; align-self: stretch; margin-left: -.6vmin;
+          color: rgba(255,255,255,.45); cursor: grab; touch-action: none; -webkit-user-select: none; user-select: none; }
+  .grip:hover { color: #fff; }
+  .ex.dragging { position: relative; z-index: 30; background: #253040; box-shadow: 0 0 0 2px #32d583, 0 16px 32px rgba(0,0,0,.6); }
+  .ex.dragging .grip { color: #32d583; }
+  body.is-dragging, body.is-dragging * { cursor: grabbing !important; -webkit-user-select: none; user-select: none; }
+  .dropline { position: absolute; left: 0; right: 0; height: 4px; margin-top: -2px; border-radius: 2px; background: #32d583; box-shadow: 0 0 10px #32d583; pointer-events: none; z-index: 20; }
+  .dropline.inloop { background: #b692f6; box-shadow: 0 0 10px #b692f6; }
+  .loopbox { width: 100%; display: flex; flex-direction: column; gap: 1vmin; border: 2px solid #b692f6; border-radius: 2vmin; background: rgba(182,146,246,.08); padding: 1vmin; }
+  .lprows { display: flex; flex-direction: column; gap: 1.2vmin; }
+  .lphead { display: flex; align-items: center; gap: 1.2vmin; padding: 0 .4vmin; }
+  .lpt { margin-right: auto; font-size: clamp(14px, 2.2vmin, 22px); font-weight: 800; color: #d6c6ff; }
+  .lphead .steps button { width: 44px; height: 44px; font-size: 18px; }
+  .lphead .lpn { min-width: 2.2em; font-size: clamp(18px, 3vmin, 30px); }
+  .lphead .lpx { width: 44px; height: 44px; font-size: 16px; }
+  .lpcap { font-size: clamp(12px, 1.9vmin, 18px); color: #d6c6ff; padding: 0 .6vmin .2vmin; }
+  .ex.inloop .exnum { background: rgba(182,146,246,.32); }
+  .exact .lpbtn { color: #e9e0ff; box-shadow: inset 0 0 0 2px rgba(182,146,246,.7); }
+  .exact .lpbtn .tx { display: none; }
+  .exact .lpbtn[data-act="unloop"] { background: #b692f6; color: #1b1035; box-shadow: none; }
+  .setchip { display: inline-block; margin-left: .3em; padding: .05em .7em; border-radius: 99px; background: #b692f6; color: #1b1035; font-weight: 900; white-space: nowrap; }
+  .seg.lp { box-shadow: inset 0 4px 0 #b692f6; }
+  .seg.lp.current { box-shadow: inset 0 4px 0 #b692f6, 0 0 0 2px rgba(255,255,255,.7); }
+  .dw-tile.lp { box-shadow: inset 0 0 0 .3vmin #b692f6; }
+  .dw-tile .lpbadge { margin-left: auto; flex: none; padding: .1em .6em; border-radius: 99px; background: #b692f6; color: #1b1035; font-weight: 900; font-size: clamp(13px, 1.9vmin, 30px); white-space: nowrap; }
   @media (max-width: 700px) {
+    .ex { grid-template-columns: 22px 32px minmax(0, 1fr) auto; }
+    .ex .grip { grid-column: 1; width: 22px; margin-left: -4px; }
+    .ex .exnum { grid-column: 2; }
+    .ex .exname { grid-column: 3; }
+    .ex .exsum { grid-column: 4; }
+    .loopbox { padding: 8px; gap: 8px; border-radius: 16px; }
+    .lprows { gap: 8px; }
+    .ex.open .exact .lpbtn { width: auto; padding: 0 12px; margin-right: auto; }
+    .ex.open .exact .lpbtn .tx { display: inline; }
     .setcard { width: 100%; border-left: 0; }
     .wkbar #wkRename { display: none; }
     .wkbar.renaming #wkName { flex: 1 1 0; order: 0; }
@@ -788,6 +824,12 @@
     #setup .brand .brandfrog { width: 48px; }
     #setup h1 .nm2 { letter-spacing: .08em; font-size: 11px; white-space: nowrap; }
     #setupSay:not(:empty) { font-size: 13px; padding: 5px 10px; }
+    .loopbox { padding: 6px; }
+    .loopbox .ex { padding: 8px 6px; }
+    .ex.open .exact { gap: 6px; }
+    .ex.open .exact button { width: 40px; }
+    .ex.open .exact .lpbtn { white-space: nowrap; padding: 0 10px; }
+    .loopbox .ex.open .mini .steps { grid-template-columns: 34px minmax(0, 1fr) 34px; }
   }
 
 </style>
@@ -1221,35 +1263,69 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   function cleanWorkout(w) {
     if (!w || typeof w !== 'object' || !Array.isArray(w.exercises)) return null;
     const num = (v, k, d) => { v = Math.round(Number(v)); return Number.isFinite(v) ? clamp(v, k) : d; };
-    const exercises = w.exercises.slice(0, 30).map((e) => ({
-      name: String((e && e.name) || '').slice(0, 40),
-      work: num(e && e.work, 'work', 40),
-      rest: num(e && e.rest, 'rest', 20),
-    }));
+    const exercises = w.exercises.slice(0, 30).map((e) => {
+      const x = { name: String((e && e.name) || '').slice(0, 40), work: num(e && e.work, 'work', 40), rest: num(e && e.rest, 'rest', 20) };
+      if (e && Number.isInteger(e.g) && e.g > 0 && e.g < 1000) x.g = e.g;
+      return x;
+    });
     if (!exercises.length) return null;
-    return {
+    const c = {
       name: String(w.name || '').slice(0, 40),
       prep: num(w.prep, 'prep', 10),
       rounds: num(w.rounds, 'rounds', 3),
       roundRest: num(w.roundRest, 'roundRest', 60),
       exercises,
     };
+    if (w.loops && typeof w.loops === 'object') c.loops = w.loops;
+    return tidyLoops(c);
   }
+
+  /* ---------- Loops: a run of exercises played N times in a row inside each round ----------
+     Exercises in a loop share a number, ex.g; how many times it plays is w.loops[g]. A loop's
+     exercises always sit next to each other in the list. Rest-after works as usual inside a loop,
+     including between repeats. Workouts without loops are exactly as before. */
+  const MAX_LOOP = 20;
+  const loopTimes = (c, g) => Math.max(2, Math.min(MAX_LOOP, Math.round(Number(c.loops && c.loops[g])) || 2));
+  function tidyLoops(c) {                            // one unbroken run per loop; forget loops with nobody in them
+    const seen = new Set(); let prev = null;
+    c.exercises.forEach((e) => {
+      if (e.g == null) { prev = null; return; }
+      if (e.g !== prev && seen.has(e.g)) { delete e.g; prev = null; return; }   // a stray second run drops out of the loop
+      seen.add(e.g); prev = e.g;
+    });
+    const loops = {};
+    [...seen].sort((a, b) => a - b).forEach((g) => { loops[g] = loopTimes(c, g); });
+    if (seen.size) c.loops = loops; else delete c.loops;
+    return c;
+  }
+  function playOrder(c) {                            // one round, in play order: exercise index (+ set number inside a loop)
+    const out = [], ex = c.exercises;
+    for (let i = 0; i < ex.length;) {
+      let j = i + 1;
+      if (ex[i].g != null) while (j < ex.length && ex[j].g === ex[i].g) j++;
+      const t = ex[i].g != null ? loopTimes(c, ex[i].g) : 1;
+      for (let s = 1; s <= t; s++) for (let k = i; k < j; k++) out.push(t > 1 ? { i: k, set: s, sets: t } : { i: k });
+      i = j;
+    }
+    return out;
+  }
+  const loopCount = (c) => Object.keys(c.loops || {}).length;
 
   function buildPhases(c) {
     const p = [];
-    const n = c.exercises.length;
+    const steps = playOrder(c), n = steps.length;
     if (c.prep > 0) p.push({ type: 'prep', dur: c.prep, xi: -1 });
     for (let r = 1; r <= c.rounds; r++) {
-      for (let i = 0; i < n; i++) {
-        const ex = c.exercises[i];
-        p.push({ type: 'work', dur: ex.work, name: exName(c, i), round: r, ex: i + 1, xi: i });
-        const lastEx = i === n - 1, lastRound = r === c.rounds;
+      for (let k = 0; k < n; k++) {
+        const i = steps[k].i, ex = c.exercises[i];
+        const lp = steps[k].sets ? { set: steps[k].set, sets: steps[k].sets } : {};
+        p.push(Object.assign({ type: 'work', dur: ex.work, name: exName(c, i), round: r, ex: i + 1, xi: i }, lp));
+        const lastEx = k === n - 1, lastRound = r === c.rounds;
         if (!lastEx) {
-          if (ex.rest > 0) p.push({ type: 'rest', dur: ex.rest, round: r, upNext: exName(c, i + 1), xi: i });
+          if (ex.rest > 0) p.push(Object.assign({ type: 'rest', dur: ex.rest, round: r, upNext: exName(c, steps[k + 1].i), xi: i }, lp));
         } else if (!lastRound) {
-          if (c.roundRest > 0) p.push({ type: 'rest', dur: c.roundRest, round: r, roundBreak: true, upNext: exName(c, 0), xi: i });
-          else if (ex.rest > 0) p.push({ type: 'rest', dur: ex.rest, round: r, upNext: exName(c, 0), xi: i });   // no round break set: the last exercise's own rest is used
+          if (c.roundRest > 0) p.push({ type: 'rest', dur: c.roundRest, round: r, roundBreak: true, upNext: exName(c, steps[0].i), xi: i });
+          else if (ex.rest > 0) p.push(Object.assign({ type: 'rest', dur: ex.rest, round: r, upNext: exName(c, steps[0].i), xi: i }, lp));   // no round break set: the last exercise's own rest is used
         }
       }
     }
@@ -1264,7 +1340,11 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     renderSummary();
   }
   /* the last exercise's "rest after" only matters between rounds, and only when there is no round break */
-  const lastRestOff = () => (cfg.rounds <= 1 ? 'Not used' : cfg.roundRest > 0 ? 'Round break used' : '');
+  const lastRestOff = () => {
+    const last = cfg.exercises[cfg.exercises.length - 1];
+    if (last && last.g != null) return '';                 // in a loop: its rest runs between repeats
+    return cfg.rounds <= 1 ? 'Not used' : cfg.roundRest > 0 ? 'Round break used' : '';
+  };
   function markLastRest() {
     const rows = document.querySelectorAll('#exList .ex');
     rows.forEach((r) => {
@@ -1283,7 +1363,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   }
   function renderSummary() {
     const total = buildPhases(cfg).reduce((a, x) => a + x.dur, 0);
-    $('summary').innerHTML = `<b class="sum-t">${fmt(total)}</b> <span class="sum-d">${plural(cfg.exercises.length, 'exercise')} × ${plural(cfg.rounds, 'round')}<span class="sum-w"> · total ${fmt(total)}</span></span>`;
+    $('summary').innerHTML = `<b class="sum-t">${fmt(total)}</b> <span class="sum-d">${plural(cfg.exercises.length, 'exercise')} × ${plural(cfg.rounds, 'round')}${loopCount(cfg) ? ' · ' + plural(loopCount(cfg), 'loop') : ''}<span class="sum-w"> · total ${fmt(total)}</span></span>`;
     renderPreview();
   }
 
@@ -1291,10 +1371,30 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   function renderExercises() {
     const list = $('exList');
     list.innerHTML = '';
+    tidyLoops(cfg);
+    let box = null;                                   // the purple Repeat box we're filling, if any
     cfg.exercises.forEach((ex, i) => {
+      if (ex.g == null) box = null;
+      else if (!box || box.dataset.g !== String(ex.g)) {
+        box = document.createElement('div');
+        box.className = 'loopbox'; box.dataset.g = ex.g;
+        box.innerHTML = `
+          <div class="lphead">
+            <span class="lpt"><span aria-hidden="true">⟳</span> Repeat</span>
+            <div class="steps"><button data-act="lpd" data-g="${ex.g}" data-d="-1" aria-label="Fewer repeats">−</button><span class="val lpn"></span><button data-act="lpd" data-g="${ex.g}" data-d="1" aria-label="More repeats">+</button></div>
+            <button class="lpx" data-act="lpx" data-g="${ex.g}" aria-label="Remove this loop" title="Remove the loop (keeps the exercises)">✕</button>
+          </div>
+          <div class="lprows"></div>
+          <div class="lpcap"></div>`;
+        box.querySelector('.lpn').textContent = '×' + loopTimes(cfg, ex.g);
+        list.appendChild(box);
+      }
+      const inLoop = ex.g != null;
       const row = document.createElement('div');
-      row.className = 'ex';
+      row.className = 'ex' + (inLoop ? ' inloop' : '');
+      row.dataset.i = i;
       row.innerHTML = `
+        <span class="grip" aria-hidden="true" title="Drag to move"><svg viewBox="0 0 12 20" width="12" height="20" fill="currentColor"><circle cx="3" cy="3" r="2"/><circle cx="9" cy="3" r="2"/><circle cx="3" cy="10" r="2"/><circle cx="9" cy="10" r="2"/><circle cx="3" cy="17" r="2"/><circle cx="9" cy="17" r="2"/></svg></span>
         <div class="exnum">${i + 1}</div>
         <input class="exname" type="text" maxlength="40" placeholder="Exercise ${i + 1}" data-i="${i}">
         <button class="exsum" data-act="tog" data-i="${i}" aria-label="Show or hide times for exercise ${i + 1}"><span data-sum="${i}"></span><span class="chev">▸</span></button>
@@ -1311,6 +1411,9 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
             <button data-act="x" data-i="${i}" data-f="rest" data-d="5" data-hold>+</button>
           </div></div></div>
         <div class="exact">
+          ${inLoop
+            ? `<button class="lpbtn" data-act="unloop" data-i="${i}" title="Take this exercise out of the loop"><span aria-hidden="true">⟳</span><span class="tx"> Out of loop</span></button>`
+            : `<button class="lpbtn" data-act="loop" data-i="${i}" title="Loop this exercise (drag others in to loop them too)"><span aria-hidden="true">⟳</span><span class="tx"> Loop this</span></button>`}
           <button data-act="up" data-i="${i}" title="Move up">↑</button>
           <button data-act="down" data-i="${i}" title="Move down">↓</button>
           <button data-act="dup" data-i="${i}" title="Duplicate">⧉</button>
@@ -1318,14 +1421,25 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
         </div>`;
       row.querySelector('.exname').value = ex.name;
       if (i === openEx) row.classList.add('open');
-      list.appendChild(row);
+      (inLoop ? box.querySelector('.lprows') : list).appendChild(row);
       updateExVals(i);
     });
+    loopCaptions();
     markLastRest();
     // the "set every exercise to" fields start from the first exercise's times
     if (document.activeElement !== $('allWork')) $('allWork').value = fmt(cfg.exercises[0].work);
     if (document.activeElement !== $('allRest')) $('allRest').value = fmt(cfg.exercises[0].rest);
     renderSummary();
+  }
+  function loopCaptions() {                           // "Push-ups → Lunges, 3 times" under each Repeat box
+    document.querySelectorAll('#exList .loopbox').forEach((b) => {
+      const g = +b.dataset.g, idx = cfg.exercises.map((x, k) => (x.g === g ? k : -1)).filter((k) => k >= 0);
+      if (!idx.length) return;
+      const after = cfg.exercises[idx[idx.length - 1] + 1];
+      const t = loopTimes(cfg, g);
+      b.querySelector('.lpcap').textContent = idx.map((k) => exName(cfg, k)).join(' → ') + `, ${t} times` + (after ? `, then ${exName(cfg, idx[idx.length - 1] + 1)}` : '');
+      b.setAttribute('aria-label', `Loop: ${b.querySelector('.lpcap').textContent}`);
+    });
   }
   document.addEventListener('focusin', (e) => {
     if (e.target.classList && e.target.classList.contains('exname')) {
@@ -1402,6 +1516,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   $('exList').addEventListener('input', (e) => {
     if (e.target.classList.contains('exname')) {
       cfg.exercises[+e.target.dataset.i].name = e.target.value;
+      loopCaptions();
       save();
     }
   });
@@ -1473,7 +1588,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     };
     if (!compact) {
       ph.forEach((p, i) => {
-        const d = mk('seg ' + (p.roundBreak ? 'brk' : p.type), st[i], st[i] + p.dur);
+        const d = mk('seg ' + (p.roundBreak ? 'brk' : p.type) + (p.sets ? ' lp' : ''), st[i], st[i] + p.dur);
         d.dataset.x = p.xi;
         d.appendChild(document.createElement('i'));
         els.push(d);
@@ -1619,13 +1734,100 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     } else if (act === 'dup') {
       if (cfg.exercises.length >= 30) return;
       cfg.exercises.splice(i + 1, 0, Object.assign({}, cfg.exercises[i])); openEx = i + 1; renderExercises();
-    } else if (act === 'up' && i > 0) {
-      [cfg.exercises[i - 1], cfg.exercises[i]] = [cfg.exercises[i], cfg.exercises[i - 1]]; openEx = i - 1; renderExercises();
-    } else if (act === 'down' && i < cfg.exercises.length - 1) {
-      [cfg.exercises[i + 1], cfg.exercises[i]] = [cfg.exercises[i], cfg.exercises[i + 1]]; openEx = i + 1; renderExercises();
+    } else if (act === 'up' || act === 'down') {
+      openEx = stepEx(i, act === 'up' ? -1 : 1); renderExercises();
+    } else if (act === 'loop') {                                      // a new loop with just this exercise in it
+      const used = cfg.exercises.map((x) => x.g || 0);
+      const g = Math.max(0, ...used) + 1;
+      cfg.exercises[i].g = g; cfg.loops = Object.assign({}, cfg.loops, { [g]: 2 });
+      openEx = i; renderExercises();
+    } else if (act === 'unloop') {                                    // out of the loop; from the middle it's parked just after it
+      const ex = cfg.exercises, e = ex[i], g = e.g;
+      let a = i; while (a > 0 && ex[a - 1].g === g) a--;
+      let z = i; while (z + 1 < ex.length && ex[z + 1].g === g) z++;
+      delete e.g; openEx = i;
+      if (i !== a && i !== z) { ex.splice(i, 1); ex.splice(z, 0, e); openEx = z; }
+      renderExercises();
+    } else if (act === 'lpd') {
+      const g = +b.dataset.g;
+      cfg.loops = Object.assign({}, cfg.loops, { [g]: Math.max(2, Math.min(MAX_LOOP, loopTimes(cfg, g) + +b.dataset.d)) });
+      document.querySelectorAll(`#exList .loopbox[data-g="${g}"] .lpn`).forEach((el) => { el.textContent = '×' + cfg.loops[g]; });
+      loopCaptions(); renderSummary();
+    } else if (act === 'lpx') {
+      const g = +b.dataset.g;
+      cfg.exercises.forEach((x) => { if (x.g === g) delete x.g; });
+      renderExercises();
     }
     save();
   }
+  // ↑ / ↓ (keyboards, TV remotes, the open row): at the edge of a loop, the first press steps out of it
+  // (or into the loop next door) and the next press moves on past it
+  function stepEx(i, dir) {
+    const ex = cfg.exercises, e = ex[i], nb = ex[i + dir];
+    if (!nb) { if (e.g != null) delete e.g; return i; }
+    if (e.g != null && nb.g !== e.g) { delete e.g; return i; }
+    if (e.g == null && nb.g != null) { e.g = nb.g; return i; }
+    ex.splice(i, 1); ex.splice(i + dir, 0, e);
+    return i + dir;
+  }
+  /* ---------- Drag the ⠿ grip to reorder, and to move exercises into or out of a loop ----------
+     Only the grip starts a drag, so a swipe anywhere else on the list still scrolls. */
+  let drag = null;
+  $('exList').addEventListener('pointerdown', (e) => {
+    const grip = e.target.closest('.grip'), row = grip && grip.closest('.ex');
+    if (!row || drag || (e.pointerType === 'mouse' && e.button !== 0)) return;
+    e.preventDefault(); blurTin();
+    drag = { i: +row.dataset.i, row, id: e.pointerId, y0: e.clientY, y: e.clientY, s0: $('setup').scrollTop, to: null, g: null };
+    row.classList.add('dragging'); document.body.classList.add('is-dragging');
+    drag.line = document.createElement('div'); drag.line.className = 'dropline'; $('exList').appendChild(drag.line);
+    try { grip.setPointerCapture(e.pointerId); } catch (err) {}
+    dragAt(e.clientY);
+    drag.raf = requestAnimationFrame(dragScroll);
+  });
+  function dragAt(y) {
+    drag.y = y;
+    const list = $('exList'), lr = list.getBoundingClientRect();
+    drag.row.style.transform = `translateY(${y - drag.y0 + $('setup').scrollTop - drag.s0}px)`;
+    const rows = [...list.querySelectorAll('.ex')].filter((x) => x !== drag.row);
+    let to = rows.length, at = null;
+    for (let k = 0; k < rows.length; k++) {
+      const rr = rows[k].getBoundingClientRect();
+      if (y < rr.top + rr.height / 2) { to = k; at = rr.top - 5; break; }
+    }
+    if (at === null) { const last = rows[rows.length - 1]; at = last ? last.getBoundingClientRect().bottom + 5 : lr.top; }
+    let g = null;                                     // dropped inside a Repeat box = joins that loop
+    list.querySelectorAll('.loopbox').forEach((b) => { const br = b.getBoundingClientRect(); if (y >= br.top && y <= br.bottom) g = +b.dataset.g; });
+    drag.to = to; drag.g = g;
+    drag.line.style.top = (at - lr.top) + 'px';
+    drag.line.classList.toggle('inloop', g !== null);
+  }
+  function dragScroll() {                            // near the top, or near the START bar: scroll the list along
+    if (!drag) return;
+    const sc = $('setup'), bar = sc.querySelector('.startbar'), bottom = bar ? bar.getBoundingClientRect().top : innerHeight;
+    const before = sc.scrollTop;
+    if (drag.y < 90) sc.scrollTop -= 12; else if (drag.y > bottom - 50) sc.scrollTop += 12;
+    if (sc.scrollTop !== before) dragAt(drag.y);
+    drag.raf = requestAnimationFrame(dragScroll);
+  }
+  function dragEnd(keep) {
+    if (!drag) return;
+    const d = drag; drag = null;
+    cancelAnimationFrame(d.raf);
+    d.line.remove(); d.row.classList.remove('dragging'); d.row.style.transform = '';
+    document.body.classList.remove('is-dragging');
+    if (!keep || d.to === null) return;
+    const ex = cfg.exercises, e = ex.splice(d.i, 1)[0];
+    ex.splice(d.to, 0, e);
+    if (d.g !== null) e.g = d.g; else delete e.g;
+    openEx = openEx === d.i ? d.to : -1;
+    renderExercises(); save();
+  }
+  document.addEventListener('pointermove', (e) => { if (drag && e.pointerId === drag.id) { e.preventDefault(); dragAt(e.clientY); } }, { passive: false });
+  document.addEventListener('pointerup', (e) => { if (drag && e.pointerId === drag.id) dragEnd(true); });
+  document.addEventListener('pointercancel', (e) => { if (drag && e.pointerId === drag.id) dragEnd(false); });
+  window.addEventListener('blur', () => dragEnd(false));
+  document.addEventListener('keydown', (e) => { if (drag && e.key === 'Escape') dragEnd(false); });
+
   let holdT = null, holdI = null, touchB = null, touchAt = null, held = false;
   function stopHold() { clearTimeout(holdT); clearInterval(holdI); holdT = holdI = null; }
   function blurTin() { if (isTin(document.activeElement)) document.activeElement.blur(); }   // commit anything half-typed first
@@ -1808,7 +2010,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
         : msg('rest', ['Breathe… {next} is next!', 'Shake it out! {next} next.', 'Water break! {next} is next.'], { next: p.upNext, round: p.round, rounds: run.rounds }));
     }
     if (idx === lastWorkIdx) return say(msg('lastInterval', ['Last one! Give it everything!'], { exercise: p.name }));
-    if (run.rounds > 1 && p.round === run.rounds && p.ex === 1) return say(msg('lastRound', ['Last round — make it count!'], { exercise: p.name, round: p.round, rounds: run.rounds }));
+    if (run.rounds > 1 && p.round === run.rounds && p.ex === 1 && (p.set || 1) === 1) return say(msg('lastRound', ['Last round — make it count!'], { exercise: p.name, round: p.round, rounds: run.rounds }));
     if (!halfSaid && total > 0 && starts[idx] / total >= 0.5) { halfSaid = true; return say(msg('halfway', ['Halfway through the workout!'], { exercise: p.name })); }
     return say(msg('work', WORK_LINES, { exercise: p.name, round: p.round, rounds: run.rounds }));
   }
@@ -1938,7 +2140,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
         return;
       }
       el.className = 'nu-card';
-      el.innerHTML = `<small>Up next</small><b>${escH(labelFor(n))}</b><span>${fmt(n.dur)}</span>`;
+      el.innerHTML = `<small>Up next${n.sets ? ` · set ${n.set} of ${n.sets}` : ''}</small><b>${escH(labelFor(n))}</b><span>${fmt(n.dur)}</span>`;
       return;
     }
     el.textContent = nextText(i);
@@ -1962,6 +2164,10 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
       $('roundLabel').textContent = `${plural(run.rounds, 'round')} · ${plural(n, 'exercise')}`;
     } else if (p.type === 'work') {
       $('roundLabel').textContent = `Round ${p.round} of ${run.rounds} · Exercise ${p.ex} of ${n}`;
+      if (p.sets) {
+        const chip = document.createElement('span'); chip.className = 'setchip'; chip.textContent = `⟳ Set ${p.set} of ${p.sets}`;
+        $('roundLabel').append(' ', chip);
+      }
     } else {
       if (p.roundBreak) $('roundLabel').innerHTML = `<span aria-hidden="true">✓</span> Round ${p.round} of ${run.rounds} done`;
       else $('roundLabel').textContent = `Round ${p.round} of ${run.rounds}`;   // what's next is the line below
@@ -2455,14 +2661,14 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   };
   function encodeWorkout(w) {
     return '1.' + b64e(JSON.stringify({ n: w.name, p: w.prep, r: w.rounds, q: w.roundRest,
-      e: w.exercises.map((x) => [x.name, x.work, x.rest]) }));
+      e: w.exercises.map((x) => (x.g != null ? [x.name, x.work, x.rest, x.g] : [x.name, x.work, x.rest])), ...(w.loops ? { l: w.loops } : {}) }));
   }
   function decodeWorkout(code) {
     try {
       if (!code || code.length > 20000 || code.slice(0, 2) !== '1.') return null;
       const o = JSON.parse(b64d(code.slice(2)));
-      return cleanWorkout({ name: o.n, prep: o.p, rounds: o.r, roundRest: o.q,
-        exercises: (Array.isArray(o.e) ? o.e : []).map((a) => ({ name: (a || [])[0], work: (a || [])[1], rest: (a || [])[2] })) });
+      return cleanWorkout({ name: o.n, prep: o.p, rounds: o.r, roundRest: o.q, loops: o.l,
+        exercises: (Array.isArray(o.e) ? o.e : []).map((a) => ({ name: (a || [])[0], work: (a || [])[1], rest: (a || [])[2], g: (a || [])[3] })) });
     } catch (e) { return null; }
   }
   const shareLink = (w) => location.href.split('#')[0] + '#w=' + encodeWorkout(w);
@@ -2522,7 +2728,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     const ul = document.createElement('ul');
     w.exercises.slice(0, 8).forEach((x, i) => {
       const li = document.createElement('li');
-      li.textContent = `${exName(w, i)} — ${fmt(x.work)} work, ${fmt(x.rest)} rest`;
+      li.textContent = `${exName(w, i)} — ${fmt(x.work)} work, ${fmt(x.rest)} rest` + (x.g != null ? ` · ⟳ loop ×${loopTimes(w, x.g)}` : '');
       ul.appendChild(li);
     });
     if (w.exercises.length > 8) { const li = document.createElement('li'); li.textContent = `…and ${w.exercises.length - 8} more`; ul.appendChild(li); }
@@ -2973,6 +3179,11 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
       t.innerHTML = '<div class="tn"><span class="no"></span><span class="nm"></span></div><div class="tt"><span class="tw"></span><span></span></div>';
       t.querySelector('.no').textContent = i + 1;
       t.querySelector('.nm').textContent = exName(w, i);
+      if (e.g != null) {
+        t.classList.add('lp');
+        const b = document.createElement('span'); b.className = 'lpbadge'; b.textContent = '⟳×' + loopTimes(w, e.g);
+        t.querySelector('.tn').appendChild(b);
+      }
       t.querySelector('.tw').textContent = fmt(e.work) + ' work';
       const r = t.querySelector('.tt span:last-child');
       if (last) { r.className = last[0]; r.textContent = last[1]; } else { r.className = 'tr'; r.textContent = fmt(e.rest) + ' rest'; }
