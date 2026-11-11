@@ -832,6 +832,130 @@
     .loopbox .ex.open .mini .steps { grid-template-columns: 34px minmax(0, 1fr) 34px; }
   }
 
+
+  /* =========================================================================
+     Setup redesign (Nov 2026): glanceable list, settings tiles, edit sheets
+     ========================================================================= */
+  /* rounds / round break / get ready: three small tiles; tap one for the settings sheet */
+  .gtiles { width: 100%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .gt { min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px 6px; border-radius: 14px; }
+  .gt b { font-size: clamp(22px, 3.4vmin, 34px); font-weight: 900; line-height: 1.05; font-variant-numeric: tabular-nums; }
+  .gt span { font-size: clamp(12px, 1.8vmin, 17px); font-weight: 700; color: var(--muted); }
+  .gt-brk b { color: #c9b8ff; } .gt-prep b { color: #fdb022; }
+  .gt.off b { color: var(--muted); text-decoration: line-through; text-decoration-thickness: 2px; }
+
+  /* exercise rows: name + chips; the whole row opens its sheet, only the grip drags */
+  #exList { gap: 8px; }
+  .lprows { gap: 6px; }
+  #exList .ex { display: grid; grid-template-columns: 24px 34px minmax(0, 1fr); align-items: center; gap: 10px; padding: 4px 6px 4px 8px; min-height: 64px; flex-wrap: nowrap; border-radius: 16px; }
+  #exList .ex .grip { grid-column: 1; width: 24px; margin-left: 0; }
+  #exList .ex .exnum { grid-column: 2; width: 32px; height: 32px; font-size: 15px; }
+  #exList .ex.open { box-shadow: inset 0 0 0 3px #32d583; }
+  .exopen { grid-column: 3; min-width: 0; min-height: 56px; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; gap: 5px;
+            padding: 4px 6px; background: transparent; text-align: left; border-radius: 12px; }
+  .exopen:hover { background: rgba(255,255,255,.05); }
+  .exopen:active { transform: none; background: rgba(255,255,255,.08); }
+  .exn { max-width: 100%; font-size: clamp(17px, 2.6vmin, 24px); font-weight: 800; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .exn.unnamed { color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { padding: 2px 9px; border-radius: 99px; font-size: clamp(13px, 1.8vmin, 16px); font-weight: 800; line-height: 1.4; white-space: nowrap; }
+  .chip.cw { background: rgba(50,213,131,.16); color: #4ade80; }
+  .chip.cr { background: rgba(83,177,253,.16); color: #93c5fd; }
+  .chip.cb { background: rgba(201,184,255,.16); color: #c9b8ff; }
+  .chip.cn { background: rgba(255,255,255,.08); color: var(--muted); }
+  .loopbox { padding: 6px; gap: 6px; border-radius: 18px; }
+  .lphead { padding: 0 4px; }
+  .lphead .lpn { min-width: 2em; }
+  .addbtn { min-height: 52px; border-radius: 16px; color: #32d583; }
+
+  /* Quick set is a toggle on every width now, so the list starts higher */
+  .qtog { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; font-size: clamp(14px, 1.9vmin, 18px); font-weight: 800; background: transparent; color: #32d583; }
+  .qtog[aria-expanded="true"] { background: rgba(50,213,131,.16); }
+  .allrow { display: none; }
+  .allrow.open { display: flex; }
+  #wkSheet .g .lbl, #wkSheet .gd { text-align: left; }
+  .shcard:focus { outline: none; }
+  /* the sheets */
+  .sheet { position: fixed; inset: 0; z-index: 45; display: flex; flex-direction: column; justify-content: flex-end; background: rgba(0,0,0,.55); }
+  .sheet[hidden] { display: none !important; }
+  .shcard { max-height: 94%; overflow-y: auto; overscroll-behavior: contain; display: flex; flex-direction: column; gap: 14px;
+            background: #1b2029; border-radius: 24px 24px 0 0; box-shadow: 0 -10px 40px rgba(0,0,0,.5);
+            padding: 10px max(16px, env(safe-area-inset-right)) calc(14px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+  .sheet.in .shcard { animation: sh-up .22s ease-out; }
+  @keyframes sh-up { from { transform: translateY(40px); opacity: .4; } to { transform: none; opacity: 1; } }
+  .shgrab { align-self: center; width: 44px; height: 5px; border-radius: 3px; background: #3a4250; flex: none; }
+  .shhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .shtitle { font-size: 20px; font-weight: 900; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .shkick { font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+  .shdone { min-height: 48px; padding: 0 22px; font-size: 16px; font-weight: 900; background: #32d583; color: #052e16; border-radius: 12px; flex: none; }
+  .shdone:hover { background: #4ade80; }
+  .shfield { display: flex; flex-direction: column; gap: 6px; }
+  .shlbl { font-size: 12px; font-weight: 800; color: var(--muted); }
+  #exSheetName { height: 54px; min-width: 0; border: 2px solid rgba(255,255,255,.14); border-radius: 14px; background: #0e1116; color: inherit; padding: 0 14px; font: inherit; font-size: 20px; font-weight: 800; }
+  #exSheetName:focus { outline: none; border-color: #32d583; }
+  #exSheetBody { display: flex; flex-direction: column; gap: 14px; }
+  .shtimes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .shtimes .mini { min-width: 0; border-radius: 16px; padding: 10px; gap: 8px; }
+  .shtimes .shwork { background: rgba(50,213,131,.1); } .shtimes .shrest { background: rgba(83,177,253,.1); }
+  .shtimes .mini .lbl { font-size: 12px; font-weight: 900; letter-spacing: .08em; }
+  .shtimes .shwork .lbl { color: #4ade80; } .shtimes .shrest .lbl { color: #93c5fd; }
+  .shtimes .mini.off .lbl { color: var(--muted); }
+  .shtimes .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
+  .shtimes .steps .val { grid-column: 1 / -1; order: -1; width: 100%; min-width: 0; font-size: 34px; }
+  .shtimes .steps button { width: 100%; height: 48px; font-size: 22px; }
+  .shwhy { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.3; }
+  .shwhy:empty { display: none; }
+  .shloop { width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 10px 12px; border-radius: 16px; text-align: left;
+            background: transparent; box-shadow: inset 0 0 0 2px rgba(182,146,246,.6); }
+  .shloop b, .shlt b { font-size: 15px; font-weight: 800; color: #c9b8ff; }
+  .shloop span, .shlt > span { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .shloop b span, .shlt b span { font: inherit; color: inherit; }
+  .shloop.on { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 10px; background: rgba(182,146,246,.1); box-shadow: inset 0 0 0 2px #b692f6; }
+  .shlt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .shloop .steps button { width: 44px; height: 44px; font-size: 20px; }
+  .shloop .lpn { min-width: 2em; font-size: 20px; }
+  .shout { grid-column: 1 / -1; min-height: 44px; font-size: 14px; font-weight: 700; color: #e9e0ff; }
+  .shacts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+  .shacts button { min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 13px; font-weight: 700; border-radius: 14px; padding: 4px 2px; }
+  .shacts button span { font-size: 18px; }
+  .shacts button.del { background: rgba(180,35,24,.25); color: #fda29b; }
+  .shacts button.del:hover { background: #b42318; color: #fff; }
+  .shacts button:disabled { opacity: .35; cursor: default; }
+  /* workout settings rows: label | − | value | + */
+  #wkSheet .globals { display: flex; flex-direction: column; gap: 10px; }
+  #wkSheet .g { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 10px 12px; background: #0e1116; border-radius: 16px; }
+  #wkSheet .gl { min-width: 0; }
+  #wkSheet .g .lbl { font-size: 17px; font-weight: 800; color: #fff; }
+  #wkSheet .g-brk .lbl { color: #c9b8ff; } #wkSheet .g-prep .lbl { color: #fdb022; }
+  #wkSheet .g.off .lbl { color: var(--muted); }
+  #wkSheet .gd { font-size: 13px; font-weight: 600; color: var(--muted); }
+  #wkSheet .steps { display: grid; grid-template-columns: 52px 76px 52px; gap: 6px; align-items: center; }
+  #wkSheet .steps button { width: 52px; height: 52px; font-size: 22px; }
+  #wkSheet .steps .val { width: 100%; min-width: 0; font-size: 26px; grid-column: auto; order: 0; }
+  .shhint { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .shgap { flex: 1 0 0; }
+  .shfrog { display: flex; align-items: center; gap: 10px; }
+  .shfrog .mascot { width: 56px; }
+  .shbub { background: #fff; color: #1b2029; border-radius: 14px; padding: 8px 12px; font-size: 15px; font-weight: 800; line-height: 1.3; }
+  .shcredit { font-size: 11px; }
+  @media (max-height: 640px) { .shfrog { display: none; } }
+  @media (prefers-reduced-motion: reduce) { .sheet.in .shcard { animation: none; } }
+
+  /* wide screens: the sheet becomes a side panel, the list stays readable beside it */
+  @media (min-width: 900px) {
+    .sheet { flex-direction: row; justify-content: flex-end; background: rgba(0,0,0,.3); }
+    .shcard { width: 440px; max-height: none; height: 100%; border-radius: 0; border-left: 1px solid rgba(255,255,255,.12);
+              padding: calc(18px + env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom)) 20px; }
+    .sheet.in .shcard { animation-name: sh-in; }
+    @keyframes sh-in { from { transform: translateX(40px); opacity: .4; } to { transform: none; opacity: 1; } }
+    .shgrab { display: none; }
+    body.sheet-open #setup { padding-right: calc(3vmin + 440px); }   /* the list re-centres in the space left of the panel */
+  }
+  @media (max-width: 360px) {
+    .shacts button { font-size: 12px; }
+    #wkSheet .steps { grid-template-columns: 46px 64px 46px; }
+    #wkSheet .steps button { width: 46px; height: 48px; }
+  }
 </style>
 </head>
 <body data-phase="idle">
@@ -876,16 +1000,13 @@
     </div>
     <input id="wkFile" type="file" accept="application/json,.json" hidden>
 
-    <div class="globals">
-      <div class="g" title="How many times the whole list repeats"><div class="lbl">Rounds</div>
-        <div class="steps"><button data-act="g" data-k="rounds" data-d="-1" data-hold>−</button><input class="val tin" id="v-rounds" data-k="rounds" type="text" inputmode="numeric" aria-label="Number of rounds"><button data-act="g" data-k="rounds" data-d="1" data-hold>+</button></div></div>
-      <div class="g"><div class="lbl">Round break</div>
-        <div class="steps"><button data-act="g" data-k="roundRest" data-d="-5" data-hold>−</button><input class="val tin" id="v-roundRest" data-k="roundRest" type="text" inputmode="numeric" aria-label="Round break (seconds or m:ss)" title="Type seconds (90) or minutes:seconds (1:30)"><button data-act="g" data-k="roundRest" data-d="5" data-hold>+</button></div></div>
-      <div class="g"><div class="lbl">Get ready</div>
-        <div class="steps"><button data-act="g" data-k="prep" data-d="-5" data-hold>−</button><input class="val tin" id="v-prep" data-k="prep" type="text" inputmode="numeric" aria-label="Get ready (seconds or m:ss)" title="Type seconds (10) or minutes:seconds (0:10)"><button data-act="g" data-k="prep" data-d="5" data-hold>+</button></div></div>
+    <div class="gtiles">
+      <button class="gt" data-act="wk" aria-label="Rounds, round break and get ready"><b id="t-rounds"></b><span id="t-roundsL">rounds</span></button>
+      <button class="gt gt-brk" data-act="wk" aria-label="Rounds, round break and get ready"><b id="t-roundRest"></b><span>round break</span></button>
+      <button class="gt gt-prep" data-act="wk" aria-label="Rounds, round break and get ready"><b id="t-prep"></b><span>get ready</span></button>
     </div>
 
-    <div class="exhead"><h2>Exercises (in order)</h2><button id="quickToggle" class="qtog" aria-expanded="false">Quick set ▸</button></div>
+    <div class="exhead"><h2>Each round</h2><button id="quickToggle" class="qtog" aria-expanded="false">Quick set ▸</button></div>
     <div class="allrow">
       <div class="allhead">Set every exercise to</div>
       <div class="mini"><div class="lbl">Work</div>
@@ -897,8 +1018,39 @@
     <div id="exList"></div>
     <button class="addbtn" data-act="add">＋ Add exercise</button>
 
-    <div class="hint">Hold +/− to go faster · Tap a time to type it</div>
+    <div class="hint">Tap an exercise to change it · Drag ⠿ to reorder</div>
     <div class="credit">A Bouncy Production · Made for Haz</div>
+
+    <!-- Bottom sheets (a side panel on wide screens): workout settings, and one exercise -->
+    <div id="wkSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="wkSheetT" hidden>
+      <div class="shcard" tabindex="-1">
+        <div class="shgrab" aria-hidden="true"></div>
+        <div class="shhead"><h3 id="wkSheetT" class="shtitle">Workout</h3><button class="shdone" data-close>Done</button></div>
+    <div class="globals">
+      <div class="g"><div class="gl"><div class="lbl">Rounds</div><div class="gd">Times the list repeats</div></div>
+        <div class="steps"><button data-act="g" data-k="rounds" data-d="-1" data-hold aria-label="One fewer round">−</button><input class="val tin" id="v-rounds" data-k="rounds" type="text" inputmode="numeric" aria-label="Number of rounds"><button data-act="g" data-k="rounds" data-d="1" data-hold aria-label="One more round">+</button></div></div>
+      <div class="g g-brk"><div class="gl"><div class="lbl">Round break</div><div class="gd" id="gdBrk">Between rounds</div></div>
+        <div class="steps"><button data-act="g" data-k="roundRest" data-d="-5" data-hold aria-label="5 seconds shorter">−</button><input class="val tin" id="v-roundRest" data-k="roundRest" type="text" inputmode="numeric" aria-label="Round break (seconds or m:ss)" title="Type seconds (90) or minutes:seconds (1:30)"><button data-act="g" data-k="roundRest" data-d="5" data-hold aria-label="5 seconds longer">+</button></div></div>
+      <div class="g g-prep"><div class="gl"><div class="lbl">Get ready</div><div class="gd">Before the first exercise</div></div>
+        <div class="steps"><button data-act="g" data-k="prep" data-d="-5" data-hold aria-label="5 seconds shorter">−</button><input class="val tin" id="v-prep" data-k="prep" type="text" inputmode="numeric" aria-label="Get ready (seconds or m:ss)" title="Type seconds (10) or minutes:seconds (0:10)"><button data-act="g" data-k="prep" data-d="5" data-hold aria-label="5 seconds longer">+</button></div></div>
+    </div>
+        <div class="shhint">Tap a number to type it. Hold − or + to go faster.</div>
+        <div class="shgap"></div>
+        <div class="shfrog"><span class="mascot"></span><div class="shbub" id="wkSay"></div></div>
+        <div class="credit shcredit">A Bouncy Production · Made for Haz</div>
+      </div>
+    </div>
+    <div id="exSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="exSheetT" hidden>
+      <div class="shcard" tabindex="-1">
+        <div class="shgrab" aria-hidden="true"></div>
+        <div class="shhead"><h3 id="exSheetT" class="shkick"></h3><button class="shdone" data-close>Done</button></div>
+        <label class="shfield"><span class="shlbl">Name</span><input id="exSheetName" type="text" maxlength="40" enterkeyhint="done" autocomplete="off"></label>
+        <div id="exSheetBody"></div>
+        <div class="shgap"></div>
+        <div class="shfrog"><span class="mascot"></span><div class="shbub" id="exSay"></div></div>
+        <div class="credit shcredit">A Bouncy Production · Made for Haz</div>
+      </div>
+    </div>
 
     <div class="startbar">
       <div class="pv" id="pv" aria-hidden="true">
@@ -1336,6 +1488,14 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     $('v-rounds').value = cfg.rounds;
     $('v-roundRest').value = fmt(cfg.roundRest);
     $('v-prep').value = fmt(cfg.prep);
+    $('t-rounds').textContent = cfg.rounds;
+    $('t-roundsL').textContent = cfg.rounds === 1 ? 'round' : 'rounds';
+    $('t-roundRest').textContent = fmt(cfg.roundRest);
+    $('t-prep').textContent = fmt(cfg.prep);
+    const noBrk = cfg.rounds <= 1;                         // one round: nothing to break between
+    document.querySelector('.gt-brk').classList.toggle('off', noBrk);
+    document.querySelector('.g-brk').classList.toggle('off', noBrk);
+    $('gdBrk').textContent = noBrk ? 'Not used with 1 round' : 'Between rounds';
     markLastRest();
     renderSummary();
   }
@@ -1345,21 +1505,8 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     if (last && last.g != null) return '';                 // in a loop: its rest runs between repeats
     return cfg.rounds <= 1 ? 'Not used' : cfg.roundRest > 0 ? 'Round break used' : '';
   };
-  function markLastRest() {
-    const rows = document.querySelectorAll('#exList .ex');
-    rows.forEach((r) => {
-      const m = r.querySelectorAll('.mini')[1]; if (!m) return;
-      m.classList.remove('off'); m.removeAttribute('title'); m.querySelector('.lbl').textContent = 'Rest after';
-      m.querySelectorAll('button, input').forEach((x) => { x.disabled = false; });
-    });
-    const why = lastRestOff(), last = rows[rows.length - 1];
-    if (last && why) {
-      const m = last.querySelectorAll('.mini')[1];
-      m.classList.add('off'); m.querySelector('.lbl').textContent = why;
-      m.title = cfg.rounds <= 1 ? 'Only one round, so there is nothing to rest before.' : 'The round break replaces this rest. Set “Round break” to 0:00 to use this one instead.';
-      m.querySelectorAll('button, input').forEach((x) => { x.disabled = true; });
-    }
-    if (last) updateExVals(rows.length - 1);
+  function markLastRest() {                         // only the last exercise's chip (and its sheet) depend on the round settings
+    if (cfg.exercises.length) updateExVals(cfg.exercises.length - 1);
   }
   function renderSummary() {
     const total = buildPhases(cfg).reduce((a, x) => a + x.dur, 0);
@@ -1380,13 +1527,14 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
         box.className = 'loopbox'; box.dataset.g = ex.g;
         box.innerHTML = `
           <div class="lphead">
-            <span class="lpt"><span aria-hidden="true">⟳</span> Repeat</span>
+            <span class="lpt"><span aria-hidden="true">⟳</span> Loop · plays</span>
             <div class="steps"><button data-act="lpd" data-g="${ex.g}" data-d="-1" aria-label="Fewer repeats">−</button><span class="val lpn"></span><button data-act="lpd" data-g="${ex.g}" data-d="1" aria-label="More repeats">+</button></div>
             <button class="lpx" data-act="lpx" data-g="${ex.g}" aria-label="Remove this loop" title="Remove the loop (keeps the exercises)">✕</button>
           </div>
           <div class="lprows"></div>
           <div class="lpcap"></div>`;
-        box.querySelector('.lpn').textContent = '×' + loopTimes(cfg, ex.g);
+        box.querySelector('.lpn').textContent = loopTimes(cfg, ex.g) + '×';
+        box.querySelector('.lpn').dataset.lpn = ex.g;
         list.appendChild(box);
       }
       const inLoop = ex.g != null;
@@ -1396,36 +1544,14 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
       row.innerHTML = `
         <span class="grip" aria-hidden="true" title="Drag to move"><svg viewBox="0 0 12 20" width="12" height="20" fill="currentColor"><circle cx="3" cy="3" r="2"/><circle cx="9" cy="3" r="2"/><circle cx="3" cy="10" r="2"/><circle cx="9" cy="10" r="2"/><circle cx="3" cy="17" r="2"/><circle cx="9" cy="17" r="2"/></svg></span>
         <div class="exnum">${i + 1}</div>
-        <input class="exname" type="text" maxlength="40" placeholder="Exercise ${i + 1}" data-i="${i}">
-        <button class="exsum" data-act="tog" data-i="${i}" aria-label="Show or hide times for exercise ${i + 1}"><span data-sum="${i}"></span><span class="chev">▸</span></button>
-        <div class="exvals"><div class="mini"><div class="lbl">Work</div>
-          <div class="steps">
-            <button data-act="x" data-i="${i}" data-f="work" data-d="-5" data-hold>−</button>
-            <input class="val tin" type="text" inputmode="numeric" data-v="${i}-work" data-i="${i}" data-f="work" aria-label="Work time, exercise ${i + 1} (seconds or m:ss)" title="Type seconds (40) or minutes:seconds (1:30)">
-            <button data-act="x" data-i="${i}" data-f="work" data-d="5" data-hold>+</button>
-          </div></div>
-        <div class="mini"><div class="lbl">Rest after</div>
-          <div class="steps">
-            <button data-act="x" data-i="${i}" data-f="rest" data-d="-5" data-hold>−</button>
-            <input class="val tin" type="text" inputmode="numeric" data-v="${i}-rest" data-i="${i}" data-f="rest" aria-label="Rest time, exercise ${i + 1} (seconds or m:ss)" title="Type seconds (20) or minutes:seconds (0:20)">
-            <button data-act="x" data-i="${i}" data-f="rest" data-d="5" data-hold>+</button>
-          </div></div></div>
-        <div class="exact">
-          ${inLoop
-            ? `<button class="lpbtn" data-act="unloop" data-i="${i}" title="Take this exercise out of the loop"><span aria-hidden="true">⟳</span><span class="tx"> Out of loop</span></button>`
-            : `<button class="lpbtn" data-act="loop" data-i="${i}" title="Loop this exercise (drag others in to loop them too)"><span aria-hidden="true">⟳</span><span class="tx"> Loop this</span></button>`}
-          <button data-act="up" data-i="${i}" title="Move up">↑</button>
-          <button data-act="down" data-i="${i}" title="Move down">↓</button>
-          <button data-act="dup" data-i="${i}" title="Duplicate">⧉</button>
-          <button class="del" data-act="del" data-i="${i}" title="Remove">✕</button>
-        </div>`;
-      row.querySelector('.exname').value = ex.name;
+        <button class="exopen" data-act="edit" data-i="${i}"><span class="exn"></span><span class="chips" data-sum="${i}"></span></button>`;
       if (i === openEx) row.classList.add('open');
       (inLoop ? box.querySelector('.lprows') : list).appendChild(row);
       updateExVals(i);
     });
     loopCaptions();
     markLastRest();
+    if (openEx >= 0 && !$('exSheet').hidden) renderExSheet();
     // the "set every exercise to" fields start from the first exercise's times
     if (document.activeElement !== $('allWork')) $('allWork').value = fmt(cfg.exercises[0].work);
     if (document.activeElement !== $('allRest')) $('allRest').value = fmt(cfg.exercises[0].rest);
@@ -1441,21 +1567,142 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
       b.setAttribute('aria-label', `Loop: ${b.querySelector('.lpcap').textContent}`);
     });
   }
-  document.addEventListener('focusin', (e) => {
-    if (e.target.classList && e.target.classList.contains('exname')) {
-      openEx = +e.target.dataset.i;
-      document.querySelectorAll('#exList .ex').forEach((r, k) => r.classList.toggle('open', k === openEx));
-    }
-  });
+  const short = (t) => (t < 60 ? t + 's' : fmt(t));          // 40s, 1:30
   function updateExVals(i) {
-    if (!cfg.exercises[i]) return;                 // rows from the previous workout, about to be redrawn
+    const e = cfg.exercises[i];
+    if (!e) return;                                   // rows from the previous workout, about to be redrawn
+    const why = i === cfg.exercises.length - 1 && lastRestOff();
+    // the row: name + "40s work" / "20s rest" chips
+    const row = document.querySelector(`#exList .ex[data-i="${i}"]`);
+    if (row) {
+      const nm = exName(cfg, i);
+      row.querySelector('.exn').textContent = nm;
+      row.querySelector('.exn').classList.toggle('unnamed', !e.name.trim());
+      const rest = why === 'Round break used' ? '<span class="chip cb">then round break</span>'
+        : why ? ''                                    // one round: nothing comes after the last one
+        : e.rest > 0 ? `<span class="chip cr">${short(e.rest)} rest</span>` : '<span class="chip cn">no rest</span>';
+      row.querySelector('.chips').innerHTML = `<span class="chip cw">${short(e.work)} work</span>${rest}`;
+      row.querySelector('.exopen').setAttribute('aria-label', `Edit ${nm}: ${fmt(e.work)} work, ${why === 'Round break used' ? 'then the round break' : why ? 'last one' : e.rest > 0 ? fmt(e.rest) + ' rest' : 'no rest'}`);
+    }
+    // its sheet, if open
+    if (i !== openEx) return;
     const w = document.querySelector(`[data-v="${i}-work"]`), r = document.querySelector(`[data-v="${i}-rest"]`);
-    if (w) w.value = fmt(cfg.exercises[i].work);
-    if (r) r.value = fmt(cfg.exercises[i].rest);
-    const sm = document.querySelector(`[data-sum="${i}"]`);
-    const off = i === cfg.exercises.length - 1 && lastRestOff();
-    if (sm) sm.textContent = fmt(cfg.exercises[i].work) + ' · ' + (off ? '–' : fmt(cfg.exercises[i].rest));
+    if (w && document.activeElement !== w) w.value = fmt(e.work);
+    if (r && document.activeElement !== r) r.value = fmt(e.rest);
+    const m = $('exSheet').querySelector('.shrest');
+    if (m) {
+      m.classList.toggle('off', !!why);
+      m.querySelector('.lbl').textContent = why || 'Rest after';
+      m.querySelector('.shwhy').textContent = !why ? '' : cfg.rounds <= 1 ? 'Only one round, so there’s nothing to rest before.' : 'The round break replaces this rest. Set Round break to 0:00 to use this one.';
+      m.querySelectorAll('button, input').forEach((x) => { x.disabled = !!why; });
+    }
   }
+
+  /* ---------- Sheets: tap a row (or a settings tile) to edit it ----------
+     A bottom sheet on phones, a side panel on wide screens. Everything inside uses the same
+     data-act buttons as before, so hold-to-repeat, typing times and tap-vs-swipe all still apply. */
+  const EX_SAYS = ['Name it, time it, crush it.', 'I’ll count. You sweat.', 'Looking spicy!', 'Ooh, a good one.', 'Make it hurt (nicely).'];
+  const WK_SAYS = ['More rounds? Brave.', 'Breaks are for heroes too.', 'I’ll be here, counting.', 'Big plans. I like it.'];
+  const sheetOpen = () => !$('exSheet').hidden || !$('wkSheet').hidden;
+  let sheetFrom = null;                              // where focus goes back to on close
+  function showSheet(id) {
+    const el = $(id);
+    if (el.hidden) { sheetFrom = document.activeElement; el.hidden = false; el.classList.remove('in'); void el.offsetWidth; el.classList.add('in'); }
+    document.body.classList.add('sheet-open');
+  }
+  function hideSheet(id) {
+    const el = $(id); if (el.hidden) return;
+    blurTin(); el.hidden = true;
+    if (!sheetOpen()) document.body.classList.remove('sheet-open');
+  }
+  function renderExSheet() {
+    const i = openEx, e = cfg.exercises[i];
+    if (!e) { closeExSheet(); return; }
+    const n = cfg.exercises.length, g = e.g;
+    const keep = document.activeElement && $('exSheetBody').contains(document.activeElement) ? document.activeElement.dataset.act : null;
+    $('exSheetT').textContent = `Exercise ${i + 1} of ${n}`;
+    const nm = $('exSheetName');
+    if (document.activeElement !== nm) nm.value = e.name;
+    nm.placeholder = `Exercise ${i + 1}`;
+    nm.dataset.i = i;
+    const body = $('exSheetBody');
+    body.innerHTML = `
+      <div class="shtimes">
+        <div class="mini shwork"><div class="lbl">Work</div>
+          <div class="steps">
+            <button data-act="x" data-i="${i}" data-f="work" data-d="-5" data-hold aria-label="5 seconds less work">−</button>
+            <input class="val tin" type="text" inputmode="numeric" data-v="${i}-work" data-i="${i}" data-f="work" aria-label="Work time (seconds or m:ss)" title="Type seconds (40) or minutes:seconds (1:30)">
+            <button data-act="x" data-i="${i}" data-f="work" data-d="5" data-hold aria-label="5 seconds more work">+</button>
+          </div></div>
+        <div class="mini shrest"><div class="lbl">Rest after</div>
+          <div class="steps">
+            <button data-act="x" data-i="${i}" data-f="rest" data-d="-5" data-hold aria-label="5 seconds less rest">−</button>
+            <input class="val tin" type="text" inputmode="numeric" data-v="${i}-rest" data-i="${i}" data-f="rest" aria-label="Rest after (seconds or m:ss)" title="Type seconds (20) or minutes:seconds (0:20)">
+            <button data-act="x" data-i="${i}" data-f="rest" data-d="5" data-hold aria-label="5 seconds more rest">+</button>
+          </div><div class="shwhy"></div></div>
+      </div>
+      ${g != null ? `
+      <div class="shloop on">
+        <div class="shlt"><b><span aria-hidden="true">⟳</span> <span class="shmates"></span></b><span>Plays this many times each round</span></div>
+        <div class="steps"><button data-act="lpd" data-g="${g}" data-d="-1" data-hold aria-label="Play the loop fewer times">−</button><span class="val lpn" data-lpn="${g}">${loopTimes(cfg, g)}×</span><button data-act="lpd" data-g="${g}" data-d="1" data-hold aria-label="Play the loop more times">+</button></div>
+        <button class="shout" data-act="unloop" data-i="${i}">Take it out of the loop</button>
+      </div>` : `
+      <button class="shloop" data-act="loop" data-i="${i}"><b><span aria-hidden="true">⟳</span> Loop this</b><span>Play it more than once in a row. Drag others in to join it.</span></button>`}
+      <div class="shacts">
+        <button data-act="up" data-i="${i}" ${i === 0 && g == null ? 'disabled' : ''}><span aria-hidden="true">↑</span>Move up</button>
+        <button data-act="down" data-i="${i}" ${i === n - 1 && g == null ? 'disabled' : ''}><span aria-hidden="true">↓</span>Move down</button>
+        <button data-act="dup" data-i="${i}" ${n >= 30 ? 'disabled' : ''}><span aria-hidden="true">⧉</span>Duplicate</button>
+        <button class="del" data-act="del" data-i="${i}" ${n <= 1 ? 'disabled' : ''}><span aria-hidden="true">✕</span>Delete</button>
+      </div>`;
+    if (g != null) {
+      const mates = cfg.exercises.map((x, k) => (x.g === g && k !== i ? exName(cfg, k) : null)).filter(Boolean);
+      body.querySelector('.shmates').textContent = mates.length ? 'In a loop with ' + mates.join(', ') : 'Looped on its own';
+    }
+    updateExVals(i);
+    highlightExercise(i);
+    document.querySelectorAll('#exList .ex').forEach((r) => r.classList.toggle('open', +r.dataset.i === i));
+    if (keep) { const b = body.querySelector(`button[data-act="${keep}"]:not([disabled])`); if (b) b.focus(); else $('exSheet').querySelector('.shcard').focus(); }
+  }
+  function openExSheet(i, focusName) {
+    openEx = i;
+    $('exSay').textContent = msg('editExercise', EX_SAYS);
+    renderExSheet();
+    showSheet('exSheet');
+    $('exSheet').querySelector('.shcard').scrollTop = 0;
+    if (matchMedia('(min-width: 900px)').matches) {      // side panel: keep the row being edited in view beside it
+      const row = document.querySelector(`#exList .ex[data-i="${i}"]`);
+      if (row) requestAnimationFrame(() => row.scrollIntoView({ block: 'center', behavior: 'smooth' }));
+    }
+    (focusName ? $('exSheetName') : $('exSheet').querySelector('.shcard')).focus({ preventScroll: true });
+  }
+  function closeExSheet() {
+    const was = openEx;
+    openEx = -1; hideSheet('exSheet'); highlightExercise(null);
+    document.querySelectorAll('#exList .ex.open').forEach((r) => r.classList.remove('open'));
+    const back = document.querySelector(`#exList .exopen[data-i="${was}"]`);
+    if (back) back.focus({ preventScroll: true });
+    else if (sheetFrom && sheetFrom.isConnected) sheetFrom.focus({ preventScroll: true });
+  }
+  function openWkSheet() {
+    $('wkSheetT').textContent = wkLabel(cfg);
+    $('wkSay').textContent = msg('editWorkout', WK_SAYS);
+    showSheet('wkSheet');
+    $('wkSheet').querySelector('.shcard').focus({ preventScroll: true });
+  }
+  function closeWkSheet() { hideSheet('wkSheet'); if (sheetFrom && sheetFrom.isConnected) sheetFrom.focus({ preventScroll: true }); }
+  function closeSheets() { if (!$('exSheet').hidden) closeExSheet(); if (!$('wkSheet').hidden) closeWkSheet(); }
+  ['exSheet', 'wkSheet'].forEach((id) => {
+    $(id).addEventListener('click', (e) => {
+      if (e.target === $(id) || e.target.closest('[data-close]')) { if (id === 'exSheet') closeExSheet(); else closeWkSheet(); }
+    });
+  });
+  $('exSheetName').addEventListener('input', (e) => {
+    const i = +e.target.dataset.i;
+    if (!cfg.exercises[i]) return;
+    cfg.exercises[i].name = e.target.value;
+    updateExVals(i); loopCaptions(); save();
+  });
+  $('exSheetName').addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); e.target.blur(); } });
 
   /* ---------- Typing times: "90", "1:30" or "1m30" ---------- */
   function parseTime(str) {
@@ -1512,13 +1759,6 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     cfg.exercises.forEach((x) => { if (nw !== null) x.work = nw; if (nr !== null) x.rest = nr; });
     save(); renderExercises();
     toast(`Set ${plural(cfg.exercises.length, 'exercise')} to ${fmt(cfg.exercises[0].work)} work · ${fmt(cfg.exercises[0].rest)} rest`);
-  });
-  $('exList').addEventListener('input', (e) => {
-    if (e.target.classList.contains('exname')) {
-      cfg.exercises[+e.target.dataset.i].name = e.target.value;
-      loopCaptions();
-      save();
-    }
   });
 
   /* ---------- Dialogs (one reusable, in-page, themed with Frogue) ---------- */
@@ -1632,9 +1872,9 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   }
   $('exList').addEventListener('focusin', (e) => {
     const row = e.target.closest && e.target.closest('.ex');
-    if (row) highlightExercise(row.querySelector('.exname').dataset.i);
+    if (row) highlightExercise(row.dataset.i);
   });
-  $('exList').addEventListener('focusout', () => highlightExercise(null));
+  $('exList').addEventListener('focusout', () => { if (openEx < 0) highlightExercise(null); });
 
   /* ---------- Saved workouts ---------- */
   function renderWorkoutBar() {
@@ -1717,23 +1957,27 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
       const cur = parseTime(el.value);
       el.value = fmt(clamp((Number.isFinite(cur) ? cur : cfg.exercises[0][k]) + +b.dataset.d, k));
       return;                                                         // nothing changes until "Apply to all"
-    } else if (act === 'tog') {
-      openEx = openEx === i ? -1 : i;
-      document.querySelectorAll('#exList .ex').forEach((r, k) => r.classList.toggle('open', k === openEx));
+    } else if (act === 'edit') {
+      openExSheet(i);
+      return;
+    } else if (act === 'wk') {
+      openWkSheet();
       return;
     } else if (act === 'add') {
       const last = cfg.exercises[cfg.exercises.length - 1] || { work: 40, rest: 20 };
-      if (cfg.exercises.length >= 30) return;
+      if (cfg.exercises.length >= 30) { toast('That’s 30 exercises. Frogue’s legs are tired!'); return; }
       cfg.exercises.push({ name: '', work: last.work, rest: last.rest });
-      openEx = cfg.exercises.length - 1;
       renderExercises();
-      const inputs = document.querySelectorAll('.exname'); inputs[inputs.length - 1].focus();
+      openExSheet(cfg.exercises.length - 1, true);
     } else if (act === 'del') {
       if (cfg.exercises.length <= 1) return;
-      cfg.exercises.splice(i, 1); openEx = -1; renderExercises();
+      const gone = exName(cfg, i);
+      cfg.exercises.splice(i, 1); closeExSheet(); renderExercises();
+      toast(`Removed ${gone}`);
     } else if (act === 'dup') {
       if (cfg.exercises.length >= 30) return;
       cfg.exercises.splice(i + 1, 0, Object.assign({}, cfg.exercises[i])); openEx = i + 1; renderExercises();
+      toast(`Copied ${exName(cfg, i)}`);
     } else if (act === 'up' || act === 'down') {
       openEx = stepEx(i, act === 'up' ? -1 : 1); renderExercises();
     } else if (act === 'loop') {                                      // a new loop with just this exercise in it
@@ -1751,7 +1995,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     } else if (act === 'lpd') {
       const g = +b.dataset.g;
       cfg.loops = Object.assign({}, cfg.loops, { [g]: Math.max(2, Math.min(MAX_LOOP, loopTimes(cfg, g) + +b.dataset.d)) });
-      document.querySelectorAll(`#exList .loopbox[data-g="${g}"] .lpn`).forEach((el) => { el.textContent = '×' + cfg.loops[g]; });
+      document.querySelectorAll(`[data-lpn="${g}"]`).forEach((el) => { el.textContent = cfg.loops[g] + '×'; });
       loopCaptions(); renderSummary();
     } else if (act === 'lpx') {
       const g = +b.dataset.g;
@@ -3311,6 +3555,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   window.frogueTvBack = () => {
     if (dlgOpen()) { closeDialog(dlgCancel); return true; }
     if (setOpen()) { settings(false); return true; }
+    if (sheetOpen()) { closeSheets(); return true; }
     if (active) { askStop(); return true; }
     return false;
   };
@@ -3352,6 +3597,17 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
       else if (e.key === 'Tab') { // keep keyboard focus inside the dialog
         const f = [...dlg.querySelectorAll('button, input')].filter((x) => !x.disabled);
         if (!f.length) return;
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+      return;
+    }
+    if (sheetOpen()) {
+      const sh = !$('exSheet').hidden ? $('exSheet') : $('wkSheet');
+      if (e.code === 'Escape') { if (!e.defaultPrevented) { e.preventDefault(); closeSheets(); } }
+      else if (e.key === 'Tab') { // keep keyboard focus inside the sheet
+        const f = [...sh.querySelectorAll('button, input')].filter((x) => !x.disabled && x.offsetParent);
         const first = f[0], last = f[f.length - 1];
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
         else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
