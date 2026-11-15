@@ -982,6 +982,32 @@
   @media (max-width: 700px) {
     .titlebar .scrbtns #setBtn { width: 48px; }
   }
+  /* Different rounds: round tabs, the round bar, the round sheet, and the switch in the Workout sheet */
+  .rtabs { flex: none; width: 100%; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 2px; margin: -2px; }
+  .rtabs::-webkit-scrollbar { display: none; }
+  .rtabs button { flex: none; min-height: 48px; padding: 0 14px; border-radius: 14px; font-size: 15px; font-weight: 800; color: #d0d5dd; }
+  .rtabs button.on { background: #32d583; color: #052e16; font-weight: 900; }
+  .rtabs .radd { width: 48px; padding: 0; background: transparent; box-shadow: inset 0 0 0 2px rgba(255,255,255,.25); color: #32d583; font-size: 22px; }
+  .rbar { flex: none; width: 100%; display: flex; align-items: center; gap: 8px; }
+  .rinfo { flex: 1 1 auto; min-width: 0; font-size: 14px; color: var(--muted); }
+  .rinfo b { color: #f2f4f7; }
+  #rMore { flex: none; width: 48px; height: 44px; padding: 0; font-size: 20px; font-weight: 900; border-radius: 12px; }
+  .rmode { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 16px; background: rgba(255,255,255,.05); }
+  .rmode .lbl { font-size: 12px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .rseg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; padding: 4px; border-radius: 14px; background: #0e1116; }
+  .rseg button { min-height: 48px; border-radius: 10px; background: transparent; color: #d0d5dd; font-size: 15px; font-weight: 800; }
+  .rseg button.on { background: #32d583; color: #052e16; font-weight: 900; }
+  .rmode .gd { font-size: 13px; color: var(--muted); line-height: 1.4; }
+  .rdcopy { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 16px; background: rgba(255,255,255,.05); }
+  .rdcopy b { font-size: 15px; }
+  .rdfrom { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 6px; max-height: 220px; overflow-y: auto; }
+  .rdfrom button { min-height: 48px; border-radius: 12px; font-size: 15px; font-weight: 800; }
+  .rdcopy .shwhy { text-align: left; }
+  .rdacts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .rdacts button { min-height: 52px; border-radius: 14px; font-size: 15px; font-weight: 800; }
+  .rdacts button.del { background: rgba(240,68,56,.16); color: #fda29b; }
+  .rdacts button.del:hover:not(:disabled) { background: #b42318; color: #fff; }
+  .rdacts button:disabled, .rtabs button:disabled { opacity: .4; }
 </style>
 </head>
 <body data-phase="idle">
@@ -1028,7 +1054,7 @@
       <button class="gt gt-prep" data-act="wk" aria-label="Rounds, round break and get ready"><b id="t-prep"></b><span>get ready</span></button>
     </div>
 
-    <div class="exhead"><h2>Each round</h2><button id="quickToggle" class="qtog" aria-expanded="false">Quick set ▸</button></div>
+    <div class="exhead"><h2 id="exHeadT">Each round</h2><button id="quickToggle" class="qtog" aria-expanded="false">Quick set ▸</button></div>
     <div class="allrow">
       <div class="allhead">Set every exercise to</div>
       <div class="mini qwork"><div class="lbl">Work</div>
@@ -1037,8 +1063,10 @@
         <div class="steps"><button data-act="ast" data-f="allRest" data-d="-5" data-hold>−</button><input class="val tin" id="allRest" type="text" inputmode="numeric" aria-label="Rest time for all exercises" title="Type seconds (20) or minutes:seconds (0:20)"><button data-act="ast" data-f="allRest" data-d="5" data-hold>+</button></div></div>
       <button class="apply" id="applyAll">Apply to all</button>
     </div>
+    <div id="rTabs" class="rtabs" role="group" aria-label="Choose a round to edit" hidden></div>
+    <div id="rBar" class="rbar" hidden><div id="rInfo" class="rinfo"></div><button id="rMore" data-act="rmore" aria-haspopup="dialog">⋯</button></div>
     <div id="exList"></div>
-    <button class="addbtn" data-act="add">＋ Add exercise</button>
+    <button class="addbtn" id="addBtn" data-act="add">＋ Add exercise</button>
 
     <div class="hint">Tap an exercise to change it · Drag ⠿ to reorder</div>
     <div class="credit">A Bouncy Production · Made for Haz</div>
@@ -1048,8 +1076,16 @@
       <div class="shcard" tabindex="-1">
         <div class="shgrab" aria-hidden="true"></div>
         <div class="shhead"><h3 id="wkSheetT" class="shtitle">Workout</h3><button class="shdone" data-close>Done</button></div>
+    <div class="rmode">
+      <div class="lbl">Every round</div>
+      <div class="rseg" role="group" aria-label="Every round">
+        <button data-act="mode" data-v="same" id="modeSame">The same</button>
+        <button data-act="mode" data-v="diff" id="modeDiff">Different</button>
+      </div>
+      <div class="gd" id="modeD"></div>
+    </div>
     <div class="globals">
-      <div class="g"><div class="gl"><div class="lbl">Rounds</div><div class="gd">Times the list repeats</div></div>
+      <div class="g"><div class="gl"><div class="lbl">Rounds</div><div class="gd" id="gdRounds">Times the list repeats</div></div>
         <div class="steps"><button data-act="g" data-k="rounds" data-d="-1" data-hold aria-label="One fewer round">−</button><input class="val tin" id="v-rounds" data-k="rounds" type="text" inputmode="numeric" aria-label="Number of rounds"><button data-act="g" data-k="rounds" data-d="1" data-hold aria-label="One more round">+</button></div></div>
       <div class="g g-brk"><div class="gl"><div class="lbl">Round break</div><div class="gd" id="gdBrk">Between rounds</div></div>
         <div class="steps"><button data-act="g" data-k="roundRest" data-d="-5" data-hold aria-label="5 seconds shorter">−</button><input class="val tin" id="v-roundRest" data-k="roundRest" type="text" inputmode="numeric" aria-label="Round break (seconds or m:ss)" title="Type seconds (90) or minutes:seconds (1:30)"><button data-act="g" data-k="roundRest" data-d="5" data-hold aria-label="5 seconds longer">+</button></div></div>
@@ -1070,6 +1106,27 @@
         <div id="exSheetBody"></div>
         <div class="shgap"></div>
         <div class="shfrog"><span class="mascot"></span><div class="shbub" id="exSay"></div></div>
+        <div class="credit shcredit">A Bouncy Production · Made for Haz</div>
+      </div>
+    </div>
+
+    <div id="rdSheet" class="sheet" role="dialog" aria-modal="true" aria-labelledby="rdSheetT" hidden>
+      <div class="shcard" tabindex="-1">
+        <div class="shgrab" aria-hidden="true"></div>
+        <div class="shhead"><h3 id="rdSheetT" class="shkick">Round</h3><button class="shdone" data-close>Done</button></div>
+        <div class="rdcopy">
+          <b>Copy exercises from</b>
+          <div class="rdfrom" id="rdFrom"></div>
+          <div class="shwhy" id="rdWhy"></div>
+        </div>
+        <div class="rdacts">
+          <button data-act="rmove" data-d="-1" id="rdEarlier">← Move earlier</button>
+          <button data-act="rmove" data-d="1" id="rdLater">Move later →</button>
+          <button data-act="rdup" id="rdDup">Duplicate round</button>
+          <button data-act="rdel" class="del" id="rdDel">Delete round</button>
+        </div>
+        <div class="shgap"></div>
+        <div class="shfrog"><span class="mascot"></span><div class="shbub" id="rdSay"></div></div>
         <div class="credit shcredit">A Bouncy Production · Made for Haz</div>
       </div>
     </div>
@@ -1438,7 +1495,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   Object.keys(store.workouts).forEach((id) => { if (!validWorkout(store.workouts[id])) delete store.workouts[id]; });
   if (!store.workouts[store.current]) store.current = Object.keys(store.workouts)[0];
   let cfg = store.workouts[store.current];
-  const save = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {} try { draftPub(); } catch (e) {} };
+  const save = () => { stash(); try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {} try { draftPub(); } catch (e) {} };
   const clamp = (v, k) => Math.min(LIM[k][1], Math.max(LIM[k][0], v));
 
   const fmt = (s) => { s = Math.max(0, Math.ceil(s)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
@@ -1447,24 +1504,40 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   const wkLabel = (w) => (w.name || '').trim() || 'Untitled workout';
   const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
 
-  function cleanWorkout(w) {
-    if (!w || typeof w !== 'object' || !Array.isArray(w.exercises)) return null;
-    const num = (v, k, d) => { v = Math.round(Number(v)); return Number.isFinite(v) ? clamp(v, k) : d; };
-    const exercises = w.exercises.slice(0, 30).map((e) => {
-      const x = { name: String((e && e.name) || '').slice(0, 40), work: num(e && e.work, 'work', 40), rest: num(e && e.rest, 'rest', 20) };
+  const numOf = (v, k, d) => { v = Math.round(Number(v)); return Number.isFinite(v) ? clamp(v, k) : d; };
+  function cleanList(src) {                          // one exercise list (+ its loops), or null if it's junk/empty
+    if (!src || typeof src !== 'object' || !Array.isArray(src.exercises)) return null;
+    const exercises = src.exercises.slice(0, 30).map((e) => {
+      const x = { name: String((e && e.name) || '').slice(0, 40), work: numOf(e && e.work, 'work', 40), rest: numOf(e && e.rest, 'rest', 20) };
       if (e && Number.isInteger(e.g) && e.g > 0 && e.g < 1000) x.g = e.g;
       return x;
     });
     if (!exercises.length) return null;
+    const c = { exercises };
+    if (src.loops && typeof src.loops === 'object') c.loops = src.loops;
+    return tidyLoops(c);
+  }
+  function cleanWorkout(w) {
+    if (!w || typeof w !== 'object') return null;
+    const base = cleanList(w);
+    if (!base) return null;
     const c = {
       name: String(w.name || '').slice(0, 40),
-      prep: num(w.prep, 'prep', 10),
-      rounds: num(w.rounds, 'rounds', 3),
-      roundRest: num(w.roundRest, 'roundRest', 60),
-      exercises,
+      prep: numOf(w.prep, 'prep', 10),
+      rounds: numOf(w.rounds, 'rounds', 3),
+      roundRest: numOf(w.roundRest, 'roundRest', 60),
+      exercises: base.exercises,
     };
-    if (w.loops && typeof w.loops === 'object') c.loops = w.loops;
-    return tidyLoops(c);
+    if (base.loops) c.loops = base.loops;
+    // Different rounds: rl holds one list per round; the round being edited (ri) is always the
+    // workout's own exercises/loops, so older apps that ignore rl still see a sensible list.
+    if (w.split && Array.isArray(w.rl) && w.rl.length >= 2) {
+      const rl = w.rl.slice(0, LIM.rounds[1]);
+      const ri = Math.max(0, Math.min(rl.length - 1, Math.round(Number(w.ri)) || 0));
+      const lists = rl.map((r, k) => (k === ri ? JSON.parse(JSON.stringify(base)) : cleanList(r)));
+      if (lists.every(Boolean)) Object.assign(c, { split: true, ri, rl: lists, rounds: lists.length });
+    }
+    return c;
   }
 
   /* ---------- Loops: a run of exercises played N times in a row inside each round ----------
@@ -1498,21 +1571,39 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   }
   const loopCount = (c) => Object.keys(c.loops || {}).length;
 
+  /* ---------- Different rounds (opt-in): each round has its own list ----------
+     c.split = true, c.rl = [{exercises, loops?}, …] one per round, c.ri = the round being edited.
+     For round ri the live list is always c.exercises / c.loops (stash() copies it back into rl). */
+  const isSplit = (c) => !!(c && c.split && Array.isArray(c.rl) && c.rl.length >= 2);
+  function roundCfg(c, r) {                          // the list for round r (1-based)
+    if (!isSplit(c)) return c;
+    const k = Math.max(0, Math.min(c.rl.length, r) - 1);
+    return k === (c.ri | 0) ? { exercises: c.exercises, loops: c.loops } : c.rl[k];
+  }
+  function stash(c) {
+    c = c || cfg;
+    if (isSplit(c)) c.rl[c.ri | 0] = c.loops ? { exercises: c.exercises, loops: c.loops } : { exercises: c.exercises };
+  }
+  const copyList = (l) => JSON.parse(JSON.stringify(l));
+
   function buildPhases(c) {
-    const p = [];
-    const steps = playOrder(c), n = steps.length;
+    const p = [], split = isSplit(c), R = split ? c.rl.length : c.rounds;
     if (c.prep > 0) p.push({ type: 'prep', dur: c.prep, xi: -1 });
-    for (let r = 1; r <= c.rounds; r++) {
+    for (let r = 1; r <= R; r++) {
+      const lc = roundCfg(c, r), steps = playOrder(lc), n = steps.length;
+      const mine = !split || r - 1 === (c.ri | 0);   // only the round on screen lights up in the setup preview
       for (let k = 0; k < n; k++) {
-        const i = steps[k].i, ex = c.exercises[i];
+        const i = steps[k].i, ex = lc.exercises[i], xi = mine ? i : -1;
         const lp = steps[k].sets ? { set: steps[k].set, sets: steps[k].sets } : {};
-        p.push(Object.assign({ type: 'work', dur: ex.work, name: exName(c, i), round: r, ex: i + 1, xi: i }, lp));
-        const lastEx = k === n - 1, lastRound = r === c.rounds;
+        p.push(Object.assign({ type: 'work', dur: ex.work, name: exName(lc, i), round: r, ex: i + 1, of: lc.exercises.length, xi }, lp));
+        const lastEx = k === n - 1, lastRound = r === R;
         if (!lastEx) {
-          if (ex.rest > 0) p.push(Object.assign({ type: 'rest', dur: ex.rest, round: r, upNext: exName(c, steps[k + 1].i), xi: i }, lp));
+          if (ex.rest > 0) p.push(Object.assign({ type: 'rest', dur: ex.rest, round: r, upNext: exName(lc, steps[k + 1].i), xi }, lp));
         } else if (!lastRound) {
-          if (c.roundRest > 0) p.push({ type: 'rest', dur: c.roundRest, round: r, roundBreak: true, upNext: exName(c, steps[0].i), xi: i });
-          else if (ex.rest > 0) p.push(Object.assign({ type: 'rest', dur: ex.rest, round: r, upNext: exName(c, steps[0].i), xi: i }, lp));   // no round break set: the last exercise's own rest is used
+          const nc = roundCfg(c, r + 1), first = exName(nc, playOrder(nc)[0].i);
+          const nx = split ? { nextNames: nc.exercises.map((x, j) => exName(nc, j)) } : {};
+          if (c.roundRest > 0) p.push(Object.assign({ type: 'rest', dur: c.roundRest, round: r, roundBreak: true, upNext: first, xi }, nx));
+          else if (ex.rest > 0) p.push(Object.assign({ type: 'rest', dur: ex.rest, round: r, upNext: first, xi }, lp));   // no round break set: the last exercise's own rest is used
         }
       }
     }
@@ -1520,11 +1611,17 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   }
 
   function renderGlobals() {
+    if (syncRounds()) renderExercises(); else if (isSplit(cfg)) renderRounds();
+    const split = isSplit(cfg);
+    $('modeSame').classList.toggle('on', !split); $('modeDiff').classList.toggle('on', split);
+    $('modeSame').setAttribute('aria-pressed', String(!split)); $('modeDiff').setAttribute('aria-pressed', String(split));
+    $('modeD').textContent = split ? 'Each round has its own list. Pick a round above the list to change it.' : 'One list, played every round. Easiest.';
+    $('gdRounds').textContent = split ? 'Each with its own list' : 'Times the list repeats';
     $('v-rounds').value = cfg.rounds;
     $('v-roundRest').value = fmt(cfg.roundRest);
     $('v-prep').value = fmt(cfg.prep);
     $('t-rounds').textContent = cfg.rounds;
-    $('t-roundsL').textContent = cfg.rounds === 1 ? 'round' : 'rounds';
+    $('t-roundsL').textContent = split ? 'different rounds' : cfg.rounds === 1 ? 'round' : 'rounds';
     $('t-roundRest').textContent = fmt(cfg.roundRest);
     $('t-prep').textContent = fmt(cfg.prep);
     const noBrk = cfg.rounds <= 1;                         // one round: nothing to break between
@@ -1538,14 +1635,151 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   const lastRestOff = () => {
     const last = cfg.exercises[cfg.exercises.length - 1];
     if (last && last.g != null) return '';                 // in a loop: its rest runs between repeats
+    if (isSplit(cfg)) return (cfg.ri | 0) === cfg.rl.length - 1 ? 'Not used' : cfg.roundRest > 0 ? 'Round break used' : '';
     return cfg.rounds <= 1 ? 'Not used' : cfg.roundRest > 0 ? 'Round break used' : '';
   };
   function markLastRest() {                         // only the last exercise's chip (and its sheet) depend on the round settings
     if (cfg.exercises.length) updateExVals(cfg.exercises.length - 1);
   }
+
+  /* ---------- Different rounds: tabs above the list, the round ⋯ sheet, switching it on and off ---------- */
+  const RD_SAYS = ['Round {round}: the sequel. Usually sweatier.', 'Mix it up! Muscles hate surprises.', 'New round, new pain. Love it.', 'Ooh, plot twist.'];
+  function useRound(k) {                             // put round k's list on screen (no stash: callers decide)
+    const l = cfg.rl[k];
+    cfg.ri = k; cfg.exercises = l.exercises;
+    if (l.loops) cfg.loops = l.loops; else delete cfg.loops;
+  }
+  function syncRounds() {                            // Rounds stepper: + adds a copy of the last round, − drops the last one
+    if (!isSplit(cfg)) return false;
+    stash();
+    cfg.rounds = Math.max(2, cfg.rounds);
+    let moved = false;
+    if (cfg.rl.length > cfg.rounds) {
+      const gone = cfg.rl.length - cfg.rounds;
+      if ((cfg.ri | 0) >= cfg.rounds) { useRound(cfg.rounds - 1); moved = true; openEx = -1; }
+      cfg.rl.length = cfg.rounds;
+      toast(gone === 1 ? `Round ${cfg.rounds + 1} removed` : `Rounds ${cfg.rounds + 1}–${cfg.rounds + gone} removed`);
+    }
+    while (cfg.rl.length < cfg.rounds) cfg.rl.push(copyList(cfg.rl[cfg.rl.length - 1]));
+    return moved;
+  }
+  function renderRounds() {
+    const on = isSplit(cfg);
+    $('rTabs').hidden = !on; $('rBar').hidden = !on;
+    $('exHeadT').textContent = on ? 'Rounds' : 'Each round';
+    $('addBtn').textContent = on ? `＋ Add exercise to Round ${(cfg.ri | 0) + 1}` : '＋ Add exercise';
+    document.querySelector('.allhead').textContent = on ? 'Set every exercise in every round to' : 'Set every exercise to';
+    if (!on) return;
+    const t = $('rTabs'), keepFocus = t.contains(document.activeElement) ? document.activeElement.dataset.act : null;
+    t.innerHTML = '';
+    cfg.rl.forEach((x, k) => {
+      const b = document.createElement('button');
+      b.dataset.act = 'rtab'; b.dataset.r = k; b.textContent = `Round ${k + 1}`;
+      if (k === (cfg.ri | 0)) { b.className = 'on'; b.setAttribute('aria-current', 'true'); }
+      t.appendChild(b);
+    });
+    const add = document.createElement('button');
+    add.dataset.act = 'radd'; add.className = 'radd'; add.textContent = '+';
+    add.setAttribute('aria-label', 'Add a round'); add.title = 'Add a round (starts as a copy of the last one)';
+    if (cfg.rl.length >= LIM.rounds[1]) add.disabled = true;
+    t.appendChild(add);
+    const cur = t.querySelector('.on');
+    if (keepFocus) { const f = keepFocus === 'radd' ? add : cur; if (f) f.focus({ preventScroll: true }); }
+    if (cur) t.scrollLeft = cur.offsetLeft - t.offsetLeft - (t.clientWidth - cur.offsetWidth) / 2;   // sideways only
+  }
+  function selectRound(k) {
+    if (!isSplit(cfg) || k === (cfg.ri | 0) || !cfg.rl[k]) return;
+    stash(); useRound(k); openEx = -1;
+    renderExercises(); save();
+  }
+  function renderRdSheet() {
+    const k = cfg.ri | 0, n = cfg.rl.length;
+    $('rdSheetT').textContent = `Round ${k + 1} of ${n}`;
+    const f = $('rdFrom'); f.innerHTML = '';
+    cfg.rl.forEach((x, j) => {
+      if (j === k) return;
+      const b = document.createElement('button');
+      b.dataset.act = 'rcopy'; b.dataset.r = j; b.textContent = `Round ${j + 1}`;
+      f.appendChild(b);
+    });
+    $('rdWhy').textContent = `Replaces Round ${k + 1}’s exercises. Frogue checks with you first.`;
+    $('rdEarlier').disabled = k === 0; $('rdLater').disabled = k === n - 1;
+    $('rdDup').disabled = n >= LIM.rounds[1];
+    $('rdDel').disabled = n <= 2;
+    $('rdDel').title = n <= 2 ? 'Two rounds is the least for different rounds. For one list, choose “The same” on the Rounds tile.' : `Delete Round ${k + 1}`;
+  }
+  function openRdSheet() {
+    if (!isSplit(cfg)) return;
+    renderRdSheet();
+    $('rdSay').textContent = msg('editRound', RD_SAYS, { round: (cfg.ri | 0) + 1 });
+    showSheet('rdSheet');
+    $('rdSheet').querySelector('.shcard').focus({ preventScroll: true });
+  }
+  const afterRound = (note) => { openEx = -1; renderGlobals(); renderExercises(); if (!$('rdSheet').hidden) renderRdSheet(); save(); if (note) toast(note); };
+  async function copyRound(j) {
+    const k = cfg.ri | 0;
+    const v = await openDialog({ title: `Copy Round ${j + 1} into Round ${k + 1}?`, mood: 'worry', cancel: 'no',
+      body: `Round ${k + 1}’s exercises are swapped for a copy of Round ${j + 1}’s.`,
+      buttons: [{ label: 'Keep it', value: 'no', focus: true }, { label: `Copy Round ${j + 1}`, kind: 'go', value: 'yes' }] });
+    if (v !== 'yes' || !isSplit(cfg) || !cfg.rl[j]) return;
+    stash(); cfg.rl[k] = copyList(cfg.rl[j]); useRound(k);
+    afterRound(`Round ${k + 1} is now a copy of Round ${j + 1}`);
+  }
+  function moveRound(d) {
+    const k = cfg.ri | 0, j = k + d;
+    if (!cfg.rl[j]) return;
+    stash(); [cfg.rl[k], cfg.rl[j]] = [cfg.rl[j], cfg.rl[k]]; useRound(j);
+    afterRound(`Moved to Round ${j + 1}`);
+  }
+  function dupRound() {
+    const k = cfg.ri | 0;
+    if (cfg.rl.length >= LIM.rounds[1]) return;
+    stash(); cfg.rl.splice(k + 1, 0, copyList(cfg.rl[k])); cfg.rounds = cfg.rl.length; useRound(k + 1);
+    afterRound(`Round ${k + 2} is a copy of Round ${k + 1}`);
+  }
+  async function delRound() {
+    const k = cfg.ri | 0;
+    if (cfg.rl.length <= 2) return;
+    const v = await openDialog({ title: `Delete Round ${k + 1}?`, mood: 'worry', cancel: 'no',
+      body: `Its ${plural(cfg.exercises.length, 'exercise')} go with it. Later rounds move up one.`,
+      buttons: [{ label: 'Keep it', value: 'no', focus: true }, { label: 'Delete round', kind: 'danger', value: 'yes' }] });
+    if (v !== 'yes' || !isSplit(cfg) || cfg.rl.length <= 2) return;
+    stash(); cfg.rl.splice(k, 1); cfg.rounds = cfg.rl.length; useRound(Math.min(k, cfg.rl.length - 1));
+    closeRdSheet();
+    afterRound(`Round ${k + 1} deleted`);
+  }
+  async function setMode(diff) {                     // "Every round: The same / Different" in the Workout sheet
+    if (diff === isSplit(cfg)) return;
+    if (diff) {
+      const n = Math.max(2, cfg.rounds), l = cfg.loops ? { exercises: cfg.exercises, loops: cfg.loops } : { exercises: cfg.exercises };
+      cfg.rl = Array.from({ length: n }, (x, k) => (k === 0 ? l : copyList(l)));
+      Object.assign(cfg, { split: true, ri: 0, rounds: n });
+      afterRound('Each round has its own list now. Pick a round to change it.');
+      return;
+    }
+    stash();
+    const first = JSON.stringify(cfg.rl[0]);
+    if (cfg.rl.some((r) => JSON.stringify(r) !== first)) {
+      const v = await openDialog({ title: 'Use Round 1 for every round?', mood: 'worry', cancel: 'no',
+        body: `Rounds 2–${cfg.rl.length} lose their own exercises, and every round plays Round 1’s list.`,
+        buttons: [{ label: 'Keep them different', value: 'no', focus: true }, { label: 'Use Round 1', kind: 'danger', value: 'yes' }] });
+      if (v !== 'yes' || !isSplit(cfg)) return;
+      stash();
+    }
+    useRound(0);
+    cfg.rounds = cfg.rl.length;
+    delete cfg.split; delete cfg.rl; delete cfg.ri;
+    afterRound('Every round is the same again');
+  }
   function renderSummary() {
-    const total = buildPhases(cfg).reduce((a, x) => a + x.dur, 0);
-    $('summary').innerHTML = `<b class="sum-t">${fmt(total)}</b> <span class="sum-d">${plural(cfg.exercises.length, 'exercise')} × ${plural(cfg.rounds, 'round')}${loopCount(cfg) ? ' · ' + plural(loopCount(cfg), 'loop') : ''}<span class="sum-w"> · total ${fmt(total)}</span></span>`;
+    const ph = buildPhases(cfg), total = ph.reduce((a, x) => a + x.dur, 0);
+    const shape = isSplit(cfg) ? plural(cfg.rl.length, 'different round') : `${plural(cfg.exercises.length, 'exercise')} × ${plural(cfg.rounds, 'round')}${loopCount(cfg) ? ' · ' + plural(loopCount(cfg), 'loop') : ''}`;
+    $('summary').innerHTML = `<b class="sum-t">${fmt(total)}</b> <span class="sum-d">${shape}<span class="sum-w"> · total ${fmt(total)}</span></span>`;
+    if (isSplit(cfg)) {                               // "Round 2 · 3 exercises · 3:20" above the list
+      const k = (cfg.ri | 0) + 1, t = ph.filter((x) => x.round === k && !x.roundBreak).reduce((a, x) => a + x.dur, 0);
+      $('rInfo').innerHTML = `<b>Round ${k}</b> · ${plural(cfg.exercises.length, 'exercise')} · ${fmt(t)}`;
+      $('rMore').setAttribute('aria-label', `Round ${k} options`); $('rMore').title = `Round ${k}: copy, move, duplicate or delete`;
+    }
     renderPreview();
   }
 
@@ -1554,6 +1788,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     const list = $('exList');
     list.innerHTML = '';
     tidyLoops(cfg);
+    renderRounds();
     let box = null;                                   // the purple Repeat box we're filling, if any
     cfg.exercises.forEach((ex, i) => {
       if (ex.g == null) box = null;
@@ -1628,7 +1863,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     if (m) {
       m.classList.toggle('off', !!why);
       m.querySelector('.lbl').textContent = why || 'Rest after';
-      m.querySelector('.shwhy').textContent = !why ? '' : cfg.rounds <= 1 ? 'Only one round, so there’s nothing to rest before.' : 'The round break replaces this rest. Set Round break to 0:00 to use this one.';
+      m.querySelector('.shwhy').textContent = !why ? '' : why === 'Not used' ? (isSplit(cfg) ? 'This is the last round, so nothing comes after it.' : 'Only one round, so there’s nothing to rest before.') : 'The round break replaces this rest. Set Round break to 0:00 to use this one.';
       m.querySelectorAll('button, input').forEach((x) => { x.disabled = !!why; });
     }
   }
@@ -1638,7 +1873,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
      data-act buttons as before, so hold-to-repeat, typing times and tap-vs-swipe all still apply. */
   const EX_SAYS = ['Name it, time it, crush it.', 'I’ll count. You sweat.', 'Looking spicy!', 'Ooh, a good one.', 'Make it hurt (nicely).'];
   const WK_SAYS = ['More rounds? Brave.', 'Breaks are for heroes too.', 'I’ll be here, counting.', 'Big plans. I like it.'];
-  const sheetOpen = () => !$('exSheet').hidden || !$('wkSheet').hidden;
+  const sheetOpen = () => !$('exSheet').hidden || !$('wkSheet').hidden || !$('rdSheet').hidden;
   let sheetFrom = null;                              // where focus goes back to on close
   function showSheet(id) {
     const el = $(id);
@@ -1725,10 +1960,11 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     $('wkSheet').querySelector('.shcard').focus({ preventScroll: true });
   }
   function closeWkSheet() { hideSheet('wkSheet'); if (sheetFrom && sheetFrom.isConnected) sheetFrom.focus({ preventScroll: true }); }
-  function closeSheets() { if (!$('exSheet').hidden) closeExSheet(); if (!$('wkSheet').hidden) closeWkSheet(); }
-  ['exSheet', 'wkSheet'].forEach((id) => {
+  function closeRdSheet() { hideSheet('rdSheet'); const b = $('rMore'); if (b && b.offsetParent) b.focus({ preventScroll: true }); }
+  function closeSheets() { if (!$('exSheet').hidden) closeExSheet(); if (!$('wkSheet').hidden) closeWkSheet(); if (!$('rdSheet').hidden) closeRdSheet(); }
+  ['exSheet', 'wkSheet', 'rdSheet'].forEach((id) => {
     $(id).addEventListener('click', (e) => {
-      if (e.target === $(id) || e.target.closest('[data-close]')) { if (id === 'exSheet') closeExSheet(); else closeWkSheet(); }
+      if (e.target === $(id) || e.target.closest('[data-close]')) { if (id === 'exSheet') closeExSheet(); else if (id === 'wkSheet') closeWkSheet(); else closeRdSheet(); }
     });
   });
   $('exSheetName').addEventListener('input', (e) => {
@@ -1791,9 +2027,12 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     const w = parseTime($('allWork').value), r = parseTime($('allRest').value);
     const nw = Number.isFinite(w) ? clamp(w, 'work') : null, nr = Number.isFinite(r) ? clamp(r, 'rest') : null;
     if (nw === null && nr === null) { toast('Type a work or rest time first'); return; }
-    cfg.exercises.forEach((x) => { if (nw !== null) x.work = nw; if (nr !== null) x.rest = nr; });
+    stash();
+    const lists = isSplit(cfg) ? cfg.rl : [cfg];                    // different rounds: every exercise in every round
+    lists.forEach((l) => l.exercises.forEach((x) => { if (nw !== null) x.work = nw; if (nr !== null) x.rest = nr; }));
     save(); renderExercises();
-    toast(`Set ${plural(cfg.exercises.length, 'exercise')} to ${fmt(cfg.exercises[0].work)} work · ${fmt(cfg.exercises[0].rest)} rest`);
+    const what = isSplit(cfg) ? `every exercise in all ${cfg.rl.length} rounds` : plural(cfg.exercises.length, 'exercise');
+    toast(`Set ${what} to ${fmt(cfg.exercises[0].work)} work · ${fmt(cfg.exercises[0].rest)} rest`);
   });
 
   /* ---------- Dialogs (one reusable, in-page, themed with Frogue) ---------- */
@@ -1979,6 +2218,19 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   /* ---------- Setup button handling (with press-and-hold repeat) ---------- */
   function doAct(b) {
     const act = b.dataset.act, i = +b.dataset.i;
+    if (act === 'mode') { setMode(b.dataset.v === 'diff'); return; }
+    if (act === 'rtab') { selectRound(+b.dataset.r); return; }
+    if (act === 'rmore') { openRdSheet(); return; }
+    if (act === 'rcopy') { copyRound(+b.dataset.r); return; }
+    if (act === 'rmove') { moveRound(+b.dataset.d); return; }
+    if (act === 'rdup') { dupRound(); return; }
+    if (act === 'rdel') { delRound(); return; }
+    if (act === 'radd') {
+      if (!isSplit(cfg) || cfg.rl.length >= LIM.rounds[1]) return;
+      cfg.rounds = cfg.rl.length + 1; syncRounds(); stash(); useRound(cfg.rl.length - 1);
+      afterRound(`Round ${cfg.rl.length} added (a copy of Round ${cfg.rl.length - 1})`);
+      return;
+    }
     if (act === 'g') {
       const k = b.dataset.k;
       cfg[k] = clamp(cfg[k] + +b.dataset.d, k);
@@ -2411,7 +2663,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     el.className = '';
     if (p && p.type === 'rest' && n && n.type === 'work') {
       if (p.roundBreak) {
-        const names = run.exercises.map((x, k) => exName(run, k));
+        const names = p.nextNames || run.exercises.map((x, k) => exName(run, k));
         const more = names.length > 6 ? `<span class="nu-chip">+${names.length - 5} more</span>` : '';
         el.className = 'nu-card nu-brk';
         el.innerHTML = `<small>Up next in round ${p.round + 1}</small><span class="nu-chips"><span class="nu-chip first">${escH(labelFor(n))} ${fmt(n.dur)}</span>`
@@ -2440,9 +2692,9 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     document.body.dataset.brk = p.roundBreak ? '1' : '';
     $('phaseLabel').textContent = labelFor(p);
     if (p.type === 'prep') {
-      $('roundLabel').textContent = `${plural(run.rounds, 'round')} · ${plural(n, 'exercise')}`;
+      $('roundLabel').textContent = isSplit(run) ? `${plural(run.rounds, 'round')} · each one different` : `${plural(run.rounds, 'round')} · ${plural(n, 'exercise')}`;
     } else if (p.type === 'work') {
-      $('roundLabel').textContent = `Round ${p.round} of ${run.rounds} · Exercise ${p.ex} of ${n}`;
+      $('roundLabel').textContent = `Round ${p.round} of ${run.rounds} · Exercise ${p.ex} of ${p.of || n}`;
       if (p.sets) {
         const chip = document.createElement('span'); chip.className = 'setchip'; chip.textContent = `⟳ Set ${p.set} of ${p.sets}`;
         $('roundLabel').append(' ', chip);
@@ -2940,14 +3192,17 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   };
   function encodeWorkout(w) {
     return '1.' + b64e(JSON.stringify({ n: w.name, p: w.prep, r: w.rounds, q: w.roundRest,
-      e: w.exercises.map((x) => (x.g != null ? [x.name, x.work, x.rest, x.g] : [x.name, x.work, x.rest])), ...(w.loops ? { l: w.loops } : {}) }));
+      e: encList(w), ...(w.loops ? { l: w.loops } : {}),
+      ...(isSplit(w) ? { s: w.rl.map((r, k) => { const l = k === (w.ri | 0) ? w : r; return l.loops ? [encList(l), l.loops] : [encList(l)]; }) } : {}) }));
   }
+  const encList = (l) => l.exercises.map((x) => (x.g != null ? [x.name, x.work, x.rest, x.g] : [x.name, x.work, x.rest]));
+  const decList = (e, l) => ({ loops: l, exercises: (Array.isArray(e) ? e : []).map((a) => ({ name: (a || [])[0], work: (a || [])[1], rest: (a || [])[2], g: (a || [])[3] })) });
   function decodeWorkout(code) {
     try {
-      if (!code || code.length > 20000 || code.slice(0, 2) !== '1.') return null;
+      if (!code || code.length > 200000 || code.slice(0, 2) !== '1.') return null;
       const o = JSON.parse(b64d(code.slice(2)));
-      return cleanWorkout({ name: o.n, prep: o.p, rounds: o.r, roundRest: o.q, loops: o.l,
-        exercises: (Array.isArray(o.e) ? o.e : []).map((a) => ({ name: (a || [])[0], work: (a || [])[1], rest: (a || [])[2], g: (a || [])[3] })) });
+      const rl = Array.isArray(o.s) ? o.s.map((x) => decList((x || [])[0], (x || [])[1])) : null;
+      return cleanWorkout(Object.assign({ name: o.n, prep: o.p, rounds: o.r, roundRest: o.q }, decList(o.e, o.l), rl ? { split: true, ri: 0, rl, exercises: rl[0].exercises, loops: rl[0].loops } : {}));
     } catch (e) { return null; }
   }
   const shareLink = (w) => location.href.split('#')[0] + '#w=' + encodeWorkout(w);
@@ -2974,7 +3229,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     const url = shareLink(w);
     const body = document.createElement('div');
     const p = document.createElement('div');
-    p.textContent = `Send this link to a friend. When they open it, Frogue will offer to add “${wkLabel(w)}” (${plural(w.exercises.length, 'exercise')}, ${plural(w.rounds, 'round')}) to their timer.`;
+    p.textContent = `Send this link to a friend. When they open it, Frogue will offer to add “${wkLabel(w)}” (${isSplit(w) ? plural(w.rounds, 'different round') : `${plural(w.exercises.length, 'exercise')}, ${plural(w.rounds, 'round')}`}) to their timer.`;
     const inp = document.createElement('input');
     inp.type = 'text'; inp.readOnly = true; inp.value = url; inp.setAttribute('aria-label', 'Share link');
     inp.addEventListener('focus', () => inp.select());
@@ -3003,7 +3258,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     const head = document.createElement('div');
     head.style.fontWeight = '800'; head.textContent = wkLabel(w);
     const sum = document.createElement('div'); sum.className = 'note';
-    sum.textContent = `${plural(w.exercises.length, 'exercise')} × ${plural(w.rounds, 'round')} · total ${fmt(totalOf(w))}`;
+    sum.textContent = `${isSplit(w) ? plural(w.rounds, 'different round') + ' (Round 1 below)' : `${plural(w.exercises.length, 'exercise')} × ${plural(w.rounds, 'round')}`} · total ${fmt(totalOf(w))}`;
     const ul = document.createElement('ul');
     w.exercises.slice(0, 8).forEach((x, i) => {
       const li = document.createElement('li');
@@ -3423,7 +3678,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   const WAIT_LINES = ['Waiting for my coach…', 'Stretching… ribbit!', 'Pick something spicy!', 'Hamstrings: done. Twice.', 'Ready when you are!', 'Warm-up in progress…', 'Hop to it, whenever you like!'];
   function draftStats(w) {
     const ph = buildPhases(w), tot = ph.reduce((a, x) => a + x.dur, 0);
-    return { rounds: w.rounds, exercises: w.exercises.length, total: tot, minutes: Math.max(1, Math.round(tot / 60)), ph };
+    return { rounds: w.rounds, split: isSplit(w), exercises: w.exercises.length, total: tot, minutes: Math.max(1, Math.round(tot / 60)), ph };
   }
   function dwBubble(t) { const b = $('dwBubble'); b.textContent = t; b.classList.remove('pop'); void b.offsetWidth; b.classList.add('pop'); }
   function dwStep() {
@@ -3442,7 +3697,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
   function waitStop() { clearInterval(waitT); waitT = null; clearTimeout(reactT); clearInterval(tileT); tileT = null; }
   let tilePage = 0, tileT = null;
   const TILE_PAGE = 12;
-  function tileLast(w) { return w.rounds <= 1 ? ['tx', 'no rest'] : w.roundRest > 0 ? ['tb', fmt(w.roundRest) + ' break'] : null; }
+  function tileLast(w) { return w.rounds <= 1 || (isSplit(w) && (w.ri | 0) === w.rl.length - 1) ? ['tx', 'no rest'] : w.roundRest > 0 ? ['tb', fmt(w.roundRest) + ' break'] : null; }
   function renderTiles(flip) {
     const w = dspDraft, box = $('dwTiles'), dots = $('dwDots'), wait = $('dspWait');
     box.innerHTML = ''; dots.innerHTML = '';
@@ -3487,7 +3742,8 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     renderTiles(false);
     if (!w) { $('dwStats').textContent = ''; return; }
     const st = draftStats(w);
-    $('dwStats').textContent = `${plural(st.rounds, 'round')} · ${plural(st.exercises, 'exercise')} · ${fmt(st.total)} total`;
+    $('dwStats').textContent = st.split ? `${plural(st.rounds, 'round')}, all different · showing Round ${(w.ri | 0) + 1} · ${fmt(st.total)} total`
+      : `${plural(st.rounds, 'round')} · ${plural(st.exercises, 'exercise')} · ${fmt(st.total)} total`;
     const seg = (flex, cls) => { const d = document.createElement('i'); d.style.flex = Math.max(1, flex) + ' 1 0'; d.className = cls; bar.appendChild(d); };
     let acc = 0, curR = 0;
     st.ph.forEach((p) => {
@@ -3641,7 +3897,7 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
       return;
     }
     if (sheetOpen()) {
-      const sh = !$('exSheet').hidden ? $('exSheet') : $('wkSheet');
+      const sh = !$('exSheet').hidden ? $('exSheet') : !$('rdSheet').hidden ? $('rdSheet') : $('wkSheet');
       if (e.code === 'Escape') { if (!e.defaultPrevented) { e.preventDefault(); closeSheets(); } }
       else if (e.key === 'Tab') { // keep keyboard focus inside the sheet
         const f = [...sh.querySelectorAll('button, input')].filter((x) => !x.disabled && x.offsetParent);
