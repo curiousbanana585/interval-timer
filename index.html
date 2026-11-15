@@ -956,6 +956,32 @@
     #wkSheet .steps { grid-template-columns: 46px 64px 46px; }
     #wkSheet .steps button { width: 46px; height: 48px; }
   }
+  /* =========================================================================
+     Tidy pass (Nov 2026): Quick set as two tinted boxes like the edit sheet,
+     TV buttons live in Settings. Kept last so it wins over the older rules.
+     ========================================================================= */
+  .allrow.open { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; align-items: stretch;
+                 padding: 12px; border-radius: 18px; }
+  .allrow .allhead { grid-column: 1 / -1; margin: 0; font-size: 14px; font-weight: 800; }
+  .allrow .mini { min-width: 0; border-radius: 16px; padding: 10px; gap: 8px; }
+  .allrow .qwork { background: rgba(50,213,131,.1); } .allrow .qrest { background: rgba(83,177,253,.1); }
+  .allrow .mini .lbl { font-size: 12px; font-weight: 900; letter-spacing: .08em; }
+  .allrow .qwork .lbl { color: #4ade80; } .allrow .qrest .lbl { color: #93c5fd; }
+  .allrow .mini .steps { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
+  .allrow .mini .steps .val { grid-column: 1 / -1; order: -1; width: 100%; min-width: 0; font-size: 30px; }
+  .allrow .mini .steps button { width: 100%; height: 48px; font-size: 22px; }
+  .allrow .apply { grid-column: 1 / -1; min-height: 48px; font-size: 17px; border-radius: 14px; }
+  @media (min-width: 701px) {                     /* wide: Work | Rest | Apply on one row */
+    .allrow.open { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); }
+    .allrow .apply { grid-column: auto; align-self: end; height: 48px; }
+  }
+  .titlebar .scrbtns #setBtn { width: auto; }
+  .scrlink { font-size: 15px; font-weight: 800; color: #86efac; line-height: 1.4; }
+  .setpanel .del { background: rgba(240,68,56,.16); color: #fda29b; }
+  .setpanel .del:hover { background: #b42318; color: #fff; }
+  @media (max-width: 700px) {
+    .titlebar .scrbtns #setBtn { width: 48px; }
+  }
 </style>
 </head>
 <body data-phase="idle">
@@ -970,15 +996,11 @@
         <div><h1 aria-label="Frogue Interval Timer"><span class="nm1">Frogue</span> <span class="nm2">Interval Timer</span></h1><div class="sub" id="setupSay"></div></div>
       </div>
       <div class="scrbtns">
-        <button id="scrDisplay" aria-label="Use as TV" title="Make this screen the TV: it shows the timer and plays the sound"><span class="ic">📺</span> <span>Use as TV</span></button>
-        <button id="scrPair" aria-label="Control a TV" title="Run the timer on a TV from this phone"><span class="ic">📱</span> <span>Control a TV</span></button>
-        <button id="scrUnpair" class="del" title="Stop controlling the TV" hidden>Disconnect</button>
-        <button id="setBtn" aria-label="Settings" title="Sound, screen, backup and tips" aria-haspopup="dialog" aria-expanded="false"><span class="ic">⚙️</span> <span>Settings</span></button>
+        <button id="setBtn" aria-label="Settings" title="TV, sound, screen, backup and tips" aria-haspopup="dialog" aria-expanded="false"><span class="ic">⚙️</span> <span>Settings</span></button>
       </div>
     </div>
     <div class="scr" id="scrBox" hidden>
       <div id="scrStatus" class="scrstat"></div>
-      <div class="wakeinfo" id="scrNote" hidden></div>
     </div>
 
     <h2>Workout</h2>
@@ -1009,9 +1031,9 @@
     <div class="exhead"><h2>Each round</h2><button id="quickToggle" class="qtog" aria-expanded="false">Quick set ▸</button></div>
     <div class="allrow">
       <div class="allhead">Set every exercise to</div>
-      <div class="mini"><div class="lbl">Work</div>
+      <div class="mini qwork"><div class="lbl">Work</div>
         <div class="steps"><button data-act="ast" data-f="allWork" data-d="-5" data-hold>−</button><input class="val tin" id="allWork" type="text" inputmode="numeric" aria-label="Work time for all exercises" title="Type seconds (40) or minutes:seconds (1:30)"><button data-act="ast" data-f="allWork" data-d="5" data-hold>+</button></div></div>
-      <div class="mini"><div class="lbl">Rest after</div>
+      <div class="mini qrest"><div class="lbl">Rest after</div>
         <div class="steps"><button data-act="ast" data-f="allRest" data-d="-5" data-hold>−</button><input class="val tin" id="allRest" type="text" inputmode="numeric" aria-label="Rest time for all exercises" title="Type seconds (20) or minutes:seconds (0:20)"><button data-act="ast" data-f="allRest" data-d="5" data-hold>+</button></div></div>
       <button class="apply" id="applyAll">Apply to all</button>
     </div>
@@ -1073,6 +1095,19 @@
   <div class="setcard">
     <div class="sethead"><h3 id="setTitle">Settings</h3><button id="setDone" class="setdone">Done</button></div>
     <div class="setbody">
+      <section class="setsec" aria-labelledby="setTv">
+        <h4 id="setTv">TV</h4>
+        <div class="setbox">
+          <div class="setnote" id="scrHow">Show the timer big on a TV and run it from your phone.</div>
+          <div id="scrLink" class="scrlink" hidden></div>
+          <div class="set2" id="scrBtns">
+            <button id="scrDisplay" title="Make this screen the TV: it shows the timer and plays the sound">📺 Use as TV</button>
+            <button id="scrPair" title="Run the timer on a TV from this phone">📱 Control a TV</button>
+          </div>
+          <button id="scrUnpair" class="setwide del" title="Stop controlling the TV" hidden>Disconnect from TV</button>
+          <div class="wakeinfo" id="scrNote" hidden></div>
+        </div>
+      </section>
       <section class="setsec" aria-labelledby="setSnd">
         <h4 id="setSnd">Sound</h4>
         <div class="setbox">
@@ -3340,15 +3375,16 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     const st = $('scrStatus'), note = $('scrNote');
     if (!st) return;
     const remote = sync.role === 'remote';
-    $('scrDisplay').hidden = remote; $('scrPair').hidden = remote; $('scrUnpair').hidden = !remote;
+    $('scrBtns').hidden = remote; $('scrUnpair').hidden = !remote; $('scrHow').hidden = remote;
     $('startBtn').textContent = remote ? 'START ON TV' : 'START';
     if (remote) {
       const how = linkStatus === 'denied' ? '⚠ can’t reach the relay' : linkStatus !== 'online' ? '… connecting' : tvAlive() ? '● TV online' : '○ TV not responding';
       st.textContent = `📺 Controlling TV ${sync.code} · ${how}`;
     } else st.textContent = '';
+    $('scrLink').textContent = st.textContent; $('scrLink').hidden = !remote;
     note.textContent = SYNC_DB ? '' : 'Sync isn’t set up yet, so screens only find each other inside this one browser (demo). See sync-config.js.';
     note.hidden = !note.textContent; st.hidden = !st.textContent;
-    $('scrBox').hidden = note.hidden && st.hidden;
+    $('scrBox').hidden = st.hidden;            // only "Controlling TV …" shows under the title; the demo note lives in Settings
   }
   let dspPhone = 0, dspMsg = null, dspMsgT = null, hiSeen = false, dspPid = null;
   const OWNER_KEY = 'intervalTimerOwner';
@@ -3538,8 +3574,9 @@ ${cheeky ? `<path d="M78 114q32 32 64 0z" fill="${FM}" stroke="${FM}" stroke-wid
     disconnect(); sync = { role: null, code: null }; saveSync(); tvTagUpdate(); renderScreens();
     toast('Disconnected from the TV');
   }
-  $('scrDisplay').addEventListener('click', enterDisplay);
-  $('scrPair').addEventListener('click', askPair);
+  // These live in Settings now: close the panel first so the TV screen / code dialog is on top
+  $('scrDisplay').addEventListener('click', () => { if (setOpen()) settings(false); enterDisplay(); });
+  $('scrPair').addEventListener('click', () => { if (setOpen()) settings(false); askPair(); });
   $('scrUnpair').addEventListener('click', unpair);
   $('dspExit').addEventListener('click', exitDisplay);
   $('dwExit').addEventListener('click', exitDisplay);
